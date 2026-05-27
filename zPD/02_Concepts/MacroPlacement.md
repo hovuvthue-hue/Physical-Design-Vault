@@ -59,6 +59,12 @@ Lý do: Large contiguous SC areas → better congestion control + more routing r
 
 Khoảng trống xung quanh Macro phục vụ hai mục đích: (1) buffer room cho routing channels, (2) space cho power strap VDD/VSS tapping giữa Macros. Thiếu VDD/VSS tap space giữa các Macros → Well không được connect → latch-up risk.
 
+Quan hệ thực thi thường gặp:
+- **MacroPlacement → Halo**: định nghĩa keep-out đi kèm Macro để bảo vệ pin access/routing access quanh biên Macro.
+- **MacroPlacement → PlacementBlockage**: giới hạn cell density ở các vùng corridor/chimney để giảm congestion theo hướng gián tiếp.
+- **MacroPlacement → RoutingBlockage**: reserve hoặc redirect routing resource theo layer tại các vùng nhạy (clock/power/sensitive interfaces) theo flow/tool/PDK [Needs verification].
+- Khi Macro chưa FIXED, Halo đi theo Macro; sau khi Macro FIXED, vùng keep-out liên quan mới ổn định để downstream steps tối ưu.
+
 **Tính toán khoảng cách routing tối thiểu giữa Macros:**
 
 $$d_{\min} = \frac{\text{Pitch of Routing Layers} \times \text{No. of Pins to be Routed}}{\text{Available Routing Layers in preferred direction}} + \text{Buffer Spacing}$$

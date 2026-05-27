@@ -9,7 +9,7 @@ chain: Chain_PnR_Flow
 # RoutingBlockage
 
 ## Definition
-Routing Blockage là vùng trong Core Area được đánh dấu cấm Router đặt wires trên một hoặc nhiều metal layers cụ thể. Khác với Placement Blockage (cấm Standard Cells), Routing Blockage không ảnh hưởng đến Placement — Standard Cells vẫn có thể được placed bên trong vùng Routing Blockage, nhưng Router không được sử dụng các layers bị block trong vùng đó.
+Routing Blockage là vùng trong Core Area được đánh dấu cấm Router đặt wires trên một hoặc nhiều metal layers cụ thể. Khác với [[PlacementBlockage]] (điều tiết placement density), Routing Blockage là cơ chế **direct routing-resource/layer restriction**. Standard Cells vẫn có thể được placed bên trong vùng Routing Blockage, nhưng Router không được sử dụng các layers bị block trong vùng đó.
 
 **Phân biệt Routing Blockage vs Placement Blockage:**
 
@@ -26,13 +26,13 @@ Macro OBS trong CellAbstract LEF tự động block routing bên trong Macro bod
 
 ## Computed from
 
-Routing Blockages được tạo thủ công tại những vùng có routing sensitivity cao:
+Routing Blockages được tạo thủ công tại những vùng có routing sensitivity cao, ví dụ để redirect routing traffic hoặc reserve routing resource cho vùng nhạy:
 
-**Vùng quanh analog/sensitive Macros:** Block các digital signal layers để tránh digital switching noise coupling vào analog circuits. Ví dụ: có thể block một số lớp metal trung gian trong vùng quanh PLL hoặc ADC [Needs verification].
+**Vùng quanh analog/sensitive Macros:** có thể hạn chế một số signal layers để giảm digital switching noise coupling vào analog circuits. Layer selection cụ thể phụ thuộc flow/tool/PDK [Needs verification].
 
-**Vùng power strap corridors:** Block signal routing layers trong vùng reserved cho power straps để đảm bảo Router không sử dụng chúng cho signal wires.
+**Vùng power strap corridors:** hạn chế signal routing trên các vùng reserved cho power straps để đảm bảo resource cho power distribution. Cách chọn layer phụ thuộc flow/tool/PDK [Needs verification].
 
-**Vùng clock spine:** Block non-clock layers trong vùng dedicated cho clock distribution để tránh SI (Signal Integrity) coupling với clock nets.
+**Vùng clock-related regions (clock spine/trunk):** có thể reserve một phần routing resource để giảm rủi ro SI coupling với clock nets. Mức độ reserve và layer strategy phụ thuộc flow/tool/PDK [Needs verification].
 
 Congestion có thể được giải quyết bằng cả Placement Blockage (giảm density của Standard Cells) lẫn Routing Blockage (redirect routing traffic sang layers khác). Cả hai là complementary tools.
 

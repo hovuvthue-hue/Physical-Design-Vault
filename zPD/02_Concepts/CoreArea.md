@@ -23,11 +23,9 @@ $$\text{Die Area} = \text{IO Ring Area} + \text{Core-to-IO Spacing Area} + \text
 
 **Chip Aspect Ratio** — hình dáng của PnR boundary:
 
-$$\text{Aspect Ratio} = \frac{\text{Width}}{\text{Height}}$$
+$$\text{Aspect Ratio} = \frac{\text{Height}}{\text{Width}}$$
 
-AR = 1.0 → hình vuông. AR > 1.0 → wide. AR < 1.0 → tall. Aspect Ratio được điều chỉnh để khớp với packaging constraints (bond pitch, bump grid) và để bias routing resources theo chiều ưu tiên của dominant data paths.
-
-“Trong vault này, Aspect Ratio được định nghĩa là Width/Height. Một số tài liệu/tool có thể dùng định nghĩa nghịch đảo Height/Width, nên phải kiểm tra convention trước khi so sánh số liệu.”
+AR = 1.0 → hình vuông (tối ưu nhất cho Placement algorithms). AR > 1.0 → tall (nhiều vertical Tracks hơn, horizontal wire ngắn hơn). AR < 1.0 → wide (nhiều horizontal Tracks hơn, vertical wire ngắn hơn). Aspect Ratio được điều chỉnh để khớp với packaging constraints (bond pitch, bump grid) và để bias routing resources theo chiều ưu tiên của dominant data paths.
 
 **Phân loại chip theo bottleneck diện tích:**
 
@@ -51,7 +49,7 @@ Lấy tổng Standard Cell area từ Synthesis, sau đó thêm overhead 10–20%
 
 $$\text{Core Area} = \frac{\text{Estimated Cell Area (SC + Macro)}}{\text{Target Utilization}}$$
 
-Target Utilization được chọn theo mục tiêu QoR và mức độ khó của design. Không đặt 100% vì:
+Target Utilization điển hình: **70–80%**. Không bao giờ đặt 100% vì:
 - Routing Tracks cần không gian để đi dây mà không gây congestion
 - Optimizer cần white space để chèn Buffers và upsize Cells khi fix timing
 - 20–30% white space = "dự trữ kỹ thuật" bắt buộc
@@ -95,7 +93,7 @@ Khi số lượng IO Pad quá lớn so với Core logic, các phương pháp thu
 - [[MacroPlacement]] — Macros được placed bên trong Core Area
 
 ## Key insight
-[USER REVIEW — draft suggestion]: Thiết lập sai Core Utilization là một trong những nguyên nhân phổ biến nhất phải "đập đi làm lại" toàn bộ PnR flow. Nếu ép quá cao (>85%), Routing tool sẽ fail sau vài giờ chạy với thông báo "no routing solution" — không có cách fix nào ngoài quay lại Floorplan. Nếu đặt quá thấp (<60%), chip sẽ quá to và đắt. Aspect Ratio không phải là con số tùy ý — nó phải được thống nhất với Package Engineer để đảm bảo các ràng buộc kết nối/package.
+[USER REVIEW — draft suggestion]: Thiết lập sai Core Utilization là một trong những nguyên nhân phổ biến nhất phải "đập đi làm lại" toàn bộ PnR flow. Nếu ép quá cao (>85%), Routing tool sẽ fail sau vài giờ chạy với thông báo "no routing solution" — không có cách fix nào ngoài quay lại Floorplan. Nếu đặt quá thấp (<60%), chip sẽ quá to và đắt. Target 70–75% cho designs phức tạp, 75–80% cho designs đơn giản là kinh nghiệm thực tế. Ngoài ra, Aspect Ratio không phải là con số tùy ý — nó phải được negotiate với Package Engineer để đảm bảo bond wire lengths không vi phạm Maximum Length rule.
 
 ## Related
 → Chain: [[Chain_PnR_Flow]]

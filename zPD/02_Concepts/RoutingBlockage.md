@@ -28,7 +28,7 @@ Macro OBS trong CellAbstract LEF tự động block routing bên trong Macro bod
 
 Routing Blockages được tạo thủ công tại những vùng có routing sensitivity cao:
 
-**Vùng quanh analog/sensitive Macros:** Block các digital signal layers để tránh digital switching noise coupling vào analog circuits. Ví dụ: có thể block một số lớp metal trung gian trong vùng quanh PLL hoặc ADC [Needs verification].
+**Vùng quanh analog/sensitive Macros:** Block các digital signal layers để tránh digital switching noise coupling vào analog circuits. Ví dụ: block M2–M4 trong vùng quanh PLL hoặc ADC.
 
 **Vùng power strap corridors:** Block signal routing layers trong vùng reserved cho power straps để đảm bảo Router không sử dụng chúng cho signal wires.
 

@@ -21,21 +21,13 @@ Floorplanning diễn ra ở hai cấp độ thiết kế:
 
 Từ sau DesignImport, Floorplan phải đồng thời đạt được: (1) Define optimal physical boundaries phù hợp packaging constraints, (2) Optimize PPA trên toàn design, (3) Enable clean and legal IO placement để support top-level integration, (4) Place Macros và define SC areas cho best timing + utilization + routing efficiency, (5) Build robust Power Delivery Network (PDN) đạt IR Drop + EM requirements, (6) Create custom pre-routes cho critical/sensitive nets khi cần (clock, reset, analog signals).
 
-**Aspect Ratio convention (thống nhất trong vault):**
-
-$$\text{Aspect Ratio} = \frac{\text{Width}}{\text{Height}}$$
-
-AR > 1.0 → wide; AR < 1.0 → tall.
-
-“Trong vault này, Aspect Ratio được định nghĩa là Width/Height. Một số tài liệu/tool có thể dùng định nghĩa nghịch đảo Height/Width, nên phải kiểm tra convention trước khi so sánh số liệu.”
-
 ## Computed from
 
 Floorplanning là quyết định kỹ thuật, không phải computation thuần túy. Core Area ước tính được tính từ:
 
 $$\text{Core Area} = \frac{\text{Total Standard Cell Area} + \text{Macro Area}}{\text{Target Utilization}}$$
 
-Target Utilization được chọn theo mục tiêu QoR và mức độ khó của design; phần white space là bắt buộc để chừa routing Tracks và để optimizer chèn Buffers khi fix timing.
+Target Utilization điển hình: **70–80%**. Phần white space còn lại là bắt buộc — để chừa routing Tracks và để optimizer chèn Buffers khi fix timing.
 
 **7 sub-steps của Floorplanning** (theo thứ tự):
 

@@ -9,7 +9,7 @@ chain: Chain_LEF_to_PnR
 # Site
 
 ## Definition
-Site là đơn vị hình học hợp lệ nhỏ nhất (minimum legal placement unit) được định nghĩa trong Tech LEF, đóng vai trò là legal anchor cho Placement. Mọi Standard Cell bắt buộc phải có chiều cao bằng đúng chiều cao của Site (hoặc bội số nguyên lần cho double-height cells) và chiều rộng là bội số nguyên của chiều rộng Site. Site đảm bảo tính regularity của Placement — cell origin được snap vào Site grid, cho phép xếp cells thành các [[Row]] liên tục mà không overlap.
+Site là đơn vị hình học hợp lệ nhỏ nhất (minimum legal placement unit) được định nghĩa trong Tech LEF, đóng vai trò legal anchor cho cell origin trong [[Placement]]. Mọi [[StandardCell]] bắt buộc phải có chiều cao bằng đúng chiều cao của Site (hoặc bội số nguyên lần cho multi-height cases [Needs verification]) và chiều rộng là bội số nguyên của chiều rộng Site. Site đảm bảo tính regularity của placement theo site-grid alignment, để cells có thể xếp vào [[Row]] một cách hợp lệ và không overlap sau legalization.
 
 ## Computed from
 Site được Foundry định nghĩa trong Tech LEF:

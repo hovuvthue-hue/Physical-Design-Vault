@@ -47,7 +47,7 @@ Vth optimization (HVT → LVT swap trên critical paths) là một trong những
 | ECO Cell | Spare logic cells đặt sẵn → enable metal-only ECO fix sau Signoff | Pre-placed trong design |
 
 ## Constrains
-- **[[Placement]]**: tất cả Standard Cells phải placed trong Rows với Site-aligned coordinates; utilization = total Standard Cell area / total Row area; mixing different-height cells cần careful Row planning
+- **[[Placement]]**: StandardCell là đối tượng movable chính trong placement stage; tất cả Standard Cells phải được đặt hợp lệ trong [[Row]] với [[Site]]-aligned coordinates trên [[PlacementGrid]]. Uniform height + variable width (theo bội số Site width) là điều kiện nền để legal placement nhất quán.
 - **[[Routing]]**: Standard Cell Pins phải align với Routing Grid; internal OBS giới hạn over-cell routing; cell drive strength ảnh hưởng đến Net Delay (weak driver → high output resistance → slow RC charging)
 - **[[STA]]**: drive strength và Vth variant của từng cell trực tiếp ảnh hưởng đến Cell Delay (via LIB LUT lookup); Vth swapping là common ECO để fix Setup violations trên critical paths
 - **[[LogicSynthesis]]**: Technology Mapping = matching generic Boolean logic với Standard Cell functions trong library; synthesis chọn drive strength và Vth variants dựa trên timing/area/power objectives

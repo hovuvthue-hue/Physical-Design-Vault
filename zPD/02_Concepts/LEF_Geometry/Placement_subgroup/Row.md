@@ -9,7 +9,7 @@ chain: Chain_LEF_to_PnR
 # Row
 
 ## Definition
-Row là một dải nằm ngang (horizontal strip) trên Core area được formed bằng cách tile Site units liền kề theo chiều ngang, tạo thành một "hàng" mà Standard Cells được placed vào. Row height = Site height; Row width = (số Sites) × Site width. Standard Cells chỉ được placed trong Rows — không thể placed ở vùng không có Row (ví dụ: bên trong Macro, vùng blockage, hoặc ngoài Core area). Rows liền kề thường được đặt theo kiểu flip alternating để VDD/VSS rails của các Rows kề nhau chia sẻ chung một rail — đây là cơ chế giúp Power Distribution Network (PDN) được deliver đến mọi cell hiệu quả.
+Row là một dải nằm ngang (horizontal strip) trong Standard Cell placement area, được formed bằng cách tile Site units liền kề theo chiều ngang, tạo thành hạ tầng legal placement lặp lại cho Standard Cells. Row height = Site height; Row width = (số Sites) × Site width. Standard Cells chỉ được placed trong Rows — không thể placed ở vùng không có Row (ví dụ: bên trong Macro, vùng blockage, hoặc ngoài Core area). Rows liền kề thường được tổ chức theo pattern đối xứng/đảo hướng để hỗ trợ tính liên tục của power rails và well continuity ở mức hạ tầng. Cách đặt orientation cụ thể là tool/library-dependent [Needs verification].
 
 ## Computed from
 Rows được generate trong Floorplanning step dựa trên Core area dimensions và Site definition, sau đó stored trong DEF:
@@ -17,7 +17,7 @@ Rows được generate trong Floorplanning step dựa trên Core area dimensions
 ROW ROW_1 core 0 0 N DO 500 BY 1 STEP 140 0 ; 
 ROW ROW_2 core 0 900 FS DO 500 BY 1 STEP 140 0 ;
 
-Đọc là: ROW_1 sử dụng Site type "core", bắt đầu tại (0,0), orientation N (normal), chứa 500 Sites theo X với step 140nm (= Site width), 1 Site theo Y. ROW_2 tại Y=900 (= 1 Site height) với orientation FS (flip + symmetric) — orientation đảo ngược để VDD của ROW_2 tiếp giáp với VDD của ROW_1, VSS tiếp giáp VSS.
+Đọc là: ROW_1 sử dụng Site type "core", bắt đầu tại (0,0), chứa các Sites theo X với step bằng Site width. ROW liền kề có thể dùng orientation đối xứng/đảo hướng để phù hợp rail/well topology của library [Needs verification].
 
 $$\text{Tổng số Rows} = \left\lfloor \frac{\text{Core Height}}{\text{Site Height}} \right\rfloor$$
 

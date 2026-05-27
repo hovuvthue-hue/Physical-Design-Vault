@@ -11,18 +11,17 @@ chain: Chain_LEF_to_PnR
 ## Definition
 Routing Grid là toàn bộ mạng lưới các Tracks trên tất cả metal layers trong Core area, tạo thành không gian ba chiều (x, y, layer) mà Router sử dụng để đặt tất cả signal wires. Routing Grid là abstraction cho phép Router xem chip như một 3D graph — mỗi Track intersection là một node, mỗi Track segment giữa hai intersections là một edge, và Vias giữa các layers là vertical edges. Routing problem = graph shortest-path problem trên Routing Grid.
 
+Routing Grid tách biệt với [[PlacementGrid]]: PlacementGrid quản lý legal vị trí đặt cell, còn RoutingGrid quản lý legal tài nguyên đi dây.
+
 ## Computed from
 Routing Grid được tạo bằng cách instantiate Tracks cho mỗi metal layer theo thông tin từ Tech LEF. Mỗi metal layer có hướng ưu tiên (preferred routing direction) để minimize cross-layer coupling:
 
 | Layer | Hướng ưu tiên | Ghi chú |
 |---|---|---|
-| M1 | Horizontal | Local routing bên trong cells |
-| M2 | Vertical | Inter-cell connections |
-| M3 | Horizontal | Block-level routing |
-| M4 | Vertical | Semi-global routing |
-| ... | Alternating | Manhattan routing principle |
+| Lower/upper layers | Preferred direction theo công nghệ | Router dùng để quản lý routing resource |
+| Adjacent layers | Thường trực giao (orthogonal) | Giảm xung đột hướng đi dây trong Manhattan routing |
 
-Mật độ Routing Grid tại một vùng được đo bằng **routing capacity** = tổng số Tracks available trên tất cả layers tại vùng đó. **Routing congestion** xảy ra khi routing demand (số nets cần đi qua một vùng) vượt quá routing capacity — đây là blocker cho Routing và là signal quan trọng cần check sau Placement.
+Mật độ Routing Grid tại một vùng được đo bằng **routing capacity** = tổng số Tracks available trên tất cả layers tại vùng đó. **Routing congestion** xảy ra khi routing demand vượt quá routing capacity — đây là tín hiệu rủi ro quan trọng cần check sau Placement.
 
 $$\text{Routing Capacity}_{\text{region}} = \sum_{\text{layers}} \text{Tracks}_{layer} \times (1 - \text{Blockage Ratio}_{layer})$$
 

@@ -1,6 +1,6 @@
 ---
 tags: [chain, lef-geometry, pnr-flow]
-concepts: [Pitch, Track, RoutingGrid, Site, Row, PlacementGrid, CellAbstract, Pin, Obstruction, LEF, DEF, StandardCell, HardIP]
+concepts: [Pitch, Track, RoutingGrid, Site, Row, PlacementGrid, CellAbstract, Pin, Obstruction, LEF, DEF, StandardCell, HardIP, TieCell, TapCell, EndCapCell, DecapCell, FillerCell]
 ---
 
 # Chain: LEF to PnR
@@ -55,6 +55,8 @@ CellAbstract chứa:
 
 [[Site]] định nghĩa minimum cell unit → [[Row]]s formed bằng tiling Sites → [[PlacementGrid]] = all Site positions → [[Placement]] places [[StandardCell]] instances tại Site-aligned positions
 
+[[StandardCell]] library cũng bao gồm physical-only cells như [[TieCell]], [[TapCell]], [[EndCapCell]], [[DecapCell]], [[FillerCell]], được dùng/insertion trong [[Floorplanning]] / [[Placement]] và được thể hiện ở implementation checkpoints như [[DEF]].
+
 **Hard IP path:**
 
 [[HardIP]] layout → Abstract Generator → [[CellAbstract]] với large [[Obstruction]] → [[Floorplanning]] places Hard IP với FIXED status → Routing channels planned around OBS extent
@@ -85,4 +87,4 @@ CellAbstract chứa:
 
 ## Concepts trong chain này
 
-[[Pitch]] · [[Track]] · [[RoutingGrid]] · [[Site]] · [[Row]] · [[PlacementGrid]] · [[CellAbstract]] · [[Pin]] · [[Obstruction]] · [[LEF]] · [[DEF]] · [[StandardCell]] · [[HardIP]] · [[MetalStack]] · [[ITF]]
+[[Pitch]] · [[Track]] · [[RoutingGrid]] · [[Site]] · [[Row]] · [[PlacementGrid]] · [[CellAbstract]] · [[Pin]] · [[Obstruction]] · [[LEF]] · [[DEF]] · [[StandardCell]] · [[TieCell]] · [[TapCell]] · [[EndCapCell]] · [[DecapCell]] · [[FillerCell]] · [[HardIP]] · [[MetalStack]] · [[ITF]]

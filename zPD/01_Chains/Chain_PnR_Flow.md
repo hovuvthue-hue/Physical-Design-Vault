@@ -1,6 +1,6 @@
 ---
 tags: [chain, pnr-flow]
-concepts: [DesignImport, Floorplanning, CoreArea, IOCell, MacroPlacement, PlacementBlockage, RoutingBlockage, Placement, ClockTreeSynthesis, Routing, ParasiticExtraction, Signoff, GateLevelNetlist, PhysicalConstraints, MMMC]
+concepts: [DesignImport, Floorplanning, CoreArea, IOCell, MacroPlacement, PlacementBlockage, RoutingBlockage, PlacementGrid, Row, RoutingGrid, Site, Track, Pitch, PDN, IRDrop, TieCell, TapCell, EndCapCell, DecapCell, FillerCell, Placement, ClockTreeSynthesis, Routing, ParasiticExtraction, Signoff, GateLevelNetlist, PhysicalConstraints, MMMC]
 ---
 # Chain: PnR Flow
 
@@ -27,15 +27,15 @@ Exit criteria: WNS ≥ 0 và TNS ≥ 0 với zero RC delays · Timing constraint
 
 Nhận: Validated design database từ DesignImport.
 
-7 sub-steps: Define Boundary (Core Area, Aspect Ratio, Target Utilization) → Place IOs (IO Pads / Block Pins) → Place Macros (flight-line analysis, 7 key factors, FIXED status) → Define SC Areas (Pre-placed Cells: Tap + End-cap + Decap) → Build Power Grid (PDN rings + straps) → Check Quality (trial routing, IR Drop estimate) → Go to Placement.
+7 sub-steps: Define Boundary (Core Area, Aspect Ratio, Target Utilization) → Place IOs (IO Pads / Block Pins) → Place Macros (flight-line analysis, 7 key factors, FIXED status) → Define SC Areas (Pre-placed Cells: [[TapCell]] + [[EndCapCell]] + [[DecapCell]], và dùng [[FillerCell]] khi cần) → Build Power Grid ([[PDN]] rings + straps) → Check Quality (trial routing, [[IRDrop]] estimate) → Go to Placement.
 
-Output: Core boundary, Macro FIXED positions, PDN structure, Row/Placement Grid definitions, Placement Blockages, Routing Blockages. Lưu dưới dạng DEF.
+Output: Core boundary, Macro FIXED positions, [[PDN]] structure, [[Row]]/[[PlacementGrid]] definitions, [[RoutingGrid]] setup, [[PlacementBlockage]], [[RoutingBlockage]]. Lưu dưới dạng [[DEF]].
 
 Truyền xuống: Core boundary + Macro blockages + Row definitions là hard placement constraints cho Placement.
 
 Exit: Design là routable · IR Drop budget feasible · Timing closure feasible với trial-route congestion estimate.
 
-Key concepts trong sub-steps: [[CoreArea]] (Define Boundary) · [[IOCell]] (Place IOs) · [[MacroPlacement]] (Place Macros) · [[PlacementBlockage]] · [[RoutingBlockage]] (congestion management).
+Key concepts trong sub-steps: [[CoreArea]] (Define Boundary) · [[IOCell]] (Place IOs) · [[MacroPlacement]] (Place Macros) · [[TapCell]] · [[EndCapCell]] · [[DecapCell]] · [[FillerCell]] (SC physical-only support) · [[PDN]] · [[IRDrop]] (power quality) · [[PlacementBlockage]] · [[RoutingBlockage]] · [[Row]] · [[PlacementGrid]] · [[RoutingGrid]] (floorplan infrastructure).
 
 **Bước 3 — [[Placement]]**
 
@@ -127,9 +127,9 @@ Nếu Signoff fail, design phải quay lại bước bị ảnh hưởng để f
 
 **Chain_STA_Basics:** [[STA]] chạy tại 5 checkpoints trong chain này (bao gồm zero-RC post-Import); [[SDC]] là input của Floorplanning và toàn bộ PnR; [[Slack]] là metric guide mọi optimization step. [[MMMC]] là framework tổ chức tất cả Analysis Views.
 
-**Chain_LEF_to_PnR:** [[LEF]] cung cấp Site/Row definitions cho Placement Grid và Track definitions cho Routing Grid — điểm nối giữa LEF Geometry concepts và PnR Flow. [[CellAbstract]] là physical representation của mọi cell trong Floorplanning và Placement.
+**Chain_LEF_to_PnR:** [[LEF]] cung cấp [[Site]]/[[Row]] definitions cho [[PlacementGrid]] và [[Track]] definitions (theo [[Pitch]]) cho [[RoutingGrid]] — điểm nối giữa LEF Geometry concepts và PnR Flow. [[CellAbstract]] là physical representation của mọi cell trong Floorplanning và Placement.
 
 **Chain_BackEnd_Overview:** Chain này là sub-chain của Back-End Design flow tổng quát hơn — bắt đầu từ GateLevelNetlist (output của LogicSynthesis) và kết thúc bằng GDS (input của Fab).
 
 ## Concepts trong chain này
-[[DesignImport]] · [[GateLevelNetlist]] · [[PhysicalConstraints]] · [[MMMC]] · [[Floorplanning]] · [[CoreArea]] · [[IOCell]] · [[MacroPlacement]] · [[PlacementBlockage]] · [[RoutingBlockage]] · [[Placement]] · [[ClockTreeSynthesis]] · [[Routing]] · [[ParasiticExtraction]] · [[Signoff]]
+[[DesignImport]] · [[GateLevelNetlist]] · [[PhysicalConstraints]] · [[MMMC]] · [[Floorplanning]] · [[CoreArea]] · [[IOCell]] · [[MacroPlacement]] · [[TapCell]] · [[EndCapCell]] · [[DecapCell]] · [[FillerCell]] · [[PDN]] · [[IRDrop]] · [[PlacementBlockage]] · [[RoutingBlockage]] · [[Site]] · [[Row]] · [[PlacementGrid]] · [[Pitch]] · [[Track]] · [[RoutingGrid]] · [[DEF]] · [[Placement]] · [[ClockTreeSynthesis]] · [[Routing]] · [[ParasiticExtraction]] · [[Signoff]]

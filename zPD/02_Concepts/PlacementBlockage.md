@@ -9,7 +9,9 @@ chain: Chain_PnR_Flow
 # PlacementBlockage
 
 ## Definition
-Placement Blockage là vùng trong Core Area được đánh dấu cấm hoặc hạn chế Placement tool đặt Standard Cells vào. Placement Blockages được dùng chủ yếu để quản lý congestion hotspots quanh Macros và để dự trữ không gian cho routing channels, power straps, và các physical requirements khác.
+Placement Blockage là vùng trong Core Area được đánh dấu cấm hoặc hạn chế Placement tool đặt Standard Cells/Macros vào (tùy loại). Placement Blockages được dùng chủ yếu để quản lý congestion hotspots quanh Macros và để dự trữ không gian cho routing channels, power straps, và các physical requirements khác.
+
+Về bản chất, Placement Blockage là cơ chế **indirect congestion control**: nó giảm demand placement (cell density/local utilization), từ đó giảm áp lực lên [[RoutingGrid]] trong các vùng nhạy congestion. Placement Blockage **không trực tiếp** quy định layer nào được route; phần đó thuộc phạm vi [[RoutingBlockage]].
 
 **4 loại Placement Blockage:**
 
@@ -22,7 +24,7 @@ Placement Blockage là vùng trong Core Area được đánh dấu cấm hoặc 
 
 **Halo** — loại Placement Blockage đặc biệt gắn với Macro:
 - Halo là một vùng keep-out có kích thước cố định bao quanh một Macro cụ thể
-- Khi Macro di chuyển (trước khi được FIXED), Halo di chuyển cùng
+- Khi Macro di chuyển (trước khi được FIXED), Halo di chuyển cùng Macro
 - Mục đích: đảm bảo có đủ không gian routing quanh Macro Pins và đủ space cho power rail tapping
 - Kích thước Halo phụ thuộc kích thước Macro, mật độ Pin và nhu cầu routing/power quanh macro
 
@@ -51,7 +53,7 @@ Mỗi Macro cần Halo tối thiểu đủ để:
 
 ## Constrains
 - **[[Placement]]**: Placement Blockages thu hẹp Placeable Standard Cell Area; Standard Cell Utilization sẽ cao hơn nếu nhiều Blockages được đặt
-- **[[Routing]]**: Hard Blockages tạo routing corridors bằng cách ngăn Standard Cells lấp đầy vùng đó
+- **[[Routing]]**: Placement Blockage hỗ trợ routability theo hướng gián tiếp bằng cách ngăn Standard Cells lấp đầy vùng corridor; nó không phải layer-level routing rule
 
 ## Requires
 - [[CoreArea]] — Placement Blockages được đặt bên trong Core Area

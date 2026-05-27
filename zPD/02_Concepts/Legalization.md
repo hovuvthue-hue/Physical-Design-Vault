@@ -2,7 +2,7 @@
 tags: [concept, pnr-flow, placement]
 group: PnR Flow
 defined_in: Placement
-used_by: [Placement, DetailedPlacement, CTS]
+used_by: [Placement, DetailedPlacement, ClockTreeSynthesis]
 requires: [GlobalPlacement, PlacementGrid, Site, Row, PlacementBlockage]
 chain: Chain_PnR_Flow
 ---
@@ -38,7 +38,7 @@ Dịch chuyển quá mạnh có thể làm xấu wirelength/timing posture; dị
 ## Used by
 - [[DetailedPlacement]]
 - [[Placement]]
-- [[CTS]]
+- [[ClockTreeSynthesis]]
 
 ## Related
 - [[HPWL]]

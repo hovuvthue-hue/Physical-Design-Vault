@@ -9,21 +9,21 @@ chain: Chain_LEF_to_PnR
 # Track
 
 ## Definition
-Track là một đường thẳng ảo (imaginary line) chạy theo hướng ưu tiên của một metal layer trên Routing Grid, tại đó center của một wire hợp lệ có thể được đặt. Tracks là discretization của không gian routing — thay vì Router có thể đặt wire tại bất kỳ tọa độ nào, nó chỉ được phép đặt wire tại các Track positions. Mỗi Track trên một layer cách Track liền kề đúng một Pitch. Số lượng Tracks available trên một layer trong một vùng diện tích nhất định là metric trực tiếp đánh giá routing capacity của vùng đó.
+Track là một đường thẳng ảo (imaginary line) trên [[RoutingGrid]], tại đó center của một wire hợp lệ có thể được đặt; có thể xem đây là legal routing line mà router được phép sử dụng. Tracks là discretization của không gian routing — thay vì Router có thể đặt wire tại bất kỳ tọa độ nào, nó chỉ được phép đặt wire tại các Track positions. Mỗi Track trên một layer cách Track liền kề đúng một Pitch. Số lượng Tracks available trên một layer trong một vùng diện tích nhất định là metric trực tiếp đánh giá routing capacity của vùng đó.
 
 ## Computed from
 Tracks được define trong Tech LEF bằng TRACKS statement và stored vào DEF sau Floorplanning:
 
 TRACKS Y 0.0 DO 200 STEP 0.2 LAYER M1 ;
 
-Đọc là: "Trên layer M1, tạo các Tracks theo hướng Y (nằm ngang — routing direction của M1 là horizontal), bắt đầu từ tọa độ Y = 0.0, tạo 200 Tracks, mỗi Track cách nhau 0.2um (= Pitch của M1)."
+Đọc là: trên một layer, tool instantiate các Tracks từ origin với STEP bằng [[Pitch]] của layer đó; preferred direction cụ thể của từng layer phụ thuộc công nghệ và rule deck.
 
 Từ đây:
 $$\text{Track}_{i} \text{ tại vị trí} = \text{Origin} + i \times \text{Pitch}, \quad i = 0, 1, 2, \ldots, N-1$$
 
 $$\text{Số Tracks trong chiều cao H} = \left\lfloor \frac{H}{\text{Pitch}} \right\rfloor$$
 
-**Cell height in Tracks**: Chiều cao Standard Cell thường được express bằng số Tracks nằm trong khoảng từ VDD rail đến VSS rail. "7-track cell" = chiều cao cell cho phép đúng 7 horizontal Tracks (trên M1) chạy ngang qua bên trong cell. Số Tracks = số dây tín hiệu tối đa có thể route ngang qua cell đó — cell cao hơn (nhiều Tracks hơn) → internal routing dễ dàng hơn → cell có thể implement logic phức tạp hơn nhưng tốn diện tích hơn.
+**Cell height in Tracks**: Một số libraries mô tả chiều cao Standard Cell bằng số Tracks để phản ánh mức routing resource nội bộ của cell. Diễn giải chi tiết phụ thuộc library convention [Needs verification].
 
 ## Constrains
 - **[[RoutingGrid]]**: tập hợp tất cả Tracks trên tất cả metal layers tạo thành Routing Grid; Track là đơn vị cơ bản của RoutingGrid

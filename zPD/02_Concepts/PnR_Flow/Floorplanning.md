@@ -19,7 +19,7 @@ Floorplanning diễn ra ở hai cấp độ thiết kế:
 
 **6 mục tiêu của Floorplanning:**
 
-Từ sau DesignImport, Floorplan phải đồng thời đạt được: (1) Define optimal physical boundaries phù hợp packaging constraints, (2) Optimize PPA trên toàn design, (3) Enable clean and legal IO placement để support top-level integration, (4) Place Macros và define SC areas cho best timing + utilization + routing efficiency, (5) Build robust Power Delivery Network (PDN) đạt IR Drop + EM requirements, (6) Create custom pre-routes cho critical/sensitive nets khi cần (clock, reset, analog signals).
+Từ sau DesignImport, Floorplan phải đồng thời đạt được: (1) Define optimal physical boundaries phù hợp packaging constraints, (2) Optimize PPA trên toàn design, (3) Enable clean and legal IO placement để support top-level integration, (4) Place Macros và define SC areas cho best timing + utilization + routing efficiency, (5) Build robust [[PDN]] đạt yêu cầu [[IRDrop]] + EM ở mức mục tiêu thiết kế, (6) Create custom pre-routes cho critical/sensitive nets khi cần (clock, reset, analog signals).
 
 **Aspect Ratio convention (thống nhất trong vault):**
 
@@ -45,8 +45,8 @@ Target Utilization được chọn theo mục tiêu QoR và mức độ khó c�
 | 2. Place IOs | Place IO Pads (full-chip) hoặc assign Block Pins (block-level) | IO Cell positions / Pin locations |
 | 3. Place Macros | Macro Placement dựa trên flight-line analysis + 7 key factors | FIXED Macro positions + Halos |
 | 4. Define SC Areas | Xác định vùng Standard Cell placement; insert Pre-placed Cells | Placeable SC areas + Physical-only cells |
-| 5. Build Power Grid | Tạo PDN: power rings → power straps → Standard Cell rail connections | PDN structure |
-| 6. Check Quality | Verify congestion (trial routing), timing, power (IR Drop estimate) | Floorplan QoR report |
+| 5. Build Power Grid | Tạo [[PDN]]: power rings → power straps → Standard Cell rail connections | PDN structure |
+| 6. Check Quality | Verify congestion (trial routing), timing, power ([[IRDrop]] estimate) | Floorplan QoR report |
 | 7. Go to Placement | Exit criteria pass → proceed | Validated design DB → [[Placement]] |
 
 Sau Check Quality, nếu có violations, engineer quay lại bất kỳ sub-step nào để fix. Iteration loop phổ biến nhất: MacroPlacement → Check Quality → adjust → repeat.

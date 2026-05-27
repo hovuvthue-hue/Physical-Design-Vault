@@ -13,7 +13,7 @@ MacroPlacement là quá trình xác định vị trí tối ưu cho các Hard IP
 
 **Tại sao MacroPlacement quan trọng hơn Standard Cell Placement:**
 
-Macros chiếm diện tích lớn (thường 10–60% Core Area tùy design), tạo ra "bức tường thành" cản trở Routing Grid, và phải được FIXED (cố định vị trí) trước khi Placement tool chạy. Một Macro đặt sai vị trí không thể được optimizer tự động di chuyển — phải quay lại Floorplan.
+Macros chiếm diện tích lớn, tạo ra "bức tường thành" cản trở Routing Grid, và phải được FIXED (cố định vị trí) trước khi Placement tool chạy. Một Macro đặt sai vị trí không thể được optimizer tự động di chuyển — phải quay lại Floorplan.
 
 **7 nhân tố ảnh hưởng chính đến MacroPlacement:**
 
@@ -41,6 +41,11 @@ Mỗi Macro có thể được rotate/flip. Quy tắc chọn orientation:
 - Pins facing IO Pads: nếu Macro interface với bên ngoài chip, hướng Pins về phía tương ứng IO Pad positions
 - Pins away from corners: tránh đặt Pins ở góc Macro — routing corner rất khó
 
+**Nguyên tắc đặt macro theo quan hệ kết nối và tài nguyên:**
+- Ưu tiên đặt Macros gần IO/interface logic liên quan để giảm đường đi liên khối.
+- Cân nhắc gần clock/power resources để giảm rủi ro phân phối clock và cấp nguồn.
+- Chừa routing corridors đủ liên tục cho các kết nối chính giữa Macro ↔ Standard Cell areas.
+
 **Nguyên tắc để lại Standard Cell areas tốt:**
 
 Phần Standard Cell areas trong Core phải là các vùng rộng và liên tục (contiguous). Cần tránh:
@@ -56,7 +61,9 @@ Khoảng trống xung quanh Macro phục vụ hai mục đích: (1) buffer room 
 
 **Tính toán khoảng cách routing tối thiểu giữa Macros:**
 
-$$\text{Min Gap} = \frac{\text{Pitch} \times \text{Pins to route}}{\text{Available routing layers in preferred direction}} + \text{Buffer Spacing}$$
+$$d_{\min} = \frac{\text{Pitch of Routing Layers} \times \text{No. of Pins to be Routed}}{\text{Available Routing Layers in preferred direction}} + \text{Buffer Spacing}$$
+
+“Đây là công thức ước lượng (heuristic) trong giai đoạn Floorplanning để dự báo khoảng cách tối thiểu giữa hai Macros; spacing thực tế vẫn phải được kiểm chứng bằng congestion analysis, trial routing, routing rules và ràng buộc cụ thể của tool/PDK. [Needs verification: chi tiết calibration theo từng flow/tool/PDK.]”
 
 **Placement status của Macros:**
 

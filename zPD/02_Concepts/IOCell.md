@@ -46,6 +46,10 @@ Scribe Line (saw street) là vùng non-functional giữa các dies trên wafer, 
 
 ## Computed from
 
+**Phân biệt full-chip và block-level:**
+- **Full-chip:** đặt IO Pad để giao tiếp với Package/PCB, kèm ràng buộc ESD/power/packaging.
+- **Block-level:** IO Pin là interface nội bộ giữa các blocks, thường được inherit từ top-level floorplan và phải honor đúng vị trí đã assign.
+
 **IO Pad Placement strategy:**
 
 Chip-level design: Engineer xác định vị trí từng IO Pad trên 4 cạnh chip. Thứ tự sắp xếp phải được thống nhất với Package team để:

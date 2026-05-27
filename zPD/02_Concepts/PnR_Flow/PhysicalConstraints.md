@@ -9,7 +9,7 @@ chain: Chain_PnR_Flow
 # PhysicalConstraints
 
 ## Definition
-Physical Constraints là tập hợp thông tin vật lý bắt buộc cung cấp cho PnR tool trước khi Floorplanning. Chúng capture floorplan intent ở mức khung: boundary, die/core size, IO pad/pin locations, macro-related constraints, và blockage intent. Có hai cấp độ tương ứng với hai loại design:
+Physical Constraints là tập hợp thông tin vật lý bắt buộc cung cấp cho PnR tool trước khi Floorplanning. Chúng xác định "envelope" vật lý của design — kích thước, vị trí I/O interface, và boundary của các blocks trong hierarchy. Có hai cấp độ tương ứng với hai loại design:
 
 **Chip-level** (full-chip / top-level design):
 - Die X/Y dimensions: kích thước tổng thể của chip — xác định bởi packaging constraints và system architect, không phải PD engineer
@@ -17,7 +17,7 @@ Physical Constraints là tập hợp thông tin vật lý bắt buộc cung cấ
 
 **Block-level** (hierarchical block trong SoC):
 - PR boundary: ranh giới Place-and-Route của block — có thể là hình chữ nhật hoặc rectilinear (L-shape, T-shape) tùy theo chip topology
-- Pin locations: vị trí các Ports của block trên PR boundary — là hard physical interface được inherit từ top-level integration và phải được honor
+- Pin locations: vị trí các Ports của block trên PR boundary — là điểm đàm phán giữa block owner và top-level integrator
 
 ## Computed from
 
@@ -47,9 +47,7 @@ Instance names trong `.io` phải match names trong GateLevelNetlist — mismatc
 
 ## Constrains
 - **[[Floorplanning]]**: Die size và IO Pad positions là fixed starting point của Floorplan; không thể Floorplan nếu Physical Constraints chưa được load
-- **[[Placement]]**: boundary, macro-related constraints và blockage intent giới hạn vùng place hợp lệ cho Standard Cells/Macros
 - **[[Routing]]**: Block-level Pin locations phải align với RoutingGrid để Router kết nối block Ports với top-level Nets; misaligned Pins → DRC violations tại boundary
-- **[[ClockTreeSynthesis]]**: trong một số designs, vị trí pin/boundary và macro-related constraints có thể ảnh hưởng topology phân phối clock [Needs verification]
 
 ## Requires
 - [[GateLevelNetlist]] — instance names trong `.io` file phải match instance names trong Netlist

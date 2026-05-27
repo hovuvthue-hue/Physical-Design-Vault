@@ -9,13 +9,15 @@ chain: Chain_PnR_Flow
 # Placement
 
 ## Definition
-Placement là bước thứ hai trong P&R flow, trong đó PnR tool xác định vị trí (x, y) chính xác của từng Standard Cell trong Core area. Mỗi Cell được đặt trên Placement Grid (align với Site và Row definitions từ LEF), không được overlap với Macro hay Cell khác. Output là Placement DB (DEF với cell coordinates đầy đủ). 
+Trong flow PnR của vault này, Placement diễn ra sau Floorplanning và trước ClockTreeSynthesis. Một số tài liệu có thể đánh số bước khác tùy phạm vi flow, nhưng graph hiện tại đặt Placement là bước sau Floorplanning.
+
+Placement là giai đoạn legal standard-cell placement kèm pre-CTS optimization context: PnR tool xác định và tối ưu vị trí (x, y) của từng [[StandardCell]] trong Core area, sau đó đảm bảo tất cả cell được legalize trên [[PlacementGrid]] (align với [[Site]] và [[Row]]), không overlap với Macro hay cell khác. Output là placed DB (thường được lưu/trao đổi qua [[DEF]]) với cell coordinates hợp lệ.
 ## Computed from
 Placement tool tối ưu hóa đồng thời nhiều objectives:
 - **Wirelength minimization**: ước tính tổng wire length dựa trên Half-Perimeter Wirelength (HPWL) của từng Net
 - **Timing-driven placement**: cells trên critical paths được đặt gần nhau để minimize wire delay, dựa trên [[Slack]] từ SDC
 - **Congestion-driven placement**: phân bố cell density đều để tránh routing hotspots — tool dùng global routing estimate để dự đoán congestion
-- **Utilization**: tỷ lệ (total cell area) / (Core area) — thường target 70–80%
+- **Utilization**: tỷ lệ (total cell area) / (Core area), được cân bằng theo mục tiêu timing/routability cụ thể của từng design [Needs verification]
 
 Placement diễn ra theo 2 giai đoạn:
 1. **Global Placement**: xác định vị trí gần đúng, cho phép overlap tạm thời, tối ưu wirelength và timing
@@ -28,7 +30,7 @@ Placement diễn ra theo 2 giai đoạn:
 - **Power**: switching activity của cells gần nhau ảnh hưởng đến local IR Drop và thermal hotspots
 
 ## Requires
-- [[Floorplanning]] — cung cấp Core boundary, Macro positions (hard placement blockages), Row và Placement Grid definitions, PDN structure đã hoàn thành
+- [[Floorplanning]] — cung cấp Core boundary, Macro fixed positions / blockages, Row/Site/PlacementGrid infrastructure, và PDN structure đã hoàn thành
 - [[GateLevelNetlist]] — danh sách tất cả cell instances và connectivity (Netlist) để tool biết cần place những gì và Net nào cần minimize wirelength
 - [[SDC]] — Timing constraints để tool thực hiện timing-driven placement, ưu tiên cells trên critical paths
 - [[LEF]] — Cell Abstracts cung cấp kích thước chính xác của từng Standard Cell, Pin locations, và Site/Row definitions
@@ -37,6 +39,7 @@ Placement diễn ra theo 2 giai đoạn:
 - [[ClockTreeSynthesis]] — nhận vị trí chính xác của clock sinks làm input để synthesize và balance Clock Tree
 - [[Routing]] — nhận vị trí cố định của tất cả cells, route signal nets giữa các Pin đã có tọa độ xác định
 - [[STA]] (pre-route) — chạy timing analysis với estimated wire delays dựa trên placement để verify timing feasibility trước khi Routing
+- Placement DB / [[DEF]] — chứa legalized cell locations và placement density/congestion posture để downstream steps đánh giá khả năng routability và timing trước CTS
 
 ## Key insight
 [USER REVIEW — draft suggestion]:

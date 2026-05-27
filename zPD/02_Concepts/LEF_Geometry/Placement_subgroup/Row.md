@@ -27,7 +27,7 @@ Vùng bên trong Macro footprint không có Rows (Macro chiếm diện tích và
 
 ## Constrains
 - **[[PlacementGrid]]**: tất cả Rows trên Core area tạo thành Placement Grid 2D; mỗi Site position trong mỗi Row là một valid placement location
-- **[[Placement]]**: Standard Cells chỉ được placed trong Rows; cells với double height phải span hai Rows liên tiếp với matching orientation; cell utilization = (total cell area) / (total Row area) — thường target 70–80%
+- **[[Placement]]**: Standard Cells chỉ được placed trong Rows; cells với multi-height có thể cần span nhiều Rows liên tiếp với orientation tương thích theo library/tool rule [Needs verification]
 - **[[Floorplanning]]**: Row generation là một output của Floorplanning; Macro placement affects Row availability — Macros phải placed tại Row boundaries (height = N × Site height) để không bisect một Row; đây là constraint quan trọng khi plan Macro locations
 
 ## Requires
@@ -41,7 +41,7 @@ Vùng bên trong Macro footprint không có Rows (Macro chiếm diện tích và
 - [[Floorplanning]] — Floorplanning tool generates Rows sau khi Core area và Macro positions được defined; Row generation là automated step nhưng PD engineer phải verify Row coverage và identify gaps do Macro placements
 
 ## Key insight
-[USER REVIEW — draft suggestion]: Row orientation alternating (N/FS/N/FS...) là một trong những design patterns elegant nhất trong Physical Design — bằng cách flip alternating Rows, VDD rail của Row chẵn tiếp giáp với VDD rail của Row lẻ (và VSS tiếp giáp VSS), tạo ra continuous power rails chạy ngang chip mà không cần via connections giữa Rows. Đây vừa tiết kiệm via resistance vừa giúp PDN delivery uniform trên toàn chip. Điểm thực tế: khi Macro không được placed tại Row boundaries (Macro height không phải bội số của Site height), nó sẽ "bisect" một Row tạo ra incomplete Rows với một số Sites không thể dùng được — đây là DRC violation hoặc placement legalization error phổ biến khi integrate Hard IP macros không được designed cho một specific library. Đây là lý do Macro height luôn phải là bội số của Site height trong library specification.
+[USER REVIEW — draft suggestion]: Row orientation thường được tổ chức theo pattern xen kẽ để phù hợp rail/well continuity của standard-cell architecture; tuy nhiên tên orientation cụ thể (ví dụ N/FS...) là tool/library-dependent [Needs verification]. Điểm thực tế: khi Macro không được placed tại Row boundaries (Macro height không phải bội số của Site height), nó có thể "bisect" Row và làm giảm vùng placement hợp lệ quanh macro.
 
 ## Related
 → Chain: [[Chain_LEF_to_PnR]]

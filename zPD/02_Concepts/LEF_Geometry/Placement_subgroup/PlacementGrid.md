@@ -10,6 +10,7 @@ chain: Chain_LEF_to_PnR
 
 ## Definition
 Placement Grid là toàn bộ mạng lưới các valid placement positions trong Standard Cell placement area, được formed bằng cách tile tất cả [[Row]] theo chiều dọc. Mỗi [[Site]] position trong mỗi Row là một node trên Placement Grid — đây là vị trí hợp lệ để một Standard Cell được placed. Placement Grid đối với [[Placement]] giống như Routing Grid đối với [[Routing]]: nó discretize không gian liên tục thành tập hợp finite valid positions.
+Trong thực thi Placement, mọi cell cuối cùng phải snap về các vị trí hợp lệ này (site/row aligned) ở bước legalization; PlacementGrid là điều kiện legality, không phải bảo đảm trực tiếp cho routability.
 
 ## Computed from
 Placement Grid không có explicit representation riêng — nó được implied bởi tập hợp tất cả Rows trong DEF:

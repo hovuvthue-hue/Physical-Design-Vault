@@ -50,5 +50,5 @@ Vùng bên trong Macro footprint không có Rows (Macro chiếm diện tích và
 → Generated during: [[Floorplanning]]
 → Aggregated into: [[PlacementGrid]]
 → Contains: [[Placement]] locations for Standard Cells
-→ Orientation: alternating N/FS để share VDD/VSS rails
+→ Orientation: alternating row orientation, naming phụ thuộc library/tool convention [Needs verification]
 → Cùng nhóm: [[Pitch]] · [[Track]] · [[RoutingGrid]] · [[Site]] · [[PlacementGrid]]

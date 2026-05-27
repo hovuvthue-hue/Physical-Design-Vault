@@ -16,7 +16,7 @@ Placement Blockage là vùng trong Core Area được đánh dấu cấm hoặc 
 | Loại | Hành vi | Use case |
 |---|---|---|
 | **Hard** | Cấm hoàn toàn tất cả cell placement trong vùng | Vùng dự trữ cho routing channels, power straps |
-| **Partial** | Cho phép placement đến một maximum utilization nhất định (ví dụ 50%) | Vùng routing-heavy nhưng vẫn cần một số logic |
+| **Partial** | Cho phép placement đến một ngưỡng utilization xác định trước | Vùng routing-heavy nhưng vẫn cần một số logic |
 | **Soft** | Chỉ cho phép một số cell types nhất định (Buffers, Inverters, Clock gaters) | Vùng chimneys giữa Macros — chỉ buffers được allowed |
 | **Macro-only** | Cấm placement Macros trong vùng, nhưng Standard Cells vẫn được phép | Bảo vệ SC areas khỏi bị tool tự động đặt thêm Macros |
 
@@ -24,7 +24,7 @@ Placement Blockage là vùng trong Core Area được đánh dấu cấm hoặc 
 - Halo là một vùng keep-out có kích thước cố định bao quanh một Macro cụ thể
 - Khi Macro di chuyển (trước khi được FIXED), Halo di chuyển cùng
 - Mục đích: đảm bảo có đủ không gian routing quanh Macro Pins và đủ space cho power rail tapping
-- Điển hình: 3–20 µm padding tùy theo Macro size và số lượng Pins trên mỗi cạnh
+- Kích thước Halo phụ thuộc kích thước Macro, mật độ Pin và nhu cầu routing/power quanh macro
 
 **Phân biệt Placement Blockage vs Obstruction trong LEF:**
 

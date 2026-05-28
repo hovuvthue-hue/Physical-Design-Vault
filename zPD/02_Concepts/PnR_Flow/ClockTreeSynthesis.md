@@ -58,3 +58,8 @@ Kết quả CTS thường cần đi qua lớp [[CTSQualityReview]] trước khi 
 → Downstream: [[Routing]] · [[STA]]
 → Closely related: [[CTSFlow]] · [[CTSOptimization]] · [[ClockSkew]] · [[ClockLatency|Insertion Delay]] · [[HoldTime]] · [[Slack]] · [[PostCTSOptimization]] · [[CTSQualityReview]]
 → Cùng nhóm: [[Floorplanning]] · [[Placement]] · [[Routing]] · [[ParasiticExtraction]] · [[Signoff]]
+
+
+## Liên hệ với VirtualClock và GeneratedClock
+- [[VirtualClock]] không được CTS tổng hợp thành clock tree vật lý vì không có clock source vật lý trong design.
+- [[GeneratedClock]] có thể cần xử lý clock tree vật lý nếu có physical source point; chi tiết phụ thuộc tool/flow. [Needs verification]

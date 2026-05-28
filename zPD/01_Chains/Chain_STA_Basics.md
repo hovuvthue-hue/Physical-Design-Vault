@@ -1,6 +1,6 @@
 ---
 tags: [chain, sta-timing]
-concepts: [CellDelay, NetDelay, StageDelay, STA, SDC, Slack, SetupTime, HoldTime, MMMC, ClockSkew, ClockUncertainty, ClockLatency, PropagationDelay]
+concepts: [CellDelay, NetDelay, StageDelay, STA, SDC, Slack, SetupTime, HoldTime, MMMC, ClockSkew, ClockUncertainty, ClockLatency, VirtualClock, GeneratedClock, PropagationDelay]
 ---
 # Chain: STA Basics
 
@@ -150,4 +150,4 @@ $$TNS = \sum(\text{negative Slacks}) \rightarrow \text{phản ánh tổng khối
 **Chain_BackEnd_Overview:** [[SDC]] là interface chính thức giữa Front-End và Back-End; [[GateLevelNetlist]] + [[SDC]] là handoff artifacts từ Logic Synthesis sang Physical Design.
 
 ## Concepts trong chain này
-[[CellDelay]] · [[NetDelay]] · [[StageDelay]] · [[STA]] · [[SDC]] · [[Slack]] · [[SetupTime]] · [[HoldTime]] · [[MMMC]] · [[ClockSkew]] · [[ClockUncertainty]] · [[ClockLatency]] · [[PropagationDelay]] · [[Slew]] · [[TimingArc]]
+[[CellDelay]] · [[NetDelay]] · [[StageDelay]] · [[STA]] · [[SDC]] · [[VirtualClock]] · [[GeneratedClock]] · [[Slack]] · [[SetupTime]] · [[HoldTime]] · [[MMMC]] · [[ClockSkew]] · [[ClockUncertainty]] · [[ClockLatency]] · [[PropagationDelay]] · [[Slew]] · [[TimingArc]]

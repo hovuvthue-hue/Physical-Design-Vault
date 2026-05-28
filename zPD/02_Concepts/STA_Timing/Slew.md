@@ -28,7 +28,7 @@ Cụ thể trên Net: dây dài với RC lớn làm méo sóng → Output Slew t
 ## Constrains
 - **[[CellDelay]]**: Input Slew là một trong hai trục của Cell Delay LUT — Slew lớn (thoải) → Cell Delay lớn; đây là cơ chế mà Slew degradation truyền ảnh hưởng qua chuỗi stages
 - **[[NetDelay]]**: RC trên Net làm thoải sóng tín hiệu → tăng Slew tại receiver pin; Net dài là nguyên nhân chính của Slew degradation trong physical design
-- **[[ClockTreeSynthesis]]**: Clock Slew là quality metric của CTS — clock signal phải có Slew đủ dốc (nhỏ) tại tất cả Flip-flop clock pins để đảm bảo clean triggering; Max Clock Transition là một trong các constraints của CTS
+- **[[ClockTreeSynthesis]]**: Clock Slew là quality metric của CTS — clock signal phải có Slew đủ dốc (nhỏ) tại tất cả Flip-flop clock pins để đảm bảo clean triggering; Max Clock Transition trên clock nets/sinks là một trong các constraints cốt lõi của CTS
 - **[[Signoff]]**: Max Transition DRV violation (Slew vượt quá giới hạn cho phép) là blocker cho Signoff — tín hiệu quá thoải có thể gây short-circuit power không kiểm soát được và functional failure
 
 ## Requires
@@ -43,7 +43,7 @@ Cụ thể trên Net: dây dài với RC lớn làm méo sóng → Output Slew t
 - [[Signoff]] — Max Transition DRV check là một trong các Signoff criteria; violations phải được fixed trước Tape-out
 
 ## Key insight
-[USER REVIEW — draft suggestion]: Slew là khái niệm kết nối thế giới vật lý (transistor physics, wire RC) với thế giới timing (Cell Delay LUT lookup). Người mới thường chỉ quan tâm đến delay numbers mà bỏ qua Slew — nhưng trong thực tế, một timing path fail đôi khi không phải vì logic quá chậm mà vì Slew degradation tích lũy qua nhiều stages làm tăng Cell Delay ở cuối path. Dấu hiệu nhận biết: trong timing report, nếu cột Slew/Transition tăng dần và đột ngột vọt lên ở một stage nào đó → stage đó có driver quá yếu hoặc net quá dài → cần upsize cell hoặc insert repeater. Max Transition violation nghiêm trọng hơn Setup violation vì nó ảnh hưởng đến cả timing lẫn power và có thể gây functional failure.
+[USER REVIEW — draft suggestion]: Slew là khái niệm kết nối thế giới vật lý (transistor physics, wire RC) với thế giới timing (Cell Delay LUT lookup). Người mới thường chỉ quan tâm đến delay numbers mà bỏ qua Slew — nhưng trong thực tế, một timing path fail đôi khi không phải vì logic quá chậm mà vì Slew degradation tích lũy qua nhiều stages làm tăng Cell Delay ở cuối path. Dấu hiệu nhận biết: trong timing report, nếu cột Slew/Transition tăng dần và đột ngột vọt lên ở một stage nào đó → stage đó có driver quá yếu hoặc net quá dài → cần upsize cell hoặc insert repeater. Max Transition violation ảnh hưởng trực tiếp timing, đồng thời tăng rủi ro về power/noise/reliability [Needs verification] nên cần được xử lý sớm.
 
 ## Related
 → Chain: [[Chain_STA_Basics]]

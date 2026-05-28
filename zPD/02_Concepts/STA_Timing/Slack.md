@@ -46,7 +46,7 @@ Hai macro-metrics tổng hợp từ Slack của tất cả paths:
 - [[STA]] — compute và report Slack tại mỗi Endpoint; sort paths theo Slack để generate WNS/TNS summary; `-max_paths N` option report N paths có Slack âm sâu nhất
 - [[LogicSynthesis]] — synthesis engine minimize TNS bằng cách iterate over negative-Slack paths và swap cells hoặc restructure logic; WNS là stopping criterion của optimization loop
 - [[Placement]] — timing-driven placement weight placement cost function theo Slack per path; paths với Slack âm sâu được ưu tiên đặt cells gần nhau hơn
-- [[ClockTreeSynthesis]] — post-CTS STA generate mới Slack values với real [[ClockSkew]]; Hold Slack của toàn bộ design cần được checked và fixed trước Routing
+- [[ClockTreeSynthesis]] — post-CTS STA generate lại Slack với propagated clock; [[ClockSkew]] và [[ClockLatency]] thực tế có thể làm dịch chuyển cả Setup/Hold Slack so với pre-CTS ideal clock assumption
 - [[Routing]] — timing-driven routing ưu tiên route paths có Slack âm trên lower-resistance metal layers; post-route STA với SPEF generate final Slack values cho Signoff
 - [[Signoff]] — Timing Signoff pass criterion: WNS ≥ 0 và TNS = 0 ở tất cả Analysis Views; WNS và TNS là hai con số kỹ sư PD report cho team lead mỗi ngày
 

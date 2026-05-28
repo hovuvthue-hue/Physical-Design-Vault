@@ -30,7 +30,7 @@ Trong đó:
 - δ_margin: OCV derating làm cho fast paths trông nhanh hơn thực tế (bi quan về Hold)
 - δ_skew: [[ClockSkew]] — positive skew làm Hold Slack xấu đi
 
-T_c hoàn toàn vắng mặt trong equation → giảm tần số không có bất kỳ tác dụng nào với Hold violations. Hold violation trên silicon là permanent failure — chip phải bị loại bỏ.
+T_c hoàn toàn vắng mặt trong equation → giảm tần số không có bất kỳ tác dụng nào với Hold violations. Hold violation trên silicon là rủi ro chức năng nghiêm trọng [Needs verification].
 
 ## Constrains
 - **[[Slack]]**: Hold Slack âm là silicon kill — không có workaround sau khi chip đã được sản xuất; Hold Slack phải được verify clean ở fast corners (FF process, high voltage, low temperature) trước Tape-out

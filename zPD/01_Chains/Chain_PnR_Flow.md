@@ -55,7 +55,7 @@ Output: Clock tree topology, Buffer/Inverter positions, Clock net routes.
 
 Truyền xuống: Clock tree topology và Buffer positions là fixed constraints cho Routing.
 
-Exit: [[ClockSkew]] within budget · [[ClockLatency|Insertion Delay]] within budget · Slew/Transition clean.
+Exit: [[ClockSkew]] within budget · [[ClockLatency|Insertion Delay]] within budget · [[Slew]]/Transition clean.
 
 **Bước 5 — [[Routing]]**
 
@@ -132,4 +132,4 @@ Nếu Signoff fail, design phải quay lại bước bị ảnh hưởng để f
 **Chain_BackEnd_Overview:** Chain này là sub-chain của Back-End Design flow tổng quát hơn — bắt đầu từ GateLevelNetlist (output của LogicSynthesis) và kết thúc bằng GDS (input của Fab).
 
 ## Concepts trong chain này
-[[DesignImport]] · [[GateLevelNetlist]] · [[PhysicalConstraints]] · [[MMMC]] · [[Floorplanning]] · [[CoreArea]] · [[IOCell]] · [[MacroPlacement]] · [[TapCell]] · [[EndCapCell]] · [[DecapCell]] · [[FillerCell]] · [[PDN]] · [[IRDrop]] · [[PlacementBlockage]] · [[RoutingBlockage]] · [[Site]] · [[Row]] · [[PlacementGrid]] · [[Pitch]] · [[Track]] · [[RoutingGrid]] · [[DEF]] · [[Placement]] · [[ClockTreeSynthesis]] · [[Routing]] · [[ParasiticExtraction]] · [[Signoff]]
+[[DesignImport]] · [[GateLevelNetlist]] · [[PhysicalConstraints]] · [[MMMC]] · [[Floorplanning]] · [[CoreArea]] · [[IOCell]] · [[MacroPlacement]] · [[TapCell]] · [[EndCapCell]] · [[DecapCell]] · [[FillerCell]] · [[PDN]] · [[IRDrop]] · [[PlacementBlockage]] · [[RoutingBlockage]] · [[Site]] · [[Row]] · [[PlacementGrid]] · [[Pitch]] · [[Track]] · [[RoutingGrid]] · [[DEF]] · [[Placement]] · [[PreCTSOptimization]] · [[DRVFixing]] · [[PowerAnalysis]] · [[PowerOptimization]] · [[SpareCell]] · [[MBFF]] · [[CongestionAnalysis]] · [[ClockTreeSynthesis]] · [[Routing]] · [[ParasiticExtraction]] · [[Signoff]]

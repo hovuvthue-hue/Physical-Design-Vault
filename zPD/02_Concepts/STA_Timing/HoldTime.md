@@ -30,10 +30,10 @@ Trong đó:
 - δ_margin: OCV derating làm cho fast paths trông nhanh hơn thực tế (bi quan về Hold)
 - δ_skew: [[ClockSkew]] — positive skew làm Hold Slack xấu đi
 
-T_c hoàn toàn vắng mặt trong equation → giảm tần số không có bất kỳ tác dụng nào với Hold violations. Hold violation trên silicon là permanent failure — chip phải bị loại bỏ.
+T_c hoàn toàn vắng mặt trong equation → giảm tần số không có bất kỳ tác dụng nào với Hold violations. Hold violation trên silicon là rủi ro chức năng nghiêm trọng [Needs verification].
 
 ## Constrains
-- **[[Slack]]**: Hold Slack âm là silicon kill — không có workaround sau khi chip đã được sản xuất; Hold Slack phải được verify clean ở fast corners (FF process, high voltage, low temperature) trước Tape-out
+- **[[Slack]]**: Hold Slack âm là rủi ro chức năng nghiêm trọng và thường phải được clean trước Tape-out; khả năng workaround sau silicon phụ thuộc design/flow và không nên được giả định. [Needs verification]
 - **[[ClockTreeSynthesis]]**: [[ClockSkew]] (δ_skew) xuất hiện với dấu cộng trong Hold check — positive skew làm trầm trọng Hold violations; đây là lý do Hold violations bùng phát sau CTS khi Clock Tree thực tế được build và Skew không còn là zero; Hold fix (insert delay buffers) thường được thực hiện ngay sau CTS trước khi Routing
 - **[[Routing]]**: Hold fix buffers được insert trên data paths ngắn để kéo dài AT_min; Routing phải accommodate vị trí của các hold buffers này; post-route Hold STA với fast-corner SPEF là Hold Signoff checkpoint cuối cùng
 

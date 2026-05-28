@@ -9,7 +9,7 @@ chain: Chain_STA_Basics
 # ClockLatency
 
 ## Definition
-Clock Latency (a.k.a. Clock Insertion Delay) là tổng thời gian tín hiệu clock đi từ điểm nguồn phát ban đầu đến chân clock (clock pin) của một Flip-flop cụ thể. Clock Latency là con số độc lập cho từng FF — không phải một giá trị chung cho toàn bộ clock domain. Latency cao không nhất thiết là vấn đề; vấn đề xảy ra khi Latency của các FF trong cùng domain chênh lệch nhau lớn (tức là Clock Skew lớn). Latency gồm hai thành phần cộng lại: Source Latency và Network Latency.
+Clock Latency (a.k.a. Insertion Delay, hay Clock Insertion Delay) là tổng thời gian tín hiệu clock đi từ điểm nguồn phát ban đầu đến chân clock (clock pin) của một Flip-flop cụ thể. Clock Latency là con số độc lập cho từng FF — không phải một giá trị chung cho toàn bộ clock domain. Latency cao không nhất thiết là vấn đề; vấn đề xảy ra khi Latency của các FF trong cùng domain chênh lệch nhau lớn (tức là Clock Skew lớn). Latency gồm hai thành phần cộng lại: Source Latency và Network Latency.
 
 ## Computed from
 $$\text{Total Latency}_{FF} = \text{Source Latency} + \text{Network Latency}$$
@@ -18,7 +18,7 @@ $$\text{Total Latency}_{FF} = \text{Source Latency} + \text{Network Latency}$$
 
 **Network Latency**: Thời gian từ Clock Port đi xuyên qua toàn bộ mạng buffer của Clock Tree để đến clock pin của FF bên trong block. Network Latency = kết quả của CTS — đây là phần PD engineer kiểm soát được.
 
-Pre-CTS: STA dùng `set_clock_latency` trong SDC để model estimated Latency cho cả Launch và Capture paths — giúp synthesis và pre-CTS placement có timing estimate hợp lý. Post-CTS: `set_propagated_clock` thay thế — STA compute Latency thực tế từ Clock Tree buffer chain với actual RC delays.
+Pre-CTS: STA dùng `set_clock_latency` trong SDC để model latency budget (Ideal Clock assumption) cho Launch/Capture paths — phục vụ estimate timing sớm. Post-CTS: dùng Propagated Clock (`set_propagated_clock`) để compute latency thực tế từ clock source đến từng sink qua clock tree vật lý.
 
 ## Constrains
 - **[[ClockSkew]]**: Skew = hiệu số Latency giữa 2 FF; Latency là thành phần cơ bản tạo nên Skew — không thể hiểu Skew mà không hiểu Latency per-FF

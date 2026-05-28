@@ -1,6 +1,6 @@
 ---
 tags: [chain, pnr-flow]
-concepts: [DesignImport, Floorplanning, CoreArea, IOCell, MacroPlacement, PlacementBlockage, RoutingBlockage, PlacementGrid, Row, RoutingGrid, Site, Track, Pitch, PDN, IRDrop, TieCell, TapCell, EndCapCell, DecapCell, FillerCell, Placement, ClockTreeSynthesis, Routing, ParasiticExtraction, Signoff, GateLevelNetlist, PhysicalConstraints, MMMC]
+concepts: [DesignImport, Floorplanning, CoreArea, IOCell, MacroPlacement, PlacementBlockage, RoutingBlockage, PlacementGrid, Row, RoutingGrid, Site, Track, Pitch, PDN, IRDrop, TieCell, TapCell, EndCapCell, DecapCell, FillerCell, Placement, CongestionAnalysis, PreCTSOptimization, DRVFixing, PowerAnalysis, PowerOptimization, SpareCell, MBFF, ClockTreeSynthesis, Routing, ParasiticExtraction, Signoff, GateLevelNetlist, PhysicalConstraints, MMMC]
 ---
 # Chain: PnR Flow
 

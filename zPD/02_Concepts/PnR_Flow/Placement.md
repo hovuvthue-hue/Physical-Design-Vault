@@ -2,7 +2,7 @@
 tags: [concept, pnr-flow]
 group: PnR Flow
 defined_in: Cadence Innovus (interactive + scripted), DEF (output)
-used_by: [CTS, Routing, STA]
+used_by: [ClockTreeSynthesis, Routing, STA]
 requires: [Floorplanning, GateLevelNetlist, SDC, LEF]
 chain: Chain_PnR_Flow
 ---

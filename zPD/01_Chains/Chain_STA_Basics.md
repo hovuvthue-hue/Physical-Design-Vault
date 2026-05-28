@@ -56,7 +56,7 @@ $$\text{Slack}_{hold} = (t_{ccq} + t_{logic,min} - \delta_{margin}) - (t_{hold} 
 
 **Tầng 7 — Phán định**
 - [[SetupTime]]: Setup Slack < 0 → data path quá chậm → Setup violation → có thể cứu bằng cách giảm tần số sau silicon.
-- [[HoldTime]]: Hold Slack < 0 → data path quá nhanh → Hold violation → silicon kill, không có workaround.
+- [[HoldTime]]: Hold Slack < 0 → data path quá nhanh → Hold violation là rủi ro chức năng nghiêm trọng và thường phải được clean trước Tape-out; workaround sau silicon không nên được giả định và phụ thuộc design/flow. [Needs verification]
 
 ## Hai luồng phân tích song song trong STA
 
@@ -117,7 +117,7 @@ $$TNS = \sum(\text{negative Slacks}) \rightarrow \text{phản ánh tổng khối
 
 **Post-Placement STA:** Net Delay = RC estimate từ wire length (WLM) · Timing feasibility check trước CTS · Hold với ideal clock · Accuracy trung bình.
 
-**Post-CTS STA (quan trọng nhất):** Clock = Propagated với real [[ClockSkew]] + [[ClockLatency|Insertion Delay]] · Hold violations bùng phát lần đầu · Insert Hold fix Buffers tại đây.
+**Post-CTS STA (quan trọng nhất):** Clock = Propagated với real [[ClockSkew]] + [[ClockLatency|Insertion Delay]] · Hold risks có thể trở nên rõ hơn sau CTS khi propagated clock, [[ClockSkew]], và [[ClockLatency|Insertion Delay]] thực tế được đưa vào phân tích. [Needs verification] · Insert Hold fix Buffers tại đây.
 
 **Post-Route STA:** Net Delay = extracted RC từ actual wire geometry qua full [[SPEF]] · Setup + Hold · Accuracy cao nhất.
 

@@ -1,6 +1,6 @@
 ---
 tags: [chain, pnr-flow]
-concepts: [DesignImport, Floorplanning, CoreArea, IOCell, MacroPlacement, PlacementBlockage, RoutingBlockage, PlacementGrid, Row, RoutingGrid, Site, Track, Pitch, PDN, IRDrop, TieCell, TapCell, EndCapCell, DecapCell, FillerCell, Placement, CongestionAnalysis, PreCTSOptimization, DRVFixing, PowerAnalysis, PowerOptimization, SpareCell, MBFF, ClockTreeSynthesis, Routing, ParasiticExtraction, Signoff, GateLevelNetlist, PhysicalConstraints, MMMC]
+concepts: [DesignImport, Floorplanning, CoreArea, IOCell, MacroPlacement, PlacementBlockage, RoutingBlockage, PlacementGrid, Row, RoutingGrid, Site, Track, Pitch, PDN, IRDrop, TieCell, TapCell, EndCapCell, DecapCell, FillerCell, Placement, CongestionAnalysis, PreCTSOptimization, DRVFixing, PowerAnalysis, PowerOptimization, SpareCell, MBFF, ClockTreeSynthesis, CTSOptimization, CTSFlow, PostCTSOptimization, CTSQualityReview, Routing, ParasiticExtraction, Signoff, GateLevelNetlist, PhysicalConstraints, MMMC]
 ---
 # Chain: PnR Flow
 
@@ -105,7 +105,7 @@ Exit: Timing clean (all MMMC corners × modes) · DRC clean · LVS clean · IR D
 
 **Post-Placement STA:** Ideal clock · Wire delay estimate (WLM) · Setup check chính · Hold với ideal clock · Dùng để verify timing feasibility trước CTS.
 
-**Post-CTS STA (quan trọng nhất):** Propagated clock với real Skew + Insertion Delay · Hold violations bùng phát lần đầu do [[ClockSkew]] thực tế · Hold fix Buffers được insert tại đây trước khi Routing.
+**Post-CTS STA (quan trọng nhất):** Propagated clock với real Skew + Insertion Delay · Hold risks có thể trở nên rõ hơn sau CTS khi propagated clock, [[ClockSkew]], và [[ClockLatency|Insertion Delay]] thực tế được đưa vào STA; mức độ phụ thuộc design/flow. [Needs verification] · Hold fix Buffers được insert tại đây trước khi Routing.
 
 **Post-Route STA:** Full [[SPEF]] · [[NetDelay]] extracted từ actual wire geometry · Setup + Hold · Timing numbers chính xác nhất trong toàn bộ flow.
 
@@ -132,4 +132,4 @@ Nếu Signoff fail, design phải quay lại bước bị ảnh hưởng để f
 **Chain_BackEnd_Overview:** Chain này là sub-chain của Back-End Design flow tổng quát hơn — bắt đầu từ GateLevelNetlist (output của LogicSynthesis) và kết thúc bằng GDS (input của Fab).
 
 ## Concepts trong chain này
-[[DesignImport]] · [[GateLevelNetlist]] · [[PhysicalConstraints]] · [[MMMC]] · [[Floorplanning]] · [[CoreArea]] · [[IOCell]] · [[MacroPlacement]] · [[TapCell]] · [[EndCapCell]] · [[DecapCell]] · [[FillerCell]] · [[PDN]] · [[IRDrop]] · [[PlacementBlockage]] · [[RoutingBlockage]] · [[Site]] · [[Row]] · [[PlacementGrid]] · [[Pitch]] · [[Track]] · [[RoutingGrid]] · [[DEF]] · [[Placement]] · [[PreCTSOptimization]] · [[DRVFixing]] · [[PowerAnalysis]] · [[PowerOptimization]] · [[SpareCell]] · [[MBFF]] · [[CongestionAnalysis]] · [[ClockTreeSynthesis]] · [[Routing]] · [[ParasiticExtraction]] · [[Signoff]]
+[[DesignImport]] · [[GateLevelNetlist]] · [[PhysicalConstraints]] · [[MMMC]] · [[Floorplanning]] · [[CoreArea]] · [[IOCell]] · [[MacroPlacement]] · [[TapCell]] · [[EndCapCell]] · [[DecapCell]] · [[FillerCell]] · [[PDN]] · [[IRDrop]] · [[PlacementBlockage]] · [[RoutingBlockage]] · [[Site]] · [[Row]] · [[PlacementGrid]] · [[Pitch]] · [[Track]] · [[RoutingGrid]] · [[DEF]] · [[Placement]] · [[PreCTSOptimization]] · [[DRVFixing]] · [[PowerAnalysis]] · [[PowerOptimization]] · [[SpareCell]] · [[MBFF]] · [[CongestionAnalysis]] · [[ClockTreeSynthesis]] · [[CTSOptimization]] · [[CTSFlow]] · [[PostCTSOptimization]] · [[CTSQualityReview]] · [[Routing]] · [[ParasiticExtraction]] · [[Signoff]]

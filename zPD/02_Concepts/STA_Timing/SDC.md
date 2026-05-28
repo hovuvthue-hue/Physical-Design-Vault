@@ -82,7 +82,7 @@ Trong đó $T_c$ đến từ `create_clock -period`; $\delta_{uncertainty}$ đ�
 → Chain: [[Chain_STA_Basics]]
 → Design Objects: Design · Cell · Reference · Port · Pin · Net · Clock
 → Path types: Reg-to-Reg · Input-to-Reg · Reg-to-Output · Input-to-Output
-→ Consumed by: [[MMMC]] · [[STA]] · [[LogicSynthesis]] · [[Placement]] · [[CTS]] · [[Routing]] · [[Signoff]]
+→ Consumed by: [[MMMC]] · [[STA]] · [[LogicSynthesis]] · [[Placement]] · [[ClockTreeSynthesis]] · [[Routing]] · [[Signoff]]
 → Defines constraints for: [[SetupTime]] · [[HoldTime]] · [[ClockSkew]] · [[ClockUncertainty]] · [[Slew]]
 → Related formats: [[SPEF]] (physical parasitics) · [[LIB]] (cell timing) — cùng là inputs của STA
 → Cùng nhóm: [[STA]] · [[CellDelay]] · [[NetDelay]] · [[Slack]] · [[MMMC]]

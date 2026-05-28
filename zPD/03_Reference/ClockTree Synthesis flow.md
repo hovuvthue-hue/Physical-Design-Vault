@@ -1,4 +1,4 @@
-# Concept: ClockTreeSynthesis  
+# Concept: ClockTreeSynthesis flow
 
 **Definition:** Clock‐Tree Synthesis (CTS) is the backend step that builds the physical clock distribution network.  Starting from one or more clock source pins, the CTS tool automatically inserts buffers/inverters and wires to connect the clock to all sequential sinks (flip‐flop clock pins) in the design, **after** placement.  The goals are to distribute the clock with minimal skew (difference in arrival times) and controlled insertion delay while respecting slew/transition limits【28†L158-L162】【18†L10-L17】.  CTS converts the ideal clock (zero-skew assumption) into a real clock tree in the database (updating the netlist and DEF with inserted clock buffers/inverters).  
 

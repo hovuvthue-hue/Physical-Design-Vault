@@ -86,3 +86,7 @@ Trong đó $T_c$ đến từ `create_clock -period`; $\delta_{uncertainty}$ đ�
 → Defines constraints for: [[SetupTime]] · [[HoldTime]] · [[ClockSkew]] · [[ClockUncertainty]] · [[Slew]]
 → Related formats: [[SPEF]] (physical parasitics) · [[LIB]] (cell timing) — cùng là inputs của STA
 → Cùng nhóm: [[STA]] · [[CellDelay]] · [[NetDelay]] · [[Slack]] · [[MMMC]]
+
+## Related clock concepts
+- [[VirtualClock]]: mốc clock logic cho timing I/O khi không có clock source vật lý trong design.
+- [[GeneratedClock]]: clock dẫn xuất từ master clock, cần mô hình đúng quan hệ clock cho phân tích timing.

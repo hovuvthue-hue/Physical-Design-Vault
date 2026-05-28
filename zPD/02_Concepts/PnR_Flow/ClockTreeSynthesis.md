@@ -28,6 +28,7 @@ CTS tool xây dựng Clock Tree theo các bước:
 - **Timing (Setup)**: Insertion Delay làm tăng effective clock period nhìn từ góc độ data path — tool STA phải account cho giá trị này khi compute Setup Slack sau CTS
 - **Timing (Hold)**: [[ClockSkew]] ảnh hưởng trực tiếp đến Hold Slack — Skew quá lớn gây Hold violations không thể fix bằng cách tăng clock period
 - **Power**: Clock Tree thường chiếm 20–40% tổng dynamic power của chip — số lượng Buffer insert và clock net length quyết định clock power budget
+- **MBFF interaction**: MBFF có thể làm thay đổi cấu trúc clock sinks và clock tree load vì nhiều bits có thể chia sẻ clock connection; mức ảnh hưởng thực tế phụ thuộc library/tool/flow [Needs verification]
 
 ## Requires
 - [[Placement]] — vị trí chính xác (x, y) của tất cả clock sinks là input bắt buộc; CTS không thể chạy trước khi Placement hoàn thành và legalized

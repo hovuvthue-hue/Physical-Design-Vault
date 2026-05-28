@@ -56,6 +56,7 @@ Tiêu chí cụ thể phụ thuộc flow signoff nội bộ [Needs verification]
 ## Related
 - [[DRVFixing]]
 - [[PowerOptimization]]
+- [[MBFF]]
 - [[PowerAnalysis]]
 - [[Placement]]
 - [[STA]]

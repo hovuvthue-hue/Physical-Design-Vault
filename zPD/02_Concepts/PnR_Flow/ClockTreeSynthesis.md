@@ -45,13 +45,13 @@ CTS tool xây dựng Clock Tree theo các bước:
 - [[Signoff]] — chất lượng clock tree (skew/latency/transition và tác động timing/power/noise) ảnh hưởng trực tiếp tới closure
 
 ## Key insight
-[USER REVIEW — draft suggestion]:
-CTS là bước tạo ra sự chuyển đổi quan trọng trong timing analysis: trước CTS, STA chạy với "ideal clock" (zero Skew, zero Insertion Delay); sau CTS, STA phải account cho clock network thực tế. Hệ quả là Hold violations — vốn vô hình trước CTS — có thể xuất hiện hàng loạt sau CTS nếu Skew lớn. Đây là lý do Hold fixing thường được thực hiện ngay sau CTS bằng cách
-insert Delay Buffers trên data paths, trước khi bước vào Routing.
+CTS là bước chuyển quan trọng của timing analysis: trước CTS, STA thường chạy với ideal clock assumption; sau CTS, STA phải dùng propagated clock và bắt đầu phản ánh các hiệu ứng clock network thực như [[ClockSkew]], [[ClockLatency|Insertion Delay]], và clock transition thực tế.
+
+Vì vậy một số setup/hold risk có thể trở nên rõ hơn sau CTS, đặc biệt khi skew hoặc latency chưa cân bằng. Mức độ ảnh hưởng phụ thuộc clock topology, constraints, library, và flow cụ thể. [Needs verification]
 
 ## Related
 → Chain: [[Chain_PnR_Flow]]
 → Upstream: [[Placement]]
 → Downstream: [[Routing]] · [[STA]]
-→ Closely related: [[ClockSkew]] · [[ClockLatency|Insertion Delay]] · [[HoldTime]] · [[Slack]]
+→ Closely related: [[CTSOptimization]] · [[ClockSkew]] · [[ClockLatency|Insertion Delay]] · [[HoldTime]] · [[Slack]]
 → Cùng nhóm: [[Floorplanning]] · [[Placement]] · [[Routing]] · [[ParasiticExtraction]] · [[Signoff]]

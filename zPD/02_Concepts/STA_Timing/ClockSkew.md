@@ -35,6 +35,9 @@ Trong đó Latency của mỗi FF = Source Latency + Network Latency (toàn bộ
 - [[ClockTreeSynthesis]] — Global/Local Skew là primary quality metric của CTS; CTS tool iterate để kiểm soát Skew trong khi đáp ứng Slew và Latency constraints
 - [[Signoff]] — Skew tại Signoff được compute từ propagated clock với full SPEF; là thành phần của Clock Uncertainty budget verification
 
+## Key insight
+Clock Skew là khái niệm trung tâm phân biệt Pre-CTS timing và Post-CTS timing. Trước CTS, clock thường được model lý tưởng hoặc abstracted; sau CTS, STA phải dùng propagated clock với skew/latency thực tế. Skew không chỉ “xấu” tuyệt đối: trong một số flow, useful skew có thể được khai thác để hỗ trợ setup timing, nhưng luôn phải đánh đổi với hold margin và phụ thuộc tool/flow. [Needs verification]
+
 ## Related
 → Chain: [[Chain_STA_Basics]]
 → Produced by: [[ClockTreeSynthesis]]

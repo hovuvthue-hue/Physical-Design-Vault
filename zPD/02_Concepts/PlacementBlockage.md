@@ -11,7 +11,7 @@ chain: Chain_PnR_Flow
 ## Definition
 Placement Blockage là vùng trong Core Area được đánh dấu cấm hoặc hạn chế Placement tool đặt Standard Cells/Macros vào (tùy loại). Placement Blockages được dùng chủ yếu để quản lý congestion hotspots quanh Macros và để dự trữ không gian cho routing channels, power straps, và các physical requirements khác.
 
-Về bản chất, Placement Blockage là cơ chế điều chỉnh **legal placement availability** và placement density theo vùng: nó giảm demand placement (cell density/local utilization) tại các khu vực nhạy cảm, từ đó gián tiếp ảnh hưởng congestion posture trước CTS/Routing. Placement Blockage **không trực tiếp** quy định layer nào được route; phần đó thuộc phạm vi [[RoutingBlockage]].
+Về bản chất, Placement Blockage là cơ chế điều chỉnh **legal placement availability** và placement density theo vùng: nó giảm demand placement (cell density/local utilization) tại các khu vực nhạy cảm, từ đó gián tiếp ảnh hưởng congestion posture trước CTS/Routing và kết quả [[CongestionAnalysis]]. Placement Blockage **không trực tiếp** quy định layer nào được route; phần đó thuộc phạm vi [[RoutingBlockage]].
 
 **4 loại Placement Blockage:**
 

@@ -59,13 +59,13 @@ Exit: [[ClockSkew]] within budget · [[ClockLatency|Insertion Delay]] within bud
 
 **Bước 5 — [[Routing]]**
 
-Nhận: Clock tree topology từ CTS + PDN từ Floorplanning.
+Nhận: Clock tree topology và Buffer/Inverter positions từ CTS + placed database + PDN/blockage từ Floorplanning + [[LEF]]/[[DEF]] + [[SDC]]/[[MMMC]].
 
-Output: Wire geometries hoàn chỉnh cho tất cả signal nets — Route DB / GDS.
+Output: Routed database / routed [[DEF]] với wire/via geometries hoàn chỉnh cho signal nets và các geometry cần cho extraction/signoff.
 
-Truyền xuống: Wire geometries là input bắt buộc cho Parasitic Extraction.
+Truyền xuống: Routed wire/via geometries là input bắt buộc cho [[ParasiticExtraction]] và là layout nền cho [[Signoff]].
 
-Exit: DRC clean · No Timing violations post-route · IR Drop within budget.
+Exit: Connectivity complete · DRC/LVS-ready layout · No major post-route timing/routability blockers · IR Drop within budget.
 
 **Bước 6 — [[ParasiticExtraction]]**
 

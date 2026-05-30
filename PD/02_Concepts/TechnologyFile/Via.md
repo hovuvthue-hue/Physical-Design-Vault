@@ -2,7 +2,7 @@
 tags: [concept, technology-file, routing, interconnect]
 group: Technology File
 defined_in: LEF / Technology File
-used_by: [Routing, DetailedRouting, ParasiticExtraction, Signoff]
+used_by: [Routing, ParasiticExtraction, Signoff]
 requires: [MetalStack, LEF, ITF]
 chain: Chain_LEF_to_PnR
 ---

@@ -3,43 +3,46 @@ tags: [concept, pnr-flow]
 group: PnR Flow
 defined_in: Cadence Innovus (interactive + scripted), DEF (output)
 used_by: [ParasiticExtraction, STA, Signoff]
-requires: [ClockTreeSynthesis, Floorplanning, LEF, SDC]
+requires: [ClockTreeSynthesis, Floorplanning, LEF, DEF, SDC, MMMC]
 chain: Chain_PnR_Flow
 ---
 # Routing
 
 ## Definition
-Routing là bước thứ tư trong P&R flow, trong đó PnR tool kết nối tất cả các Pins của cells theo đúng connectivity trong Netlist bằng cách đặt metal wires trên các Routing Tracks được định nghĩa trong LEF. Output là Route DB (DEF với đầy đủ wire geometries) — đây là layout hoàn chỉnh đầu tiên có thể dùng để extract parasitics thực tế.
+Routing là bước trong P&R flow sau [[ClockTreeSynthesis]] và trước [[ParasiticExtraction]]/[[Signoff]], nơi tool kết nối các nets bằng metal wires và vias theo connectivity của netlist. Routing biến placed/CTS database thành routed database: các đường dây/via vật lý được ghi vào route DB hoặc routed [[DEF]], tạo geometry thực tế cho extraction và signoff.
+
+Ở mức concept, Routing không chỉ “vẽ dây” mà là bước cân bằng giữa connectivity, tài nguyên routing, timing, DRC/LVS readiness, SI, reliability và manufacturability. Các chi tiết như chiến lược route clock trước, shielding, NDR, hoặc policy sửa lỗi phụ thuộc tool/PDK/flow và cần kiểm tra theo project. [Needs verification]
 
 ## Computed from
-Routing diễn ra theo 3 giai đoạn tuần tự:
+Routing thường được nhìn như một chuỗi xử lý có kiểm soát:
 
-- **Global Routing**: chia chip thành các gcells (global routing cells), tìm đường đi tổng quát cho từng Net qua các gcells — mục tiêu là phân bố wire density đều, tránh congestion. Chưa có wire geometry thực tế.
-- **Track Assignment**: gán từng Net vào Routing Track cụ thể trên từng metal layer — bắt đầu có wire coordinates thực tế nhưng chưa xử lý DRC.
-- **Detailed Routing**: route từng Net chính xác theo Track và Via rules, đảm bảo không có DRC violations (min spacing, min width, via enclosure). Clock nets được route trước với   shielding, signal nets route sau theo Timing priority.
+- **Routing setup**: kiểm tra placed database, CTS result, clock tree topology, routing constraints, [[LEF]]/[[DEF]], [[SDC]], [[MMMC]] và technology files trước khi route.
+- **Global Routing**: lập kế hoạch đường đi ở mức trừu tượng để ước lượng demand/supply, tránh [[CongestionAnalysis|congestion]] và hướng dẫn sử dụng layer/resource. Đây chưa phải final DRC-clean wire geometry.
+- **Track Assignment / Detailed Routing**: gán nets lên [[Track]]/metal layer cụ thể, tạo wires/vias hợp lệ theo [[RoutingGrid]], [[Pitch]] và routing rules, rồi sửa các vấn đề connectivity/geometry còn lại ở mức chi tiết.
+- **Post-route handoff**: routed geometry được dùng cho [[ParasiticExtraction]], post-route STA và [[Signoff]].
 
 ## Constrains
-- **ParasiticExtraction**: wire geometry (length, width, layer, spacing với neighboring wires) sau Routing là input duy nhất để extract RC parasitics thực tế — chất lượng Routing quyết
-  định độ chính xác của parasitic values
-- **Timing**: actual wire delay sau Routing thường khác đáng kể so với estimated delay trước Routing — Setup và Hold Slack phải được re-verified với extracted parasitics (post-route STA)
-- **DRC**: tất cả wire geometries phải pass Design Rule Check của foundry trước khi proceed sang Signoff — DRC violations là hard blocker cho Tape-out
-- **Signal Integrity**: wire spacing quá nhỏ giữa aggressor và victim nets gây Crosstalk noise và Crosstalk-induced Delay — Routing tool phải enforce net spacing rules cho critical nets
+- **Connectivity**: Routing phải hoàn tất kết nối giữa các pins của từng net; open/short là lỗi correctness cơ bản cần được loại bỏ trước handoff.
+- **ParasiticExtraction**: wire/via geometry sau Routing là input để extract RC parasitics thực tế và tạo [[SPEF]]. Chất lượng route ảnh hưởng trực tiếp độ chính xác của parasitic values.
+- **Timing**: actual wire delay sau Routing có thể khác estimated delay trước Routing, nên setup/hold/slew/DRV cần được re-check với extracted parasitics ở post-route STA.
+- **Physical correctness**: routed layout cần sẵn sàng cho DRC/LVS và các kiểm tra Signoff liên quan; ngưỡng pass/fail cụ thể phụ thuộc rule deck, foundry và signoff policy. [Needs verification]
+- **Routability / SI / reliability / manufacturability**: lựa chọn layer, spacing, via usage và detour có thể ảnh hưởng congestion, coupling noise, via reliability và DFM readiness. Các policy cụ thể cần được xác nhận theo flow. [Needs verification]
 
 ## Requires
-- [[ClockTreeSynthesis]] — clock nets và Buffer positions đã được fix; Routing nhận clock tree topology làm constraints, route clock nets trước với shielding để minimize Crosstalk
-- [[Floorplanning]] — PDN (power stripes, rings) đã được route trong Floorplanning stage; signal Routing chỉ sử dụng Routing Tracks còn lại sau khi PDN và clock nets đã chiếm chỗ
-- [[LEF]] — định nghĩa Routing Grid (Track pitch, direction, layer stackup), Via rules, DRC rules cho từng metal layer — Routing tool không thể hoạt động nếu thiếu LEF
-- [[SDC]] — Timing constraints để tool ưu tiên route critical paths trước, enforce net topology constraints (max fanout, max capacitance)
+- [[ClockTreeSynthesis]] — cung cấp clock tree topology, clock nets và vị trí clock buffer/inverter đã insert; Routing phải tôn trọng các ràng buộc này khi route phần còn lại của design.
+- [[Floorplanning]] — core boundary, macro/blockage, [[RoutingBlockage]], PDN và routing resources nền tảng giới hạn không gian route khả dụng.
+- [[LEF]] — định nghĩa cell abstracts, pin/obstruction shapes, [[RoutingGrid]], [[Track]], [[Pitch]], layer/via/routing rules cần cho router.
+- [[DEF]] — mang placed design database và là nơi lưu/trao đổi routed geometry ở các mốc implementation.
+- [[SDC]] và [[MMMC]] — timing/mode/corner context để Routing ưu tiên critical paths và chuẩn bị cho post-route timing analysis.
+- Routing constraints — giới hạn layer, blockage, special-net requirement hoặc route policy; chi tiết phụ thuộc tool/flow. [Needs verification]
 
 ## Used by
-- [[ParasiticExtraction]] — nhận wire geometries hoàn chỉnh từ Route DB để extract RC parasitic values cho từng Net; đây là bước bắt buộc trước post-route STA
-- [[STA]] (post-route) — chạy lại timing analysis với actual parasitic delays thay vì estimates; đây là lần STA chính xác nhất và là cơ sở cho Timing Signoff
-- [[Signoff]] — DRC clean layout từ Routing là điều kiện cần cho Physical Verification (DRC/LVS) signoff
+- [[ParasiticExtraction]] — nhận routed wire/via geometry từ Route DB hoặc routed [[DEF]] để extract RC parasitic values và tạo [[SPEF]].
+- [[STA]] (post-route) — chạy lại timing analysis với actual parasitic delays thay vì estimates; đây là checkpoint timing quan trọng trước Signoff.
+- [[Signoff]] — dùng routed layout/geometry làm nền cho physical verification, timing signoff và các kiểm tra reliability/manufacturability liên quan.
 
 ## Key insight
-[USER REVIEW — draft suggestion]:
-Routing là bước đầu tiên trong PD flow mà tất cả các con số timing trở nên thực tế — trước Routing mọi delay đều là ước tính, sau Routing mới có extracted parasitics thực sự. Hệ quả
-thực tế: timing violations xuất hiện sau post-route STA thường nhiều hơn và khác về bản chất so với pre-route STA. Nếu phải fix timing violation sau Routing (ECO — Engineering Change Order), chi phí rất cao vì phải re-route nhiều nets. Đây là lý do Placement và CTS quality cần được verify kỹ trước khi bước vào Routing.
+Routing là mốc chuyển từ mô hình ước lượng sang geometry vật lý thực tế: trước Routing, net delay chủ yếu dựa trên estimate; sau Routing, wire/via geometry cho phép extraction ra parasitics thực. Vì vậy Placement và CTS quality cần được kiểm tra kỹ trước khi bước vào Routing, còn mọi sửa đổi sau route nên ưu tiên local/minimal-impact để tránh phá vỡ convergence của flow.
 
 ## Related
 → Chain: [[Chain_PnR_Flow]]

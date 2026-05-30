@@ -11,7 +11,7 @@ chain: Chain_LEF_to_PnR
 ## Definition
 Routing Grid là toàn bộ mạng lưới các Tracks trên tất cả metal layers trong Core area, tạo thành không gian ba chiều (x, y, layer) mà Router sử dụng để đặt tất cả signal wires. Routing Grid là abstraction cho phép Router xem chip như một 3D graph — mỗi Track intersection là một node, mỗi Track segment giữa hai intersections là một edge, và Vias giữa các layers là vertical edges. Routing problem = graph shortest-path problem trên Routing Grid.
 
-Routing Grid tách biệt với [[PlacementGrid]]: PlacementGrid quản lý legal vị trí đặt cell, còn RoutingGrid quản lý legal tài nguyên đi dây.
+Routing Grid tách biệt với [[PlacementGrid]]: PlacementGrid quản lý legal vị trí đặt cell, còn RoutingGrid quản lý legal tài nguyên đi dây. RoutingGrid định nghĩa tài nguyên hình học hợp lệ; [[InterconnectRC]] mô tả hệ quả điện học được extract sau khi wire/via geometry thật đã tồn tại.
 
 ## Computed from
 Routing Grid được tạo bằng cách instantiate Tracks cho mỗi metal layer theo thông tin từ Tech LEF. Mỗi metal layer có hướng ưu tiên (preferred routing direction) để minimize cross-layer coupling:
@@ -28,7 +28,7 @@ $$\text{Routing Capacity}_{\text{region}} = \sum_{\text{layers}} \text{Tracks}_{
 Một phần Routing Grid bị blocked bởi: PDN (power stripes chiếm một số Tracks), Clock Tree shielding wires, OBS trong Macro LEF, và Macro boundaries.
 
 ## Constrains
-- **[[Routing]]**: Routing Grid là không gian duy nhất Router được phép hoạt động; mọi wire phải nằm trên Track, mọi via phải nằm tại Track intersection; Router cannot create new Tracks — chỉ allocate Tracks đã có
+- **[[Routing]]**: Routing Grid là không gian duy nhất Router được phép hoạt động; mọi wire phải nằm trên Track, mọi [[Via]] phải nằm tại vị trí hợp lệ giữa các layers; Router cannot create new Tracks — chỉ allocate Tracks đã có
 - **[[Placement]]**: Congestion-aware Placement phải ensure rằng cell density không quá cao tại bất kỳ vùng nào — cell density cao → ít Tracks còn trống → routing congestion; post-Placement congestion map là key quality metric trước Routing
 - **[[CellAbstract]]**: Pin alignment với Routing Grid là design requirement cho Standard Cell library — Pins phải nằm tại Track intersections để Router có thể access trực tiếp bằng Via drop
 
@@ -52,5 +52,5 @@ Một phần Routing Grid bị blocked bởi: PDN (power stripes chiếm một s
 → Track spacing = [[Pitch]] per layer
 → Defined in: [[LEF]] (Tech LEF) · [[DEF]] (instantiated post-Floorplan)
 → Must align with: [[PlacementGrid]] (key constraint trong Physical Design)
-→ Consumed by: [[Routing]] · [[Placement]] (congestion estimation)
+→ Consumed by: [[Routing]] · [[Placement]] (congestion estimation) · [[ParasiticExtraction]] context for [[InterconnectRC]]
 → Cùng nhóm: [[Pitch]] · [[Track]] · [[Site]] · [[Row]] · [[PlacementGrid]]

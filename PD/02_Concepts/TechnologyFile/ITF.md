@@ -9,7 +9,7 @@ chain: Chain_LEF_to_PnR
 # ITF
 
 ## Definition
-Interconnect Technology File (ITF) chứa các thông số vật liệu R/C của từng metal layer cho một RC corner cụ thể. ITF là input cho tool **Techgen** để compile ra binary RC tech files (qrcTechFiles) — sau đó được dùng bởi hai consumers độc lập: P&R tool (Innovus) và RC Extraction tool (QRC). Cả hai đều output RC values dưới dạng **SPEF**.
+Interconnect Technology File (ITF) chứa các thông số vật liệu R/C của từng metal layer cho một RC corner cụ thể. Ở mức khái niệm, ITF là nguồn dữ liệu công nghệ để [[ParasiticExtraction]] tính [[InterconnectRC]] và ghi kết quả ra [[SPEF]]. ITF là input cho tool **Techgen** để compile ra binary RC tech files (qrcTechFiles) — sau đó được dùng bởi hai consumers độc lập: P&R tool (Innovus) và RC Extraction tool (QRC). Cả hai đều output RC values dưới dạng **SPEF**.
 
 ITF tồn tại ở hai dạng phân biệt theo vòng đời:
 - **Text format (.ICT)**: human-readable, do Foundry cung cấp trong PDK; được Techgen đọc để compile
@@ -55,7 +55,7 @@ RC corner naming convention phản ánh worst-case combinations:
 | typical | Nominal | Nominal (25°C) | Reference |
 
 ## Constrains
-- **[[NetDelay]]**: $R$ và $C$ values từ ITF (qua SPEF) là input trực tiếp vào $t_{pd} \approx 0.38 \times r \times c \times L^2$; accuracy của SPEF phụ thuộc vào accuracy của qrcTechFile
+- **[[NetDelay]]**: $R$ và $C$ values từ ITF (qua SPEF) là input trực tiếp cho timing của routed interconnect; accuracy của [[InterconnectRC]] trong SPEF phụ thuộc vào accuracy của technology data
 - **[[MMMC]]**: mỗi RC Corner trong MMMC file tham chiếu một qrcTechFile theo corner name; incorrect qrcTechFile pairing → incorrect Net Delay → incorrect Slack → false timing closure
 
 ## Requires
@@ -74,6 +74,6 @@ RC corner naming convention phản ánh worst-case combinations:
 → Source: Foundry PDK
 → Pipeline: ITF (.ICT) → Techgen → qrcTechFile (binary, per RC corner)
 → Two consumers: Innovus (estimated SPEF) · QRC (accurate SPEF for Signoff)
-→ Constrains: [[NetDelay]] (via R/C values in SPEF)
+→ Constrains: [[InterconnectRC]] · [[NetDelay]] (via R/C values in SPEF)
 → Part of: [[MMMC]] RC Corner definitions
 → Cùng nhóm: [[MetalStack]] · [[SPEF]] · [[ParasiticExtraction]]

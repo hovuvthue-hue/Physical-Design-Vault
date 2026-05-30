@@ -9,7 +9,7 @@ chain: Chain_LEF_to_PnR
 # Track
 
 ## Definition
-Track là một đường thẳng ảo (imaginary line) trên [[RoutingGrid]], tại đó center của một wire hợp lệ có thể được đặt; có thể xem đây là legal routing line mà router được phép sử dụng. Tracks là discretization của không gian routing — thay vì Router có thể đặt wire tại bất kỳ tọa độ nào, nó chỉ được phép đặt wire tại các Track positions. Mỗi Track trên một layer cách Track liền kề đúng một Pitch. Số lượng Tracks available trên một layer trong một vùng diện tích nhất định là metric trực tiếp đánh giá routing capacity của vùng đó.
+Track là một đường thẳng ảo (imaginary line) trên [[RoutingGrid]], tại đó center của một wire hợp lệ có thể được đặt; có thể xem đây là legal routing line mà router được phép sử dụng. Sau khi wire thật nằm trên Track, geometry đó trở thành một phần nguồn dữ liệu để extract [[InterconnectRC]]. Tracks là discretization của không gian routing — thay vì Router có thể đặt wire tại bất kỳ tọa độ nào, nó chỉ được phép đặt wire tại các Track positions. Mỗi Track trên một layer cách Track liền kề đúng một Pitch. Số lượng Tracks available trên một layer trong một vùng diện tích nhất định là metric trực tiếp đánh giá routing capacity của vùng đó.
 
 ## Computed from
 Tracks được define trong Tech LEF bằng TRACKS statement và stored vào DEF sau Floorplanning:
@@ -49,5 +49,6 @@ $$\text{Số Tracks trong chiều cao H} = \left\lfloor \frac{H}{\text{Pitch}} \
 → Defined in: [[LEF]] — Tech LEF TRACKS statement
 → Stored in: [[DEF]] — post-Floorplan DEF TRACKS section
 → Building block of: [[RoutingGrid]]
+→ Physical consequence after route: [[InterconnectRC]]
 → Consumed by: [[Routing]] · [[CellAbstract]] (Pin alignment)
 → Cùng nhóm: [[Pitch]] · [[RoutingGrid]] · [[Site]] · [[Row]] · [[PlacementGrid]]

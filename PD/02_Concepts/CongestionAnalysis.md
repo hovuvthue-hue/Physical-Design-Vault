@@ -32,7 +32,7 @@ Các chỉ số cụ thể (ví dụ tên metric, cách normalize, ngưỡng pas
 
 ## Common causes
 - Mật độ cell cục bộ cao.
-- Pin density cao (nhiều kết nối tập trung trong vùng nhỏ).
+- Pin density cao (nhiều kết nối tập trung trong vùng nhỏ), có thể làm [[PinAccess]] khó hơn hoặc buộc route phải detour.
 - Macro channels hẹp / narrow corridors.
 - Routing resources không đủ (theo grid/layer khả dụng).
 - Tương tác blockage chưa hợp lý giữa nhu cầu placement và nhu cầu route.
@@ -56,6 +56,7 @@ CongestionAnalysis chỉ là phép dự báo dựa trên placement và mô hình
 - [[Placement]]
 - [[DetailedPlacement]]
 - [[GlobalRouting]]
+- [[PinAccess]]
 - [[Routing]]
 - [[Signoff]]
 
@@ -63,6 +64,7 @@ CongestionAnalysis chỉ là phép dự báo dựa trên placement và mô hình
 - [[Track]]
 - [[Pitch]]
 - [[GlobalRouting]]
+- [[PinAccess]]
 - [[Routing]]
 - [[DetailedPlacement]]
 - [[Chain_PnR_Flow]]

@@ -25,12 +25,12 @@ Extraction tool tính toán parasitics dựa trên wire geometry và process par
 - **Extraction modes:**
   - **RC (resistive + capacitive)**: mode chuẩn cho STA
   - **C-only**: nhanh hơn, dùng cho early estimation
-  - **RCCT (coupled RC)**: extract coupling capacitance riêng biệt giữa aggressor/victim net pairs — cần thiết cho Crosstalk analysis
+  - **RCCT (coupled RC)**: extract coupling capacitance riêng biệt giữa aggressor/victim net pairs — cần thiết cho [[SignalIntegrity|Crosstalk]] analysis
 
 ## Constrains
 - **STA accuracy**: chất lượng SPEF trực tiếp quyết định độ chính xác của post-route timing — SPEF sai hoặc thiếu sẽ tạo ra timing sign-off không hợp lệ
 - **Signoff**: SPEF phải được extract ở nhiều Process Corners (best case, typical, worst case) để STA có thể run multi- corner analysis — thiếu bất kỳ corner nào là blocker cho Timing Signoff
-- **Crosstalk / SI**: coupling capacitance values trong SPEF là input cho Signal Integrity analysis — nếu coupling C lớn, Crosstalk-induced delay và noise phải được analyzed riêng
+- **[[SignalIntegrity|Crosstalk / SI]]**: coupling capacitance values trong SPEF là input cho Signal Integrity analysis — nếu coupling C lớn, [[SignalIntegrity|Crosstalk-induced delay]] và noise phải được analyzed riêng
 
 ## Requires
 - [[Routing]] — wire geometries hoàn chỉnh và DRC-clean trong Route DB là input bắt buộc; extraction trên layout chưa DRC-clean cho kết quả không đáng tin cậy
@@ -52,5 +52,5 @@ ngày càng lớn trong tổng parasitic — đây là lý do Crosstalk analysis
 → Downstream: [[STA]] · [[Signoff]]
 → Output format: [[SPEF]]
 → Extracted concept: [[InterconnectRC]]
-→ Closely related: [[ProcessCorner]] · [[Crosstalk]] · [[SignalIntegrity]]
+→ Closely related: [[SignalIntegrity|Crosstalk]] · [[SignalIntegrity]]
 → Cùng nhóm: [[Floorplanning]] · [[Placement]] · [[ClockTreeSynthesis]] · [[Routing]] · [[Signoff]]

@@ -11,7 +11,7 @@ chain: Chain_PnR_Flow
 ## Definition
 DetailedRouting là stage trong [[Routing]] biến route plan trừu tượng từ [[GlobalRouting]] thành wire và [[Via]] geometry cụ thể trên các routing layers. Đây là nơi router chọn [[Track]] cụ thể, đặt đoạn metal, chuyển layer bằng Via, và tạo routed geometry có thể được kiểm tra bằng physical verification, extraction và timing analysis sau route.
 
-Khác với GlobalRouting, DetailedRouting làm việc ở mức legal geometry: wire/via phải phù hợp với [[RoutingGrid]], [[Pitch]], pin shapes, obstruction/blockage và routing rules từ [[LEF]]/[[DEF]].
+Khác với GlobalRouting, DetailedRouting làm việc ở mức legal geometry: wire/via phải phù hợp với [[RoutingGrid]], [[Pitch]], [[PinAccess|pin-access]] constraints, obstruction/blockage và routing rules từ [[LEF]]/[[DEF]].
 
 ## Position inside Routing
 DetailedRouting đứng sau [[GlobalRouting]] và trước [[ParasiticExtraction]]/[[Signoff]]. GlobalRouting đưa ra hướng đi ở mức planning; DetailedRouting cụ thể hóa hướng đi đó thành layout vật lý.
@@ -29,20 +29,20 @@ DetailedRouting tạo hoặc hoàn thiện:
 Kết quả này không chỉ là kế hoạch; nó là layout routing cụ thể được dùng bởi [[ParasiticExtraction]], [[STA]] và [[Signoff]].
 
 ## Correctness concerns
-Ở mức concept, DetailedRouting phải giải quyết hoặc tránh các vấn đề physical correctness như open, short, spacing/rule violation và pin-access failure. Tên check, rule deck, ngưỡng pass/fail và thứ tự repair phụ thuộc PDK/foundry/tool/signoff policy. [Needs verification]
+Ở mức concept, DetailedRouting phải giải quyết hoặc tránh các vấn đề physical correctness như open, short, [[DRC|spacing/rule violation]] và [[PinAccess|pin-access failure]]. Tên check, rule deck, ngưỡng pass/fail và thứ tự repair phụ thuộc PDK/foundry/tool/signoff policy. [Needs verification]
 
-Antenna-related handling có thể xuất hiện trong routing hoặc signoff flow, nhưng concept riêng về antenna được để ngoài phạm vi card này. Card này chỉ ghi nhận rằng DetailedRouting tạo wire/via geometry có thể ảnh hưởng các kiểm tra downstream.
+[[AntennaEffect|Antenna-related handling]] có thể xuất hiện trong routing hoặc signoff flow. Card này chỉ ghi nhận rằng DetailedRouting tạo wire/via geometry có thể ảnh hưởng các kiểm tra downstream.
 
 ## Relation to ParasiticExtraction and Signoff
 [[ParasiticExtraction]] cần routed wire/via geometry từ DetailedRouting để tính RC parasitics thực tế hơn so với estimate trước route. Sau đó [[STA]] dùng parasitics đã extract để đánh giá timing sau route.
 
-[[Signoff]] dùng layout đã route làm nền cho các kiểm tra physical/timing/reliability/manufacturability. Vì vậy chất lượng DetailedRouting ảnh hưởng trực tiếp khả năng closure, nhưng bản thân DetailedRouting không thay thế signoff checks.
+[[Signoff]] dùng layout đã route làm nền cho các kiểm tra physical/timing/[[SignalIntegrity|SI]]/reliability/manufacturability. Vì vậy chất lượng DetailedRouting ảnh hưởng trực tiếp khả năng closure, nhưng bản thân DetailedRouting không thay thế signoff checks.
 
 ## Limits
 - DetailedRouting không tự định nghĩa rule values; rule đến từ technology/library/signoff context.
 - DetailedRouting không bảo đảm mọi signoff check đều sạch nếu chưa chạy các bước verification tương ứng.
 - Các thuật toán rip-up/reroute, cost function, via optimization, pin-access repair và antenna repair là tool/flow-specific. [Needs verification]
-- Card này không tạo concept riêng cho DRC, PinAccess, SignalIntegrity hoặc AntennaEffect.
+- Các concept [[DRC]], [[PinAccess]], [[SignalIntegrity]] và [[AntennaEffect]] được tách riêng để card này không trở thành signoff/tool manual.
 
 ## Requires
 - [[Routing]] — parent flow chứa DetailedRouting.
@@ -65,4 +65,4 @@ Antenna-related handling có thể xuất hiện trong routing hoặc signoff fl
 → Geometry model: [[RoutingGrid]] · [[Track]] · [[Pitch]] · [[Via]]
 → File context: [[LEF]] · [[DEF]]
 → Downstream: [[ParasiticExtraction]] · [[STA]] · [[Signoff]]
-→ Constraints context: [[RoutingBlockage]] · [[CongestionAnalysis]]
+→ Constraints context: [[RoutingBlockage]] · [[CongestionAnalysis]] · [[DRC]] · [[PinAccess]] · [[SignalIntegrity]] · [[AntennaEffect]]

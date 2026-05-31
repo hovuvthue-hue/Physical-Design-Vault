@@ -1,6 +1,6 @@
 ---
 tags: [chain, lef-geometry, pnr-flow]
-concepts: [Pitch, Track, RoutingGrid, Site, Row, PlacementGrid, CellAbstract, Pin, Obstruction, LEF, DEF, StandardCell, HardIP, TieCell, TapCell, EndCapCell, DecapCell, FillerCell]
+concepts: [Pitch, Track, RoutingGrid, Site, Row, PlacementGrid, CellAbstract, Pin, Obstruction, LEF, DEF, StandardCell, HardIP, TieCell, TapCell, EndCapCell, DecapCell, FillerCell, Via]
 ---
 
 # Chain: LEF to PnR
@@ -87,4 +87,4 @@ CellAbstract chứa:
 
 ## Concepts trong chain này
 
-[[Pitch]] · [[Track]] · [[RoutingGrid]] · [[Site]] · [[Row]] · [[PlacementGrid]] · [[CellAbstract]] · [[Pin]] · [[Obstruction]] · [[LEF]] · [[DEF]] · [[StandardCell]] · [[TieCell]] · [[TapCell]] · [[EndCapCell]] · [[DecapCell]] · [[FillerCell]] · [[HardIP]] · [[MetalStack]] · [[ITF]]
+[[Pitch]] · [[Track]] · [[RoutingGrid]] · [[Site]] · [[Row]] · [[PlacementGrid]] · [[CellAbstract]] · [[Pin]] · [[Obstruction]] · [[LEF]] · [[DEF]] · [[StandardCell]] · [[TieCell]] · [[TapCell]] · [[EndCapCell]] · [[DecapCell]] · [[FillerCell]] · [[HardIP]] · [[MetalStack]] · [[ITF]] · [[Via]]

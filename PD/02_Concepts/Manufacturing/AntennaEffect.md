@@ -2,7 +2,7 @@
 tags: [concept, manufacturing, routing, signoff]
 group: Manufacturing
 defined_in: Routing / Signoff
-used_by: [DetailedRouting, DRC, Signoff]
+used_by: [DetailedRouting, DRC, ChipFinishing, DFM, Signoff]
 requires: [Routing, DetailedRouting, LEF, DEF]
 chain: Chain_PnR_Flow
 ---
@@ -22,6 +22,11 @@ Vì [[DetailedRouting]] tạo geometry cụ thể, routing decisions như layer 
 [[DetailedRouting]] có thể cần antenna-aware repair nếu flow bật hoặc yêu cầu xử lý antenna trong routing stage. Tuy nhiên final antenna checking/cleanup có thể thuộc [[Signoff]] hoặc physical verification tùy methodology. [Needs verification]
 
 [[DRC]] liên quan vì antenna thường được quản lý trong cùng physical-verification ecosystem, nhưng [[AntennaEffect]] là concept riêng: nó tập trung vào rủi ro charge/gate-oxide trong manufacturing, không chỉ spacing/width/enclosure geometry.
+
+## Relation to ChipFinishing and DFM
+[[ChipFinishing]] có thể là nơi handoff hoặc cleanup các antenna-related fixes còn lại trước [[Signoff]], nhất là khi routing-stage repair chưa đủ hoặc layout đã thay đổi sau route. Việc antenna check thuộc route, finishing hay signoff loop là flow-specific. [Needs verification]
+
+[[DFM]] xem AntennaEffect như một manufacturing risk: layout có thể đúng connectivity nhưng vẫn cần giảm rủi ro charge accumulation trong fabrication theo rule/foundry policy. [Needs verification]
 
 ## Common repair concepts
 Các repair concept thường gặp gồm:
@@ -47,9 +52,11 @@ Chọn repair nào, insert ở đâu, rule ratio nào cần thỏa và cell nào
 ## Used by
 - [[DetailedRouting]] — có thể cần antenna-aware repair trong route closure. [Needs verification]
 - [[DRC]] — physical verification context có thể bao gồm antenna-related checks. [Needs verification]
+- [[ChipFinishing]] — có thể handoff/cleanup antenna-related issues trước signoff. [Needs verification]
+- [[DFM]] — xem antenna như một manufacturability risk liên quan routing/fabrication. [Needs verification]
 - [[Signoff]] — final flow có thể kiểm tra antenna như một manufacturing/reliability gate. [Needs verification]
 
 ## Related
-→ Flow: [[Routing]] · [[DetailedRouting]] · [[Signoff]]
-→ Physical verification: [[DRC]]
+→ Flow: [[Routing]] · [[DetailedRouting]] · [[ChipFinishing]] · [[Signoff]]
+→ Physical verification: [[DRC]] · [[DFM]]
 → File context: [[LEF]] · [[DEF]]

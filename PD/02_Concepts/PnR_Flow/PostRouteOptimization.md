@@ -2,7 +2,7 @@
 tags: [concept, pnr-flow, routing, optimization]
 group: PnR Flow
 defined_in: Routing / Post-Route
-used_by: [STA, Signoff, Routing]
+used_by: [STA, Signoff, Routing, ChipFinishing]
 requires: [Routing, ParasiticExtraction, SPEF, STA, Slack, DRVFixing, InterconnectRC]
 chain: Chain_PnR_Flow
 ---
@@ -14,9 +14,9 @@ chain: Chain_PnR_Flow
 Khác với các bước tối ưu sớm hơn, giai đoạn này làm việc trong bối cảnh hậu route: [[InterconnectRC]] không còn chỉ là ước lượng từ placement/topology dự đoán, mà được lấy từ geometry thực tế và trao đổi qua [[SPEF]] cho [[STA]]. Vì vậy kết quả [[Slack]], [[Slew]], và các DRV điện phản ánh gần hơn trạng thái layout đã route.
 
 ## Position in flow
-Trong flow PnR, PostRouteOptimization nằm sau Routing/ParasiticExtraction và trước [[Signoff]] cuối cùng. Nó là lớp cleanup post-route nhằm giảm rủi ro timing/DRV còn lại trước khi design bước vào các kiểm tra signoff nghiêm ngặt hơn.
+Trong flow PnR, PostRouteOptimization nằm sau Routing/ParasiticExtraction và trước [[ChipFinishing]] hoặc [[Signoff]] cuối cùng. Nó là lớp cleanup post-route nhằm giảm rủi ro timing/DRV còn lại trước khi design bước vào các kiểm tra signoff nghiêm ngặt hơn.
 
-PostRouteOptimization không phải là final Signoff. Nó sử dụng kết quả phân tích hậu route để sửa các vấn đề còn lại, còn Signoff là bước xác nhận độc lập hơn rằng design đã đáp ứng các tiêu chí closure cần thiết. Tiêu chí handoff giữa PostRouteOptimization và Signoff phụ thuộc flow/signoff policy cụ thể. [Needs verification]
+PostRouteOptimization không phải là final Signoff. Khi timing/DRV/route quality đủ ổn định, [[ChipFinishing]] có thể tiếp tục các hoạt động hoàn thiện vật lý trước signoff handoff. Nó sử dụng kết quả phân tích hậu route để sửa các vấn đề còn lại, còn Signoff là bước xác nhận độc lập hơn rằng design đã đáp ứng các tiêu chí closure cần thiết. Tiêu chí handoff giữa PostRouteOptimization và Signoff phụ thuộc flow/signoff policy cụ thể. [Needs verification]
 
 ## Why actual parasitics matter
 Trước Routing, RC của net thường được estimate từ vị trí cell, wirelength dự đoán, congestion model, hoặc topology giả định. Các estimate này hữu ích để guide placement, CTS, và optimization sớm, nhưng chưa biết chính xác layer assignment, detour, spacing, và via usage cuối cùng.
@@ -77,6 +77,7 @@ Card này không định nghĩa TimingClosure hay PowerAreaRecovery như concept
 
 ## Used by
 - [[STA]]
+- [[ChipFinishing]]
 - [[Signoff]]
 - [[Routing]]
 - [[PowerOptimization]]

@@ -23,7 +23,9 @@ Trong đó [[PowerAnalysis]] không chỉ “đo con số tổng”, mà còn ph
 ## Static / leakage power
 **Static Power** (thường gọi là **Leakage Power**) là phần công suất tiêu tán ngay cả khi logic không switching.
 
-Nó phụ thuộc mạnh vào đặc tính cell/library, corner vận hành, và điều kiện implementation [Needs verification].
+Static Power / [[LeakagePower]] không phải một cơ chế đơn lẻ. Nó gồm nhiều nguồn leakage current như subthreshold leakage, gate leakage, reverse-biased junction leakage, GIDL và gate oxide leakage ở mức transistor.
+
+Tỷ trọng tương đối phụ thuộc cell type, Vt option, process, temperature, voltage, logic state và power-analysis methodology. [Needs verification] Xem [[LeakagePower]] để biết chi tiết concept-level.
 
 ## Dynamic power
 **Dynamic Power** là phần công suất liên quan đến hoạt động chuyển trạng thái của mạch khi vận hành.
@@ -56,6 +58,7 @@ Vì vậy, kết quả power ở placement nên dùng để ra quyết định t
 - [[Signoff]]
 
 ## Related
+- [[LeakagePower]]
 - [[PowerOptimization]]
 - [[PostRouteOptimization]]
 - [[PDN]]

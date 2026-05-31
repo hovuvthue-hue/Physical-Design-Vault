@@ -18,6 +18,8 @@ chain: Chain_PnR_Flow
 
 Các chỉ số cụ thể (ví dụ tên metric, cách normalize, ngưỡng pass/fail signoff) phụ thuộc tool/PDK/flow và cần được xác nhận theo dự án thực tế. [Needs verification]
 
+Numeric examples như overflow khoảng 1% hoặc hotspot score khoảng 100 nên được hiểu là ví dụ tool/report hoặc mnemonic reference, không phải universal pass/fail rules. Cách diễn giải phụ thuộc tool định nghĩa overflow/hotspot như thế nào, GCELL size, routing-resource model, PDK, floorplan, và project flow. [Needs verification]
+
 ## Why congestion analysis is needed after Placement
 - Placement quyết định phân bố cell/pin, nên quyết định phần lớn routing pressure ban đầu.
 - Phát hiện sớm hotspot giúp giảm rủi ro sang [[Routing]] mới phát hiện nghẽn nặng.

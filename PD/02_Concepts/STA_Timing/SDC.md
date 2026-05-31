@@ -35,6 +35,8 @@ SDC chứa các loại constraints:
 
 **Timing exceptions**: false path (path không cần check timing), multicycle path (path được phép dùng nhiều clock cycles), clock groups (clocks không synchronous với nhau). Exceptions sai hoặc missing exceptions đều gây silicon failure.
 
+Multicycle path không phải là “fix” cho một path chậm theo nghĩa tự làm path đó nhanh hơn; nó chỉ hợp lệ khi design intent thật sự cho phép data được capture sau nhiều chu kỳ. Nếu một path không meet one-cycle timing nhưng architecture/protocol cố ý cấp nhiều cycle cho path đó, SDC cần model intent này bằng multicycle path constraint. Nếu path về mặt chức năng vẫn là one-cycle, áp multicycle là sai và có thể che giấu timing violation thật. Useful skew là lever liên quan ở CTS/timing-closure, nhưng không phải timing exception trong SDC.
+
 **Physical constraints**: `set_max_transition` đặt upper bound cho Slew; `set_max_capacitance` đặt upper bound cho Net load.
 
 ## Computed from

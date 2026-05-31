@@ -21,15 +21,15 @@ Extraction tool tính toán parasitics dựa trên wire geometry và process par
 - **Capacitance**: phức tạp hơn R vì bao gồm:
   - **Area capacitance**: giữa wire và substrate bên dưới
   - **Fringe capacitance**: từ cạnh bên của wire
-  - **Coupling capacitance**: giữa wire và neighboring wires trên cùng hoặc adjacent layers — đây là thành phần quan trọng nhất ở advanced nodes vì wire pitch nhỏ
+  - **Coupling capacitance**: giữa wire và neighboring wires trên cùng hoặc adjacent layers — mức độ quan trọng tăng khi wire spacing nhỏ và phụ thuộc process/design style. [Needs verification]
 - **Extraction modes:**
   - **RC (resistive + capacitive)**: mode chuẩn cho STA
   - **C-only**: nhanh hơn, dùng cho early estimation
-  - **RCCT (coupled RC)**: extract coupling capacitance riêng biệt giữa aggressor/victim net pairs — cần thiết cho [[SignalIntegrity|Crosstalk]] analysis
+  - **RCCT (coupled RC)**: extract coupling capacitance riêng biệt giữa aggressor/victim net pairs — có thể cần cho [[SignalIntegrity|Crosstalk]] analysis tùy methodology. [Needs verification]
 
 ## Constrains
-- **STA accuracy**: chất lượng SPEF trực tiếp quyết định độ chính xác của post-route timing — SPEF sai hoặc thiếu sẽ tạo ra timing sign-off không hợp lệ
-- **Signoff**: SPEF phải được extract ở nhiều Process Corners (best case, typical, worst case) để STA có thể run multi- corner analysis — thiếu bất kỳ corner nào là blocker cho Timing Signoff
+- **STA accuracy**: chất lượng SPEF ảnh hưởng trực tiếp đến độ tin cậy của post-route timing; tiêu chí completeness/validity phụ thuộc extraction setup và signoff methodology. [Needs verification]
+- **Signoff**: SPEF thường được extract theo các RC/process corners mà MMMC setup yêu cầu; coverage cụ thể và blocker criteria phụ thuộc project policy. [Needs verification]
 - **[[SignalIntegrity|Crosstalk / SI]]**: coupling capacitance values trong SPEF là input cho Signal Integrity analysis — nếu coupling C lớn, [[SignalIntegrity|Crosstalk-induced delay]] và noise phải được analyzed riêng
 
 ## Requires
@@ -38,14 +38,12 @@ Extraction tool tính toán parasitics dựa trên wire geometry và process par
 - [[GateLevelNetlist]] — cung cấp net names và connectivity để tool map extracted RC values vào đúng Net trong SPEF; không có Netlist, SPEF không có context để STA tool đọc
 
 ## Used by
-- [[STA]] (post-route, signoff) — đọc SPEF để annotate wire delays lên từng Net trong timing graph; đây là lần đầu tiên STA có đủ thông tin vật lý thực tế để tính [[Slack]] chính xác
-- [[Signoff]] — SPEF là một trong các deliverables bắt buộc của Physical Design; Timing Signoff không thể thực hiện nếu thiếu SPEF hoặc SPEF chưa được verify
+- [[STA]] (post-route, signoff) — đọc SPEF để annotate wire delays lên từng Net trong timing graph; đây là stage STA có parasitic data gắn với routed geometry để đánh giá [[Slack]] sát implementation hơn. [Needs verification]
+- [[Signoff]] — SPEF là một deliverable quan trọng của Physical Design; Timing Signoff thường cần SPEF được kiểm tra theo methodology. [Needs verification]
 - [[PostRouteOptimization]] — tiêu thụ extracted parasitics/SPEF sau khi routed geometry tồn tại để cleanup timing, DRV, và các chỉnh sửa post-route có kiểm soát
 
 ## Key insight
-[USER REVIEW — draft suggestion]:
-Parasitic Extraction là cầu nối giữa thế giới vật lý (wire geometry trong layout) và thế giới timing (delay trong STA). Trước bước này, mọi timing number đều là ước tính dựa trên wire length models; sau bước này mới có con số thực tế từ silicon. Điểm thực tế quan trọng: ở advanced nodes (dưới 16nm), coupling capacitance giữa các wires gần nhau chiếm tỷ trọng
-ngày càng lớn trong tổng parasitic — đây là lý do Crosstalk analysis trở thành mandatory signoff check thay vì optional ở các node hiện đại.
+ParasiticExtraction là cầu nối giữa routed geometry trong layout và timing/power/SI analysis. Trước extraction, nhiều timing number vẫn dựa trên RC estimate; sau extraction, [[SPEF]] mang parasitic data từ routed wires/vias vào [[STA]] và các phân tích hậu route. Ở các process node tiên tiến hoặc các design có wire spacing nhỏ, coupling capacitance có thể trở thành thành phần quan trọng của parasitic model; mức độ quan trọng và yêu cầu [[SignalIntegrity|Crosstalk]]/SI analysis phụ thuộc process, design style và signoff methodology. [Needs verification]
 
 ## Related
 → Chain: [[Chain_PnR_Flow]]

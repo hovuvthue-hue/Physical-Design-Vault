@@ -3,51 +3,48 @@ tags: [concept, pnr-flow]
 group: PnR Flow
 defined_in: Cadence Tempus (Timing) / Mentor Calibre (DRC/LVS) /
             Cadence Voltus (Power)
-used_by: [Tape-out]
+used_by: []
 requires: [ParasiticExtraction, STA, Routing, ChipFinishing, DRC, DFM, GateLevelNetlist]
 chain: Chain_PnR_Flow
 ---
 # Signoff
 
 ## Definition
-Signoff là giai đoạn cuối của Physical Design flow, trong đó design được verify toàn diện bằng các công cụ chuyên biệt (dedicated signoff tools) để đảm bảo đáp ứng tất cả performance specifications trước khi gửi GDS file đến foundry (Tape-out). Signoff không phải một bước đơn lẻ mà là một tập hợp các checks độc lập, mỗi check là hard gate — fail bất kỳ check nào đều block Tape-out.
+Signoff là giai đoạn cuối của Physical Design flow, trong đó design được đánh giá bằng các signoff-oriented analyses trước khi release database sang Tape-out. Signoff không phải một bước đơn lẻ mà là một tập hợp các checks độc lập; tiêu chí pass/fail và mức độ blocking phụ thuộc foundry, PDK, tool setup và project policy. [Needs verification]
 
 ## Computed from
-Signoff bao gồm các checks sau, mỗi loại dùng tool riêng:
+Signoff thường bao gồm các nhóm kiểm tra sau; tool, coverage và signoff criteria phụ thuộc methodology. [Needs verification]
 
 - **Timing Signoff (STA)**: chạy trên dedicated STA tool (Cadence Tempus, Synopsys PrimeTime) với SPEF thực tế ở tất cả Process Corners và Operating Conditions (voltage,
-  temperature). Verify Setup Slack ≥ 0 và Hold Slack ≥ 0 trên tất cả timing paths ở tất cả corners — đây là Multi-Corner Multi-Mode (MCMM) analysis
+  temperature). Đánh giá Setup/Hold Slack trên các analysis views được project chọn — đây là Multi-Corner Multi-Mode (MCMM) analysis. [Needs verification]
 - **Physical Verification — DRC**: kiểm tra tất cả wire geometries trong GDS tuân thủ Design Rules của foundry (min width, min spacing, via enclosure, density rules v.v.) — tool: Mentor Calibre DRC, Synopsys IC Validator
 - **Physical Verification — LVS (Layout vs. Schematic)**: so sánh connectivity trong GDS layout với Gate-Level Netlist — đảm bảo layout thực tế khớp với thiết kế logic. Tool: Mentor Calibre LVS
-- **Power Signoff (IR Drop / EM)**: verify voltage drop trên PDN không vượt quá IR Drop budget, và current density trong wires không gây Electromigration (EM) — tool: Cadence Voltus
-- **Signal Integrity Signoff**: verify Crosstalk-induced delay và noise không gây timing violations hoặc functional failures trên critical nets
+- **Power Signoff (IR Drop / EM)**: đánh giá voltage drop trên PDN và current density trong wires so với project/foundry criteria. [Needs verification] — tool: Cadence Voltus
+- **Signal Integrity Signoff**: đánh giá Crosstalk-induced delay/noise trên các nets liên quan tùy SI methodology. [Needs verification]
 
 ## Constrains
-- **Tape-out**: Signoff là hard prerequisite — foundry không chấp nhận GDS có DRC violations hoặc LVS mismatches; Timing Signoff failure đồng nghĩa chip sẽ không hoạt động đúng spec sau khi fabricate
-- **ECO loop**: nếu bất kỳ Signoff check nào fail, design phải quay lại PnR flow để fix (Engineering Change Order — ECO), sau đó re-extract và re-signoff — mỗi ECO iteration
-  tốn thời gian đáng kể
+- **Tape-out**: Signoff là release gate quan trọng trước khi gửi database sang foundry; DRC/LVS/timing/power/SI criteria cụ thể phụ thuộc foundry deck, PDK, methodology và project policy. [Needs verification]
+- **ECO loop**: khi Signoff check chưa đạt tiêu chí, design thường cần ECO hoặc quay lại stage phù hợp trong PnR flow, sau đó re-extract/re-analyze theo phạm vi ảnh hưởng. Chi phí mỗi iteration phụ thuộc project và tool flow. [Needs verification]
 
 ## Requires
-- [[ParasiticExtraction]] — SPEF là input bắt buộc cho Timing Signoff và SI Signoff; không có SPEF, không thể tính wire delay thực tế
-- [[STA]] — timing analysis results từ post-route STA xác định các paths cần focus trong Timing Signoff; Signoff STA tool chạy lại độc lập với độ chính xác cao hơn PnR internal STA
-- [[Routing]] — GDS layout hoàn chỉnh từ Routing là input cho DRC và LVS checks; PDN layout là input cho IR Drop/EM checks
+- [[ParasiticExtraction]] — SPEF là input quan trọng cho Timing/SI signoff; extraction setup và coverage phụ thuộc methodology. [Needs verification]
+- [[STA]] — post-route/signoff timing analysis xác định các paths cần đánh giá; correlation giữa PnR internal STA và signoff STA phụ thuộc setup, extraction, libraries và methodology. [Needs verification]
+- [[Routing]] — routed layout là input cho DRC/LVS-style physical verification và PDN-related power integrity checks. [Needs verification]
 - [[ChipFinishing]] — chuẩn bị routed layout cho final physical-verification/manufacturability readiness trước signoff handoff. [Needs verification]
 - [[DRC]] — physical verification gate kiểm tra layout geometry theo rule context của process/signoff deck. [Needs verification]
 - [[DFM]] — signoff-adjacent manufacturability context; DFM criteria cụ thể phụ thuộc foundry/PDK/policy. [Needs verification]
 - [[GateLevelNetlist]] — Netlist sau CTS (bao gồm clock Buffer cells) là reference cho LVS comparison và cho Timing Signoff netlist
 
 ## Used by
-- [[Tape-out]] — Signoff clean (tất cả checks pass) là điều kiện duy nhất để release GDS file đến foundry; không có path nào đến Tape-out mà bypass Signoff
+- Tape-out — Signoff-clean status là release criterion quan trọng trước khi handoff database sang foundry; policy cụ thể phụ thuộc project và foundry flow. [Needs verification]
 
 ## Key insight
-[USER REVIEW — draft suggestion]:
-Signoff là ranh giới giữa "thiết kế trên máy tính" và "cam kết với thực tế silicon" — sau khi GDS được gửi đến foundry, mọi thay đổi đều cực kỳ tốn kém hoặc không thể thực hiện. Điểm
-quan trọng cần hiểu: Signoff tools (Tempus, Calibre) được calibrate trực tiếp với foundry process data và cho kết quả chính xác hơn PnR internal tools — đây là lý do một design có thể pass timing trong Innovus nhưng vẫn fail Tempus Signoff. Khoảng gap này gọi là "correlation gap" và là một trong những thách thức thực tế lớn nhất trong Physical Design.
+Signoff là ranh giới kiểm tra cuối giữa implementation database và quyết định release sang Tape-out. Ở giai đoạn này, design được đánh giá bằng các signoff-oriented analyses như timing, physical verification, power integrity và SI tùy methodology. Một design pass trong PnR internal tools vẫn có thể cần kiểm tra lại bằng signoff tools vì correlation, rule deck, extraction setup và analysis methodology có thể khác nhau giữa các stage. Mức độ chênh lệch và tiêu chí pass/fail phụ thuộc foundry, PDK, tool setup và project policy. [Needs verification]
 
 ## Related
 → Chain: [[Chain_PnR_Flow]]
 → Upstream: [[ParasiticExtraction]] · [[Routing]] · [[PostRouteOptimization]] · [[ChipFinishing]] · [[STA]]
-→ Downstream: [[Tape-out]]
-→ Checks bao gồm: [[DRC]] · [[LVS]] · [[IRDrop]] · [[Electromigration]] · [[SignalIntegrity]]
+→ Downstream: Tape-out
+→ Checks bao gồm: [[DRC]] · LVS · [[IRDrop]] · Electromigration · [[SignalIntegrity]]
 → Tools: Cadence Tempus · Mentor Calibre · Cadence Voltus
 → Cùng nhóm: [[Floorplanning]] · [[Placement]] · [[ClockTreeSynthesis]] · [[Routing]] · [[ParasiticExtraction]]

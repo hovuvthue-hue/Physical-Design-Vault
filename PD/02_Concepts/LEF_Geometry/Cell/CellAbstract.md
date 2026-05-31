@@ -55,6 +55,8 @@ LAYER M1 ; RECT ... ;         ← internal M1 routing → forbidden
 END
 END NAND2X1
 
+`SHAPE ABUTMENT` trên power pins cho biết các adjacent cells có thể share/abut compatible rail shapes trong Rows; nó không cho phép arbitrary cell overlap và không có nghĩa mọi neighboring effects biến mất. Tính legal phụ thuộc library LEF/GDS, row/site alignment, rail compatibility, và physical verification. [Needs verification]
+
 ## Constrains
 - **[[Placement]]**: SIZE trong Cell Abstract xác định diện tích cell trên Placement Grid; Placement tool pack cells vào Rows mà không overlap dựa hoàn toàn vào SIZE — không cần biết transistors bên trong
 - **[[Routing]]**: Pin locations là điểm kết nối duy nhất Router có thể access; OBS là vùng tuyệt đối cấm; Router phải route đến đúng Pin coordinates trên đúng metal layer
@@ -74,7 +76,7 @@ END NAND2X1
 - [[Floorplanning]] — đọc Cell Abstract của Hard IP Macros để plan Macro placement và sizing routing channels
 
 ## Key insight
-[USER REVIEW — draft suggestion]: Cell Abstract là implementation của nguyên lý "information hiding" trong Physical Design — mỗi tool chỉ nhận đúng thông tin nó cần. Circuit simulator cần transistor-level details → SPICE. Functional simulator cần logic behavior → Verilog. Layout verification cần full geometry → GDS. PnR tool cần placement và routing info → Cell Abstract (LEF). Sự phân tách này không chỉ là engineering elegance mà là necessity: nếu PnR tool phải load full GDS của tất cả cells, RAM của server sẽ cạn kiệt trong vài phút. Cell Abstract cho phép PnR tool của một billion-gate design fit trong vài GB RAM thay vì vài TB. Chất lượng Abstract Generator output ảnh hưởng trực tiếp đến routability — OBS quá conservative block routing channels không cần thiết; OBS thiếu gây DRC shorts sau Routing.
+Cell Abstract là implementation của nguyên lý "information hiding" trong Physical Design — mỗi tool chỉ nhận đúng thông tin nó cần. Circuit simulator cần transistor-level details → SPICE. Functional simulator cần logic behavior → Verilog. Layout verification cần full geometry → GDS. PnR tool cần placement và routing info → Cell Abstract (LEF). Sự phân tách này không chỉ là engineering elegance mà là necessity: nếu PnR tool phải load full GDS của tất cả cells, RAM của server sẽ cạn kiệt trong vài phút. Cell Abstract cho phép PnR tool của một billion-gate design fit trong vài GB RAM thay vì vài TB. Chất lượng Abstract Generator output ảnh hưởng trực tiếp đến routability — OBS quá conservative block routing channels không cần thiết; OBS thiếu gây DRC shorts sau Routing.
 
 ## Related
 → Chain: [[Chain_LEF_to_PnR]]

@@ -9,7 +9,7 @@ chain: Chain_LEF_to_PnR
 # StandardCell
 
 ## Definition
-Standard Cell (còn gọi là **leaf cell** trong ngữ cảnh Netlist và Import) là một logic function được thiết kế sẵn, pre-characterized, và tuân thủ một tập constraints vật lý cố định: chiều cao uniform bằng Site height, chiều rộng là bội số của Site width, và VDD/VSS power rails ở vị trí cố định trên/dưới. Tính "standard" nằm ở chỗ tất cả cells trong cùng một library đều chia sẻ cùng chiều cao và power rail positions — cho phép xếp liền kề trong Rows mà không cần special treatment.
+Standard Cell (còn gọi là **leaf cell** trong ngữ cảnh Netlist và Import) là một logic function được thiết kế sẵn, pre-characterized, và tuân thủ một tập constraints vật lý cố định: chiều rộng là bội số nguyên của Site width, chiều cao là bội số nguyên của Site height, và VDD/VSS power rails ở vị trí cố định trên/dưới. Phần lớn ordinary standard cells là single-height nên chiều cao bằng một Site height; multi-height cells dùng nhiều Site heights. Track count như 7-track/9-track là descriptor của routing/library architecture, không phải legal placement unit như Site. Tính "standard" nằm ở chỗ cells trong cùng một library chia sẻ quy ước height/site/rail positions phù hợp — cho phép xếp liền kề trong Rows mà không cần special treatment.
 
 Standard Cells là building blocks nhỏ nhất trong digital design. Phân biệt rõ với Macros: Macros (SRAM, PLL, PHY) không phải Standard Cells — chúng lớn hơn nhiều, có fixed layout, và không phải leaf cells trong Netlist hierarchy.
 
@@ -47,7 +47,7 @@ Vth optimization (HVT → LVT swap trên critical paths) là một trong những
 | ECO Cell | Spare logic cells đặt sẵn → enable metal-only ECO fix sau Signoff | Pre-placed trong design |
 
 ## Constrains
-- **[[Placement]]**: StandardCell là đối tượng movable chính trong placement stage; tất cả Standard Cells phải được đặt hợp lệ trong [[Row]] với [[Site]]-aligned coordinates trên [[PlacementGrid]]. Uniform height + variable width (theo bội số Site width) là điều kiện nền để legal placement nhất quán.
+- **[[Placement]]**: StandardCell là đối tượng movable chính trong placement stage; tất cả Standard Cells phải được đặt hợp lệ trong [[Row]] với [[Site]]-aligned coordinates trên [[PlacementGrid]]. Cell width là bội số Site width; cell height là bội số Site height, với ordinary single-height cells thường bằng một Site height. Đây là điều kiện nền để legal placement nhất quán.
 - **[[Routing]]**: Standard Cell Pins phải align với Routing Grid; internal OBS giới hạn over-cell routing; cell drive strength ảnh hưởng đến Net Delay (weak driver → high output resistance → slow RC charging)
 - **[[STA]]**: drive strength và Vth variant của từng cell trực tiếp ảnh hưởng đến Cell Delay (via LIB LUT lookup); Vth swapping là common ECO để fix Setup violations trên critical paths
 - **[[LogicSynthesis]]**: Technology Mapping = matching generic Boolean logic với Standard Cell functions trong library; synthesis chọn drive strength và Vth variants dựa trên timing/area/power objectives
@@ -56,7 +56,7 @@ Vth optimization (HVT → LVT swap trên critical paths) là một trong những
 - [[LEF]] — Macro LEF (Cell Abstract) là physical representation dùng trong PnR
 - [[LIB]] — Liberty file chứa timing/power characterization data tại từng PVT corner
 - [[GDS]] — full layout dùng cho DRC/LVS verification và Tape-out
-- [[Site]] — Standard Cell phải comply với Site height và width constraints
+- [[Site]] — Standard Cell phải comply với Site width/height constraints; [[Track]] là routing resource chứ không phải legal placement unit
 
 ## Used by
 - [[LogicSynthesis]] — maps RTL logic functions → Standard Cell instances trong Technology Mapping; selects drive strength và Vth variants
@@ -66,8 +66,13 @@ Vth optimization (HVT → LVT swap trên critical paths) là một trong những
 - [[ClockTreeSynthesis]] — uses special Clock Cell variants (balanced rise/fall delay) để build Clock Tree
 - [[STA]] · [[Signoff]] — reads LIB timing data của từng cell để compute Cell Delay và Slack
 
+## Abutment and neighboring-cell effects
+Standard cells thường được đặt abutted trong Rows để rails/wells và legal placement regularity thẳng hàng. Abutment không có nghĩa các cell độc lập hoàn toàn về vật lý/điện; neighboring cells vẫn có thể tương tác qua coupling, local power/ground noise, well/substrate effects, routing proximity, hoặc shared rail behavior.
+
+Lý do abutment được phép là standard-cell library, LEF/GDS views, DRC/LVS rules, power-rail/well structure, cell characterization, và Signoff checks được xây dựng để giữ các hiệu ứng này trong giới hạn cho phép. Rủi ro cụ thể phụ thuộc library, PDK, layout style, và signoff methodology. [Needs verification]
+
 ## Key insight
-[USER REVIEW — draft suggestion]: Standard Cell library là ranh giới giữa thế giới lý thuyết (Boolean logic, RTL) và thế giới vật lý (silicon dimensions, transistor physics). Mọi thứ phía trên Standard Cell là technology-independent; mọi thứ phía dưới là technology-specific. Đây là lý do khi chuyển sang process node mới (28nm → 7nm), PD team phải re-synthesize và re-place-route toàn bộ — không thể reuse physical layout vì Standard Cell dimensions, Pitch, và electrical characteristics hoàn toàn khác. Physical Cell variants (Filler, Tap, Decap) thường bị underestimate bởi người học mới — chúng không có logic function nhưng là bắt buộc về reliability: thiếu Tap Cells → latch-up risk; thiếu Filler Cells → broken N-Well implant → functional failure.
+Standard Cell library là ranh giới giữa thế giới lý thuyết (Boolean logic, RTL) và thế giới vật lý (silicon dimensions, transistor physics). Mọi thứ phía trên Standard Cell là technology-independent; mọi thứ phía dưới là technology-specific. Đây là lý do khi chuyển sang process node mới (28nm → 7nm), PD team phải re-synthesize và re-place-route toàn bộ — không thể reuse physical layout vì Standard Cell dimensions, Pitch, và electrical characteristics hoàn toàn khác. Physical Cell variants (Filler, Tap, Decap) thường bị underestimate bởi người học mới — chúng không có logic function nhưng là bắt buộc về reliability: thiếu Tap Cells → latch-up risk; thiếu Filler Cells → broken N-Well implant → functional failure.
 
 ## Related
 → Chain: [[Chain_LEF_to_PnR]]

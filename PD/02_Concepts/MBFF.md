@@ -18,6 +18,8 @@ Thay vì dùng nhiều single-bit FF tách rời, design có thể dùng một M
 
 Ví dụ minh họa: 8 FF 1-bit có thể được ánh xạ thành 1 MBFF 8-bit nếu thỏa điều kiện timing/clock/physical. Đây chỉ là ví dụ minh họa, không phải quy tắc bắt buộc cho mọi design.
 
+Về clock sink, ba single-bit FF sẽ expose ba clock pins độc lập cho CTS; một MBFF 3-bit tương thích có thể expose một shared clock pin cho cả nhóm, nhờ đó giảm số clock sinks mà CTS nhìn thấy. Tuy nhiên sink count giảm không có nghĩa lợi ích luôn miễn phí: MBFF cell có physical size/load lớn hơn một single FF và có thể giảm placement flexibility hoặc locality.
+
 ## Why MBFF is used
 MBFF thường được cân nhắc vì các lợi ích tiềm năng:
 - nhiều bit chia sẻ clock buffer hoặc clock connection;

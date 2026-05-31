@@ -28,7 +28,20 @@ Cấp 4 — `timing()`: Timing Arc data bao gồm:
 - `setup_rising` / `hold_rising`: Setup/Hold constraint LUT cho Flip-flop pins
 - Timing sense (positive_unate, negative_unate, non_unate)
 
-**NLDM vs CCS/ECSM**: NLDM lưu một số delay tại mỗi ô LUT; CCS (Synopsys) và ECSM (Cadence) lưu current waveforms hoặc voltage waveforms — chính xác hơn nhiều ở advanced nodes (< 130nm) nhưng file size lớn hơn hàng chục lần.
+**NLDM vs CCS/ECSM**: NLDM lưu một số delay tại mỗi ô LUT; CCS (Synopsys) và ECSM (Cadence) lưu current waveforms hoặc voltage waveforms — chính xác hơn nhiều ở advanced nodes (< 130nm) nhưng file size lớn hơn hàng chục lần:
+
+CCS (Synopsys) driver model:
+- Captures output current flowing through load capacitor
+- Yêu cầu non-zero capacitance tại output của cell
+- STA tool nhìn input voltage waveform, dùng CCS model để tính output current,
+  sau đó dùng output load để compute voltage waveform → extract delay
+
+ECSM (Cadence) driver model:
+- Captures voltage waveform tại output của cell
+- Có thể bắt đầu với zero load capacitance
+
+Receiver Model (cả hai):
+- Captures Miller capacitance với sensitivity to slope và load
 
 ## Constrains
 - **[[CellDelay]]**: LIB chứa LUT data mà STA tool dùng để compute Cell Delay; không có LIB, không thể tính Cell Delay

@@ -1,6 +1,6 @@
 ---
 tags: [chain, pnr-flow]
-concepts: [DesignImport, Floorplanning, CoreArea, IOCell, MacroPlacement, PlacementBlockage, RoutingBlockage, PlacementGrid, Row, RoutingGrid, Site, Track, Pitch, PDN, IRDrop, TieCell, TapCell, EndCapCell, DecapCell, FillerCell, Placement, CongestionAnalysis, PreCTSOptimization, DRVFixing, PowerAnalysis, PowerOptimization, SpareCell, MBFF, ClockTreeSynthesis, CTSOptimization, CTSFlow, PostCTSOptimization, CTSQualityReview, Routing, ParasiticExtraction, Signoff, GateLevelNetlist, PhysicalConstraints, MMMC]
+concepts: [DesignImport, Floorplanning, CoreArea, IOCell, MacroPlacement, PlacementBlockage, RoutingBlockage, PlacementGrid, Row, RoutingGrid, Site, Track, Pitch, PDN, IRDrop, TieCell, TapCell, EndCapCell, DecapCell, FillerCell, Placement, CongestionAnalysis, PreCTSOptimization, DRVFixing, PowerAnalysis, LeakagePower, PowerOptimization, SpareCell, MBFF, ClockTreeSynthesis, CTSOptimization, CTSFlow, PostCTSOptimization, CTSQualityReview, Routing, GlobalRouting, DetailedRouting, DRC, PinAccess, SignalIntegrity, AntennaEffect, PostRouteOptimization, ChipFinishing, DFM, ParasiticExtraction, Signoff, GateLevelNetlist, PhysicalConstraints, MMMC]
 ---
 # Chain: PnR Flow
 
@@ -59,13 +59,13 @@ Exit: [[ClockSkew]] within budget · [[ClockLatency|Insertion Delay]] within bud
 
 **Bước 5 — [[Routing]]**
 
-Nhận: Clock tree topology từ CTS + PDN từ Floorplanning.
+Nhận: Clock tree topology và Buffer/Inverter positions từ CTS + placed database + PDN/blockage từ Floorplanning + [[LEF]]/[[DEF]] + [[SDC]]/[[MMMC]].
 
-Output: Wire geometries hoàn chỉnh cho tất cả signal nets — Route DB / GDS.
+Output: Routed database / routed [[DEF]] với wire/via geometries hoàn chỉnh cho signal nets và các geometry cần cho extraction/signoff; gồm [[GlobalRouting]], [[DetailedRouting]], [[PostRouteOptimization]] và handoff sang [[ChipFinishing]].
 
-Truyền xuống: Wire geometries là input bắt buộc cho Parasitic Extraction.
+Truyền xuống: Routed wire/via geometries là input bắt buộc cho [[ParasiticExtraction]] và là layout nền cho [[Signoff]].
 
-Exit: DRC clean · No Timing violations post-route · IR Drop within budget.
+Exit: Connectivity complete · DRC/LVS-ready layout · No major post-route timing/routability blockers · IR Drop within budget.
 
 **Bước 6 — [[ParasiticExtraction]]**
 
@@ -132,4 +132,4 @@ Nếu Signoff fail, design phải quay lại bước bị ảnh hưởng để f
 **Chain_BackEnd_Overview:** Chain này là sub-chain của Back-End Design flow tổng quát hơn — bắt đầu từ GateLevelNetlist (output của LogicSynthesis) và kết thúc bằng GDS (input của Fab).
 
 ## Concepts trong chain này
-[[DesignImport]] · [[GateLevelNetlist]] · [[PhysicalConstraints]] · [[MMMC]] · [[Floorplanning]] · [[CoreArea]] · [[IOCell]] · [[MacroPlacement]] · [[TapCell]] · [[EndCapCell]] · [[DecapCell]] · [[FillerCell]] · [[PDN]] · [[IRDrop]] · [[PlacementBlockage]] · [[RoutingBlockage]] · [[Site]] · [[Row]] · [[PlacementGrid]] · [[Pitch]] · [[Track]] · [[RoutingGrid]] · [[DEF]] · [[Placement]] · [[PreCTSOptimization]] · [[DRVFixing]] · [[PowerAnalysis]] · [[PowerOptimization]] · [[SpareCell]] · [[MBFF]] · [[CongestionAnalysis]] · [[ClockTreeSynthesis]] · [[CTSOptimization]] · [[CTSFlow]] · [[PostCTSOptimization]] · [[CTSQualityReview]] · [[Routing]] · [[ParasiticExtraction]] · [[Signoff]]
+[[DesignImport]] · [[GateLevelNetlist]] · [[PhysicalConstraints]] · [[MMMC]] · [[Floorplanning]] · [[CoreArea]] · [[IOCell]] · [[MacroPlacement]] · [[TapCell]] · [[EndCapCell]] · [[DecapCell]] · [[FillerCell]] · [[PDN]] · [[IRDrop]] · [[PlacementBlockage]] · [[RoutingBlockage]] · [[Site]] · [[Row]] · [[PlacementGrid]] · [[Pitch]] · [[Track]] · [[RoutingGrid]] · [[DEF]] · [[Placement]] · [[PreCTSOptimization]] · [[DRVFixing]] · [[PowerAnalysis]] · [[LeakagePower]] · [[PowerOptimization]] · [[SpareCell]] · [[MBFF]] · [[CongestionAnalysis]] · [[ClockTreeSynthesis]] · [[CTSOptimization]] · [[CTSFlow]] · [[PostCTSOptimization]] · [[CTSQualityReview]] · [[Routing]] · [[GlobalRouting]] · [[DetailedRouting]] · [[DRC]] · [[PinAccess]] · [[SignalIntegrity]] · [[AntennaEffect]] · [[PostRouteOptimization]] · [[ChipFinishing]] · [[DFM]] · [[ParasiticExtraction]] · [[Signoff]]

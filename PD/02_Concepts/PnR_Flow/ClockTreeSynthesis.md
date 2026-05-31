@@ -30,8 +30,8 @@ CTS tool xây dựng Clock Tree theo các bước:
 - **Routing**: clock nets được route với priority cao nhất và thường được assign các metal layers riêng (shielding để giảm Crosstalk) — vị trí Buffer cells insert bởi CTS tạo thêm placement constraints cho signal routing
 - **Timing (Setup)**: [[ClockLatency|Insertion Delay]] tác động trực tiếp lên budget timing; post-CTS [[STA]] phải dùng giá trị propagation thực thay cho ideal clock
 - **Timing (Hold)**: [[ClockSkew]] ảnh hưởng trực tiếp đến Hold Slack — Skew bất lợi có thể làm xấu [[HoldTime]]/[[Slack]] và tạo hold risk sau khi dùng propagated clock
-- **Power**: Clock Tree có thể đóng góp đáng kể vào dynamic power; mức cụ thể phụ thuộc kiến trúc clock, library, và flow [Needs verification]
-- **MBFF interaction**: MBFF có thể làm thay đổi cấu trúc clock sinks và clock tree load vì nhiều bits có thể chia sẻ clock connection; mức ảnh hưởng thực tế phụ thuộc library/tool/flow [Needs verification]
+- **Power**: Clock Tree có thể là một contributor lớn của dynamic power. Một khoảng tham khảo thô 30–40% có thể gặp trong một số practical designs, nhưng không được xem là universal rule; contribution thực tế phụ thuộc clock architecture, số sinks/flops, frequency, clock tree quality, insertion delay, buffer/inverter selection, library, và flow. [Needs verification]
+- **MBFF interaction**: [[MBFF]] có thể giảm clock-sink count vì nhiều clock pins của single-bit FF được thay bằng một shared MBFF clock pin. Điều này làm thay đổi CTS sink distribution và load model, nhưng MBFF cell lớn hơn và có thể ràng buộc placement/locality; mức ảnh hưởng thực tế phụ thuộc library/tool/flow. [Needs verification]
 
 ## Requires
 - [[Placement]] — placed database/Placement DEF cung cấp vị trí vật lý của clock sinks; đây là input bắt buộc trước CTS

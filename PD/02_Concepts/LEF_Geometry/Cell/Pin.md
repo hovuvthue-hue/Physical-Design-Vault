@@ -38,7 +38,7 @@ Phân biệt **Pin** và **Port** trong EDA:
 - **Pin**: điểm kết nối của một cell instance bên trong design — dùng trong SDC (get_pins) và LEF
 
 ## Constrains
-- **[[Routing]]**: Pin locations là routing targets — Router phải đặt wire end hoặc Via tại Pin RECT; Pin layer xác định Router cần access từ layer nào; Pin accessibility (dễ hay khó tiếp cận) phụ thuộc vào alignment với Routing Grid
+- **[[Routing]]**: Pin locations là routing targets — Router phải đặt wire end hoặc Via tại Pin RECT; Pin layer xác định Router cần access từ layer nào; [[PinAccess]] (dễ hay khó tiếp cận pin hợp lệ) phụ thuộc vào alignment với Routing Grid
 - **[[STA]]**: STA timing arc bắt đầu và kết thúc tại Pins; Physical Pin location ảnh hưởng đến wire length từ driver Pin đến receiver Pin → ảnh hưởng Net Delay; post-Placement, STA estimate Net Delay dựa trên Manhattan distance giữa driver Pin và receiver Pin coordinates
 - **[[CellAbstract]]**: Pin là thành phần chính của Cell Abstract; không có Pin definitions, Router không biết cần connect đến đâu
 
@@ -48,7 +48,7 @@ Phân biệt **Pin** và **Port** trong EDA:
 - [[Track]] · [[RoutingGrid]] — Pin phải align với Track grid; alignment requirement là constraint từ Routing Grid structure
 
 ## Used by
-- [[Routing]] — Router reads Pin locations từ Cell Abstract để build routing targets; Router places Via tại Pin location để connect net wire đến cell; Pin accessibility analysis là một step trong Global Routing
+- [[Routing]] — Router reads Pin locations từ Cell Abstract để build routing targets; Router places Via tại Pin location để connect net wire đến cell; [[PinAccess]] analysis là một routing-feasibility concern quanh pin
 - [[CellAbstract]] — Pin là primary content của Cell Abstract cùng với OBS; Cell Abstract không có giá trị nếu không có accurate Pin definitions
 - [[STA]] — STA tool map logical pin names (từ Netlist) đến physical pin coordinates (từ Cell Abstract) để compute wire length estimates; Timing Arc start/end tại logical Pins nhưng Net Delay computation cần physical Pin coordinates
 
@@ -59,7 +59,7 @@ Phân biệt **Pin** và **Port** trong EDA:
 → Chain: [[Chain_LEF_to_PnR]]
 → Defined in: [[CellAbstract]] — Macro LEF PIN section
 → Must align with: [[Track]] · [[RoutingGrid]] (Pin center on Track intersection)
-→ Routing target for: [[Routing]]
+→ Routing target for: [[Routing]] · [[PinAccess]]
 → Logical counterpart: logical pin names trong [[GateLevelNetlist]]
 → Timing endpoint for: [[STA]] — [[TimingArc]] start/end
 → Distinguished from: Port (top-level boundary connection)

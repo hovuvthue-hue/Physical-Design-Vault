@@ -2,7 +2,7 @@
 tags: [concept, sta-timing]
 group: STA — Timing
 defined_in: N/A — computed quantity bởi STA tool; reported trong timing reports của Cadence Tempus / Synopsys PrimeTime
-used_by: [STA, LogicSynthesis, Placement, ClockTreeSynthesis, Routing, Signoff]
+used_by: [STA, LogicSynthesis, Placement, ClockTreeSynthesis, Routing, PostRouteOptimization, Signoff]
 requires: [STA, SDC, CellDelay, NetDelay]
 chain: Chain_STA_Basics
 ---
@@ -48,6 +48,7 @@ Hai macro-metrics tổng hợp từ Slack của tất cả paths:
 - [[Placement]] — timing-driven placement weight placement cost function theo Slack per path; paths với Slack âm sâu được ưu tiên đặt cells gần nhau hơn
 - [[ClockTreeSynthesis]] — post-CTS STA generate lại Slack với propagated clock; [[ClockSkew]] và [[ClockLatency]] thực tế có thể làm dịch chuyển cả Setup/Hold Slack so với pre-CTS ideal clock assumption
 - [[Routing]] — timing-driven routing ưu tiên route paths có Slack âm trên lower-resistance metal layers; post-route STA với SPEF generate final Slack values cho Signoff
+- [[PostRouteOptimization]] — dùng post-route Slack sau khi annotate SPEF để ưu tiên setup/hold cleanup và kiểm tra regression do chỉnh sửa hậu route
 - [[Signoff]] — Timing Signoff pass criterion: WNS ≥ 0 và TNS = 0 ở tất cả Analysis Views; WNS và TNS là hai con số kỹ sư PD report cho team lead mỗi ngày
 
 ## Key insight

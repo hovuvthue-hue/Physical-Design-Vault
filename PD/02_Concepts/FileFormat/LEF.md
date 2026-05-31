@@ -14,7 +14,7 @@ LEF (Library Exchange Format) là file format ASCII text định nghĩa thông t
 ## Computed from
 LEF không được compute trong EDA flow mà được cung cấp bởi Foundry và library vendor như một input artifact. Tuy nhiên, Macro LEF được generate từ full layout (GDS) thông qua một công cụ gọi là Abstract Generator — tool này đọc GDS, strip bỏ tất cả các layers không liên quan đến PnR, và output LEF chỉ chứa metal layers.
 
-**Tech LEF** chứa các sections chính:
+**Tech LEF** (P&R Tech File) chứa các sections chính: routing layers, DRC rules, Site, Track definitions
 - `UNITS`: đơn vị đo lường (micron, pF, ohm)
 - `MANUFACTURINGGRID`: grid tối thiểu của Foundry
 - `SITE`: định nghĩa kích thước tối thiểu của Standard Cell (width × height)
@@ -23,7 +23,7 @@ LEF không được compute trong EDA flow mà được cung cấp bởi Foundry
 - `VIA`: via definitions với geometry
 - `PROPERTYDEFINITIONS`: design rule strings
 
-**Macro LEF** chứa cho từng cell:
+**Macro LEF** (Cell Abstracts) chứa cho từng cell: SC.lef, Macro.lef, Pad.lef — physical representation của cells
 - `MACRO`: tên cell, SIZE (width × height), SYMMETRY, SITE
 - `PIN`: tên pin, DIRECTION (INPUT/OUTPUT), USE (SIGNAL/POWER), PORT với LAYER và RECT coordinates
 - `OBS`: Obstruction — vùng cấm routing với LAYER và RECT coordinates

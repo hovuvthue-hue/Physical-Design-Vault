@@ -2,8 +2,8 @@
 tags: [concept, pnr-flow, placement, power]
 group: PnR Flow
 defined_in: Post-Placement Optimization
-used_by: [PreCTSOptimization, Placement, Signoff]
-requires: [PowerAnalysis, Placement, STA]
+used_by: [PreCTSOptimization, PostRouteOptimization, Placement, Signoff]
+requires: [PowerAnalysis, LeakagePower, Placement, STA]
 chain: Chain_PnR_Flow
 ---
 # PowerOptimization
@@ -11,7 +11,7 @@ chain: Chain_PnR_Flow
 ## Definition
 **PowerOptimization** là nhóm hoạt động tối ưu sau placement nhằm giảm power tiêu thụ, đồng thời vẫn giữ các ràng buộc timing và tính hợp lệ vật lý của layout.
 
-Trong ngữ cảnh L8, đây là phần của post-placement optimization trước [[ClockTreeSynthesis]].
+Trong ngữ cảnh L8, đây là phần của post-placement optimization trước [[ClockTreeSynthesis]]. Trong bối cảnh post-route, PowerOptimization có thể xuất hiện như power/area recovery bên trong [[PostRouteOptimization]], nhưng chỉ khi timing, DRV, và rủi ro signoff còn được kiểm soát.
 
 ## Analysis vs optimization
 - [[PowerAnalysis]]: đo/ước lượng và phân rã power để hiểu nguyên nhân.
@@ -34,20 +34,32 @@ PowerOptimization là bài toán multi-objective:
 - giảm dynamic có thể ảnh hưởng area hoặc routability,
 - ưu tiên timing gắt có thể đẩy power tăng.
 
-Do đó không nên giả định PowerOptimization luôn cải thiện đồng thời mọi chỉ số PPA trong mọi design.
+Do đó không nên giả định PowerOptimization luôn cải thiện đồng thời mọi chỉ số PPA trong mọi design. Sau route, recovery có thể làm thay đổi load, [[Slew]], hoặc margin timing, nên cần được ràng buộc bởi STA/signoff context và policy cụ thể [Needs verification].
+
+## Leakage optimization context
+Trong context [[LeakagePower]], các hướng tối ưu phổ biến gồm:
+- **Multi-Vt cell swap**: đổi sang HVT có thể giảm leakage, nhưng có thể làm path chậm hơn.
+- **LVT/SVT/HVT trade-off**: LVT thường ưu tiên timing hơn leakage; HVT thường ưu tiên leakage hơn timing; SVT thường nằm giữa hai hướng này. Mức độ trade-off phụ thuộc library và corner. [Needs verification]
+- **Downsizing**: giảm drive strength có thể giảm leakage và area nếu [[Slack]], load/slew và DRV constraints vẫn cho phép.
+- **Cell swap for lower leakage**: phải bị ràng buộc bởi [[STA]], [[Slack]], DRV, placement legality, pin access và legal/library equivalence. [Needs verification]
+- **Body bias và logic-state stacking**: là cơ chế phụ thuộc device, architecture, PDK/methodology và trạng thái logic; không nên xem như generic placement levers trong mọi flow. [Needs verification]
 
 ## Requires
 - [[PowerAnalysis]]
+- [[LeakagePower]]
 - [[Placement]]
 - [[STA]]
 
 ## Used by
 - [[PreCTSOptimization]]
+- [[PostRouteOptimization]]
 - [[Placement]]
 - [[Signoff]]
 
 ## Related
 - [[PowerAnalysis]]
+- [[LeakagePower]]
 - [[PreCTSOptimization]]
+- [[PostRouteOptimization]]
 - [[STA]]
 - [[Signoff]]

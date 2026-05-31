@@ -3,7 +3,7 @@ tags: [concept, pnr-flow]
 group: PnR Flow
 defined_in: Cadence Tempus (Timing) / Mentor Calibre (DRC/LVS) /
             Cadence Voltus (Power)
-used_by: [Tape-out]
+used_by: []
 requires: [ParasiticExtraction, STA, Routing, ChipFinishing, DRC, DFM, GateLevelNetlist]
 chain: Chain_PnR_Flow
 ---

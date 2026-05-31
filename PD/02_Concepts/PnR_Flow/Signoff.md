@@ -4,7 +4,7 @@ group: PnR Flow
 defined_in: Cadence Tempus (Timing) / Mentor Calibre (DRC/LVS) /
             Cadence Voltus (Power)
 used_by: [Tape-out]
-requires: [ParasiticExtraction, STA, Routing, GateLevelNetlist]
+requires: [ParasiticExtraction, STA, Routing, ChipFinishing, DRC, DFM, GateLevelNetlist]
 chain: Chain_PnR_Flow
 ---
 # Signoff
@@ -31,6 +31,9 @@ Signoff bao gồm các checks sau, mỗi loại dùng tool riêng:
 - [[ParasiticExtraction]] — SPEF là input bắt buộc cho Timing Signoff và SI Signoff; không có SPEF, không thể tính wire delay thực tế
 - [[STA]] — timing analysis results từ post-route STA xác định các paths cần focus trong Timing Signoff; Signoff STA tool chạy lại độc lập với độ chính xác cao hơn PnR internal STA
 - [[Routing]] — GDS layout hoàn chỉnh từ Routing là input cho DRC và LVS checks; PDN layout là input cho IR Drop/EM checks
+- [[ChipFinishing]] — chuẩn bị routed layout cho final physical-verification/manufacturability readiness trước signoff handoff. [Needs verification]
+- [[DRC]] — physical verification gate kiểm tra layout geometry theo rule context của process/signoff deck. [Needs verification]
+- [[DFM]] — signoff-adjacent manufacturability context; DFM criteria cụ thể phụ thuộc foundry/PDK/policy. [Needs verification]
 - [[GateLevelNetlist]] — Netlist sau CTS (bao gồm clock Buffer cells) là reference cho LVS comparison và cho Timing Signoff netlist
 
 ## Used by
@@ -43,7 +46,7 @@ quan trọng cần hiểu: Signoff tools (Tempus, Calibre) được calibrate tr
 
 ## Related
 → Chain: [[Chain_PnR_Flow]]
-→ Upstream: [[ParasiticExtraction]] · [[Routing]] · [[STA]]
+→ Upstream: [[ParasiticExtraction]] · [[Routing]] · [[PostRouteOptimization]] · [[ChipFinishing]] · [[STA]]
 → Downstream: [[Tape-out]]
 → Checks bao gồm: [[DRC]] · [[LVS]] · [[IRDrop]] · [[Electromigration]] · [[SignalIntegrity]]
 → Tools: Cadence Tempus · Mentor Calibre · Cadence Voltus

@@ -2,7 +2,7 @@
 tags: [concept, pnr-flow]
 group: PnR Flow
 defined_in: Cadence Quantus (standalone) / Innovus (integrated)
-used_by: [STA, Signoff]
+used_by: [STA, Signoff, PostRouteOptimization]
 requires: [Routing, LEF, GateLevelNetlist]
 chain: Chain_PnR_Flow
 ---
@@ -40,6 +40,7 @@ Extraction tool tính toán parasitics dựa trên wire geometry và process par
 ## Used by
 - [[STA]] (post-route, signoff) — đọc SPEF để annotate wire delays lên từng Net trong timing graph; đây là lần đầu tiên STA có đủ thông tin vật lý thực tế để tính [[Slack]] chính xác
 - [[Signoff]] — SPEF là một trong các deliverables bắt buộc của Physical Design; Timing Signoff không thể thực hiện nếu thiếu SPEF hoặc SPEF chưa được verify
+- [[PostRouteOptimization]] — tiêu thụ extracted parasitics/SPEF sau khi routed geometry tồn tại để cleanup timing, DRV, và các chỉnh sửa post-route có kiểm soát
 
 ## Key insight
 [USER REVIEW — draft suggestion]:
@@ -49,8 +50,9 @@ ngày càng lớn trong tổng parasitic — đây là lý do Crosstalk analysis
 ## Related
 → Chain: [[Chain_PnR_Flow]]
 → Upstream: [[Routing]]
-→ Downstream: [[STA]] · [[Signoff]]
+→ Downstream: [[STA]] · [[PostRouteOptimization]] · [[Signoff]]
 → Output format: [[SPEF]]
+→ Re-analysis: route hoặc ECO-like change làm đổi geometry có thể cần extraction/STA lại tùy flow [Needs verification]
 → Extracted concept: [[InterconnectRC]]
 → Closely related: [[SignalIntegrity|Crosstalk]] · [[SignalIntegrity]]
 → Cùng nhóm: [[Floorplanning]] · [[Placement]] · [[ClockTreeSynthesis]] · [[Routing]] · [[Signoff]]

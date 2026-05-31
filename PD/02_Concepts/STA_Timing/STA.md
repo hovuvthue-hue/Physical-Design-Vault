@@ -2,7 +2,7 @@
 tags: [concept, sta-timing]
 group: STA — Timing
 defined_in: Cadence Tempus / Synopsys PrimeTime (Signoff STA) · Internal engine trong Cadence Innovus / Synopsys DC (in-design STA)
-used_by: [LogicSynthesis, Placement, ClockTreeSynthesis, Routing, Signoff]
+used_by: [LogicSynthesis, Placement, ClockTreeSynthesis, Routing, PostRouteOptimization, Signoff]
 requires: [GateLevelNetlist, SDC, LIB, SPEF]
 chain: Chain_STA_Basics
 ---
@@ -40,6 +40,7 @@ STA chạy tại nhiều thời điểm trong PD flow với độ chính xác t�
 - [[Placement]] — timing-driven placement dùng STA Slack per path để weight placement cost function; cells có Slack âm được ưu tiên đặt gần nhau để rút ngắn wire length → giảm Net Delay
 - [[ClockTreeSynthesis]] — STA sau CTS (post-CTS STA) là milestone quan trọng: dùng propagated clock với real [[ClockSkew]] và [[ClockLatency|Insertion Delay]] thay vì ideal clock; nhiều hold violations phát sinh ở đây cần fix trước Routing
 - [[Routing]] — timing-driven routing dùng STA Slack để ưu tiên route critical paths trên lower-resistance layers; post-route STA với full SPEF là final check trước Signoff
+- [[PostRouteOptimization]] — tiêu thụ kết quả post-route STA để quyết định setup/hold/DRV cleanup dựa trên parasitics đã extract
 - [[Signoff]] — Timing Signoff = STA pass tại tất cả MMMC views (Setup clean ở slow corners, Hold clean ở fast corners); là hard prerequisite cho Tape-out
 
 ## Key insight

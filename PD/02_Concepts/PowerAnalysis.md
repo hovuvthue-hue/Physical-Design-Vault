@@ -40,7 +40,7 @@ Phân tách này giúp định hướng tối ưu: giảm capacitance/activity c
 ## Accuracy across implementation stages
 Độ chính xác của [[PowerAnalysis]] thay đổi theo stage:
 - **Placement / pre-route**: parasitics và activity chưa đầy đủ → độ chính xác hạn chế.
-- **Post-route / signoff-oriented**: parasitics chi tiết hơn, activity đầy đủ hơn → kết quả đáng tin cậy hơn.
+- **Post-route / signoff-oriented**: parasitics chi tiết hơn, activity đầy đủ hơn → kết quả đáng tin cậy hơn. Trong [[PostRouteOptimization]], bối cảnh này có thể guide power/area recovery an toàn hơn, miễn là không phá timing/DRV margin.
 
 Vì vậy, kết quả power ở placement nên dùng để ra quyết định tối ưu sớm, không nên xem là kết luận cuối cùng cho tapeout.
 
@@ -52,10 +52,12 @@ Vì vậy, kết quả power ở placement nên dùng để ra quyết định t
 - [[Placement]]
 - [[PowerOptimization]]
 - [[PreCTSOptimization]]
+- [[PostRouteOptimization]]
 - [[Signoff]]
 
 ## Related
 - [[PowerOptimization]]
+- [[PostRouteOptimization]]
 - [[PDN]]
 - [[IRDrop]]
 - [[Placement]]

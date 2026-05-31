@@ -2,7 +2,7 @@
 tags: [concept, sta-timing, routing, parasitics]
 group: STA — Timing
 defined_in: ParasiticExtraction
-used_by: [ParasiticExtraction, SPEF, STA, NetDelay, Signoff]
+used_by: [ParasiticExtraction, SPEF, STA, NetDelay, PostRouteOptimization, Signoff]
 requires: [Routing, MetalStack, ITF, SPEF]
 chain: Chain_STA_Basics
 ---
@@ -34,7 +34,7 @@ Estimated RC trước Routing dùng thông tin chưa hoàn chỉnh: khoảng cá
 Actual extracted RC sau Routing dùng routed wire/via geometry thật. [[ParasiticExtraction]] kết hợp geometry này với [[ITF]] và technology data để tạo [[SPEF]], giúp STA phân tích timing gần với layout đã route hơn.
 
 ## Relation to SPEF and STA
-[[SPEF]] là representation trao đổi của extracted parasitics. STA đọc SPEF để annotate RC vào timing graph, từ đó tính [[NetDelay]], cập nhật [[Slew]], và đánh giá [[Slack]] cho setup/hold/signoff.
+[[SPEF]] là representation trao đổi của extracted parasitics. STA đọc SPEF để annotate RC vào timing graph, từ đó tính [[NetDelay]], cập nhật [[Slew]], và đánh giá [[Slack]] cho setup/hold/signoff. [[PostRouteOptimization]] dùng bối cảnh này để cleanup timing/DRV dựa trên parasitics hậu route thay vì estimate trước route.
 
 Nếu InterconnectRC không được extract đúng corner hoặc không khớp với routed layout, kết quả STA có thể không phản ánh silicon/layout thực tế [Needs verification]. Vì vậy InterconnectRC nằm giữa Routing, ParasiticExtraction, SPEF, và Signoff.
 
@@ -54,10 +54,11 @@ InterconnectRC vì vậy không phải một con số độc lập; nó là kế
 - [[SPEF]] — biểu diễn extracted resistance/capacitance theo net.
 - [[STA]] — dùng RC đã annotate để tính timing.
 - [[NetDelay]] — phụ thuộc trực tiếp vào RC của routed interconnect.
+- [[PostRouteOptimization]] — dùng extracted RC để guide cleanup hậu route có kiểm soát.
 - [[Signoff]] — dùng extracted RC để kiểm tra timing và các phân tích hậu route liên quan.
 
 ## Related
 → Physical source: [[Routing]] · [[MetalStack]] · [[Via]]
 → Extraction path: [[ParasiticExtraction]] → [[SPEF]]
-→ Timing impact: [[STA]] · [[NetDelay]] · [[Slew]] · [[Slack]]
+→ Timing impact: [[STA]] · [[NetDelay]] · [[Slew]] · [[Slack]] · [[PostRouteOptimization]]
 → Technology data: [[ITF]]

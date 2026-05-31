@@ -41,7 +41,7 @@ Vùng bên trong Macro footprint không có Rows (Macro chiếm diện tích và
 - [[Floorplanning]] — Floorplanning tool generates Rows sau khi Core area và Macro positions được defined; Row generation là automated step nhưng PD engineer phải verify Row coverage và identify gaps do Macro placements
 
 ## Key insight
-[USER REVIEW — draft suggestion]: Row orientation thường được tổ chức theo pattern xen kẽ để phù hợp rail/well continuity của standard-cell architecture; tuy nhiên tên orientation cụ thể (ví dụ N/FS...) là tool/library-dependent [Needs verification]. Điểm thực tế: khi Macro không được placed tại Row boundaries (Macro height không phải bội số của Site height), nó có thể "bisect" Row và làm giảm vùng placement hợp lệ quanh macro.
+Row orientation thường được tổ chức theo pattern xen kẽ hoặc đối xứng để hỗ trợ power-rail/well continuity của standard-cell architecture; tên orientation cụ thể và legality rule phụ thuộc library/tool convention. [Needs verification] Macro placement không tương thích với Row/Site boundary có thể làm giảm vùng placement hợp lệ quanh macro hoặc tạo local placement/routing difficulty.
 
 ## Related
 → Chain: [[Chain_LEF_to_PnR]]

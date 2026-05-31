@@ -25,7 +25,7 @@ Không phải tất cả positions đều available — các positions có thể
 **Quan hệ cốt lõi — KEY CONSTRAINT trong Physical Design:**
 $$\text{Routing Grid} \leftrightarrow \text{Placement Grid must align}$$
 
-M1 Tracks phải align với M1 Pin positions của Standard Cells. Vì Pin positions được xác định bởi Placement Grid (Site positions), và Track positions được xác định bởi Routing Grid (Pitch multiples), hai grids phải có cùng origin và compatible spacing. Foundry đảm bảo điều này khi define Site width = M1 Pitch và Site height = N × M1 Pitch.
+PlacementGrid và RoutingGrid phải tương thích để StandardCell pins có thể được router access hợp lệ sau placement. Site định nghĩa legal placement granularity, còn Track/Pitch định nghĩa routing-resource geometry. M1/M2 pin access phụ thuộc vào cell abstract pin shapes, Track/Pitch, routing layers, Site/Row alignment và library/PDK rules; exact Site-to-track mapping là library/PDK-dependent. [Needs verification]
 
 ## Constrains
 - Legal placement theo PlacementGrid là prerequisite cho downstream [[Placement]] và [[Routing]], nhưng tự nó không đảm bảo design sẽ routable hoặc timing-clean.
@@ -44,14 +44,14 @@ M1 Tracks phải align với M1 Pin positions của Standard Cells. Vì Pin posi
 - [[CellAbstract]] — Standard Cell Pin positions phải align với Placement Grid → Routing Grid intersection để ensure Router có thể access Pin bằng Via drop mà không cần off-grid jogs; đây là pin accessibility requirement
 
 ## Key insight
-[USER REVIEW — draft suggestion]: Alignment constraint giữa Placement Grid và Routing Grid là một trong những key insights của nhóm LEF Geometry — nó giải thích tại sao Site width = M1 Pitch không phải là coincidence mà là deliberate design decision. Nếu hai grids không align, mọi Pin connection phải có jog wire (wire đi ra khỏi Track rồi quay lại), tốn routing resources và gây congestion. Alignment đảm bảo bất kỳ Pin nào trong bất kỳ cell nào đều có thể được accessed bởi Router bằng cách thả Via thẳng từ M2 Track xuống M1 Pin — clean, efficient, không cần jogs. Điểm thực tế: đây là lý do library của một Foundry node không thể dùng với Tech LEF của một Foundry node khác — Site dimensions, Pitch values, và grid alignments phải nhất quán trong một ecosystem (Foundry + Library vendor + EDA tool).
+PlacementGrid và RoutingGrid phải tương thích để StandardCell pins có thể được router access hợp lệ sau placement. Site/Row xác định legal placement granularity, còn Track/Pitch xác định routing-resource geometry. Sự tương thích giữa Site dimensions, pin shapes, routing tracks và layer rules là property của library/PDK ecosystem; không nên coi Site height hoặc Site width là universal formula theo M1 Pitch. [Needs verification]
 
 ## Related
 → Chain: [[Chain_LEF_to_PnR]]
 → Formed from: all [[Row]]s tiling Core area vertically
 → Unit: [[Site]] position
 → KEY CONSTRAINT: must align with [[RoutingGrid]] — same origin, compatible spacing
-→ Alignment mechanism: Site Width = M1 [[Pitch]] · Site Height = N × M1 Pitch
+→ Compatibility mechanism: Site/PlacementGrid phải tương thích với [[RoutingGrid]] theo library/PDK rules [Needs verification]
 → Stored implicitly in: [[DEF]] ROWS section
 → Consumed by: [[Placement]] · [[Floorplanning]]
 → Cùng nhóm: [[Pitch]] · [[Track]] · [[RoutingGrid]] · [[Site]] · [[Row]]

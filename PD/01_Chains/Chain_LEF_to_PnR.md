@@ -23,18 +23,17 @@ RoutingGrid là không gian mà [[Routing]] tool hoạt động.
 
 **Nhánh 2 — Placement Grid:**
 
-Tech LEF SITE section định nghĩa [[Site]] (width = 1 M1 Pitch, height = N × M1 Pitch).
+Tech LEF SITE section định nghĩa [[Site]] dimensions dùng cho legal placement.
+Track/Pitch định nghĩa routing-grid resources; library/PDK phải làm Site, [[Pin]] geometry, Track/Pitch và routing layers tương thích để pins có thể được router access hợp lệ. Exact mapping giữa Site dimensions và routing-track architecture phụ thuộc library/PDK. [Needs verification]
 Site tiles theo chiều ngang tạo thành [[Row]]s (stored trong [[DEF]] post-Floorplan).
 Tất cả Rows tiling Core area tạo thành [[PlacementGrid]].
 PlacementGrid là không gian mà [[Placement]] tool hoạt động.
 
 ## KEY CONSTRAINT — Alignment giữa hai nhánh
 
-Routing Grid ← must align → Placement Grid
-Site Width   = M1 Pitch    (ensures M1 Tracks align with cell X boundaries)
-Site Height  = N × M1 Pitch (ensures M1 Tracks align with Pin Y positions)
-
-Alignment được Foundry đảm bảo khi define Site dimensions dựa trên Pitch values. Nếu không align: mọi Pin access cần jog wire → routing congestion → timing degradation.
+Routing Grid ← must be compatible with → Placement Grid
+Site/PlacementGrid phải tương thích với RoutingGrid.
+Pin shapes và routing tracks phải aligned/accessible theo library/PDK rules để router có thể access pins hợp lệ. Exact compatibility rule phụ thuộc library/PDK và tool flow. [Needs verification]
 
 ## Cell Abstract — nơi hai nhánh hội tụ
 
@@ -69,7 +68,7 @@ CellAbstract chứa:
 | Track | RoutingGrid | composes | RoutingGrid = all Tracks on all layers |
 | Site | Row | tiles into | Row = N Sites horizontal |
 | Row | PlacementGrid | composes | PlacementGrid = all Rows on Core area |
-| Pitch | Site | constrains | Site Width = M1 Pitch (alignment rule) |
+| Pitch/Track | Site/PlacementGrid | must be compatible with | Site dimensions và routing-track architecture phải nhất quán trong library/PDK ecosystem [Needs verification] |
 | RoutingGrid | PlacementGrid | must align with | KEY CONSTRAINT |
 | GDS | CellAbstract | abstracted into | Abstract Generator strips non-PnR layers |
 | CellAbstract | Pin | contains | Pin locations must be on RoutingGrid |

@@ -2,7 +2,7 @@
 tags: [concept, file-format, sta-timing]
 group: File Formats
 defined_in: IEEE Standard 1481 — Standard Parasitic Exchange Format; generated bởi RC extraction tool (Cadence QRC, Synopsys StarRC)
-used_by: [STA, ParasiticExtraction, Signoff]
+used_by: [STA, ParasiticExtraction, PostRouteOptimization, Signoff]
 requires: [Routing, LEF, GDS]
 chain: Chain_STA_Basics
 ---
@@ -42,6 +42,7 @@ với $C_{area} = \frac{\varepsilon \times W \times L}{t_{di}}$ (parallel plate)
 ## Used by
 - [[STA]] — annotate SPEF lên timing graph thay thế WLM estimates; Net Delay được compute per-segment theo Pi-model; Coupling Capacitance trong SPEF là input cho crosstalk-induced delay analysis
 - [[ParasiticExtraction]] — SPEF là output product của ParasiticExtraction step; quality của extraction flow (tool, ITF accuracy, extraction mode) quyết định SPEF accuracy
+- [[PostRouteOptimization]] — dùng SPEF để đưa extracted parasitics vào post-route STA và guide các vòng cleanup timing/DRV trước Signoff
 - [[Signoff]] — Timing Signoff tool đọc SPEF để compute final Slack values; SPEF phải cover tất cả MMMC corners; IR Drop analysis (Voltus) cũng đọc SPEF để compute voltage drop trên PDN
 
 ## Key insight
@@ -55,5 +56,5 @@ với $C_{area} = \frac{\varepsilon \times W \times L}{t_{di}}$ (parallel plate)
 → Contains: [[InterconnectRC]] per net segment · coupling C between adjacent nets
 → Replaces: Wire Load Model (WLM) estimates từ pre-route flow
 → One file per: RC Corner (C-max, C-min, RC-max, RC-min)
-→ Consumed by: [[STA]] · [[Signoff]]
+→ Consumed by: [[STA]] · [[PostRouteOptimization]] · [[Signoff]]
 → Cùng nhóm: [[LEF]] · [[LIB]] · [[DEF]] · [[GDS]]

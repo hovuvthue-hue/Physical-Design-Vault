@@ -17,7 +17,7 @@ Thể hiện luồng dữ liệu và quan hệ nhân quả có hướng từ inp
 
 **Bước 1 — [[DesignImport]]**
 
-Inputs: [[GateLevelNetlist]] (Verilog, connectivity + cell list), [[LEF]] (Cell Abstracts + Tech files), [[MMMC]] (Library Sets + RC Corners + Delay Corners + Analysis Views), [[PhysicalConstraints]] (die size + IO Pad placement hoặc Block PR boundary + Pin locations).
+Inputs: [[GateLevelNetlist]] (Verilog, connectivity + cell list), [[LEF]] (Cell Abstracts + Tech files), [[MMMC]] (Library Sets + RC Corners + Delay Corners + Analysis Views), [[PhysicalConstraints]] (die size + IO Pad placement hoặc Block PR boundary + Pin locations + Power/Ground Net naming (khai báo VDD/VSS và global net connections)).
 
 7 sub-steps: Netlist Import → Cell Abstracts Import → Timing Constraints Import → Physical Constraints Import → Initialize Design → Quality of Inputs Checks → Quick Timing Checks.
 

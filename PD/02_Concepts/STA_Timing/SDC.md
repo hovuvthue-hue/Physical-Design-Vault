@@ -9,7 +9,7 @@ chain: Chain_STA_Basics
 # SDC
 
 ## Definition
-Synopsys Design Constraints (SDC) là format file định nghĩa toàn bộ timing requirements và exceptions của một design. SDC ban đầu là "Synopsys Delay Constraints" nhưng đã trở thành "Standard Delay Constraints" — industry standard dùng rộng rãi trên toàn ngành EDA. Format file: **TCL**. SDC được viết thủ công, thường bởi Synthesis Engineer, và được dùng lại (với điều chỉnh nhỏ) qua cả Synthesis và PnR flow.
+Synopsys Design Constraints (SDC) là format file định nghĩa toàn bộ timing requirements và exceptions của một design. Một số tài liệu đào tạo đôi khi gọi là 'Synopsys Delay Constraints' (không chính xác) hoặc 'Standard Delay Constraints' (tên không chính thức nhưng phổ biến). Format file: **TCL**. SDC được viết thủ công, thường bởi Synthesis Engineer, và được dùng lại (với điều chỉnh nhỏ) qua cả Synthesis và PnR flow.
 
 SDC hoạt động trên **Design Objects** — các thực thể mà timing constraints tham chiếu đến. Phân biệt chính xác các Design Objects là bắt buộc để SDC hoạt động đúng:
 

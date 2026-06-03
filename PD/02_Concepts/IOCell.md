@@ -21,6 +21,41 @@ IO Cell là các Standard Cells đặc biệt tạo thành IO Ring — vành đa
 | Corner Cell | Đặt tại 4 góc của IO Ring | 45° wires bên trong để minimize current crowding, improve EM |
 | Filler Cell (IO Filler) | Lấp khoảng trống trong IO Ring | Đảm bảo VDD/VSS rings liên tục; electrical connection |
 
+**Digital I/O Buffer — ràng buộc điện đặc thù:**
+
+Digital I/O Buffer khác hoàn toàn với Standard Cell Buffer thông thường về yêu cầu
+drive strength:
+
+- **Load target: pF, không phải fF** — IO buffer phải drive PCB trace, bond wire,
+  và package capacitance (~pF range), so với on-chip load chỉ ở fF range.
+  Đây là lý do IO cell phải có transistor width lớn hơn nhiều so với logic cell.
+
+- **Requires fanout inverter chain** — để tạo được drive strength đủ lớn,
+  IO output buffer được implement như một chuỗi inverters với kích thước tăng dần
+  (tapered inverter chain) để drive large external load mà không tạo
+  excessively large input capacitance tại stage đầu.
+
+- **Short-circuit current là unacceptable** — trong quá trình switching,
+  PMOS và NMOS cùng dẫn trong một khoảng thời gian ngắn tạo short-circuit current.
+  Ở on-chip speed với fF load, thời gian này cực ngắn và ảnh hưởng không đáng kể.
+  Nhưng với pF external load, switching chậm hơn → overlap time dài hơn →
+  short-circuit current tăng đáng kể → phải được kiểm soát trong IO buffer design.
+  Đây là một trong các lý do IO cell characterization phức tạp hơn Standard Cell.
+
+**Corner Cell — 45-degree wires:**
+
+Corner Cell được đặt tại 4 góc của IO Ring. Điểm đặc trưng là sử dụng 45-degree wires
+thay vì right-angle routing tại điểm chuyển hướng. Bốn lý do kỹ thuật:
+
+1. **Minimize Current Crowding**: right-angle corners tạo điểm hội tụ dòng điện cục bộ
+   (current crowding) làm tăng local current density.
+2. **Improve EM Performance**: current crowding trực tiếp làm tăng rủi ro Electromigration
+   tại corner. 45° spread out dòng điện đều hơn.
+3. **Enhance Signal Integrity**: giảm impedance discontinuity tại điểm chuyển hướng,
+   cải thiện signal quality trên high-frequency IO.
+4. **Reduce Metal Density**: phân bố metal geometry đều hơn tại corner,
+   hỗ trợ CMP uniformity và metal density DRC compliance.
+
 **Tại sao IO power supply tách biệt với Core power:**
 
 IO Cells tiêu thụ dòng điện lớn và thường chạy ở điện áp cao hơn Core (ví dụ: IOVDD = 2.5V vs VDD = 1.2V). Nếu dùng chung power supply, switching noise từ IO sẽ couple vào Core logic → setup/hold violations. Core và IO power domains phải tách biệt với separate power rings.

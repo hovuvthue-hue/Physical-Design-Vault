@@ -17,6 +17,23 @@ TapCell là **physical-only standard cell** dùng để nối các vùng well/su
 - hỗ trợ giảm rủi ro **Latch-up**,
 - ổn định điều kiện vận hành vật lý của Standard Cell fabric.
 
+**Lịch sử và lý do tồn tại như cell riêng:**
+
+Trong các Standard Cell library thế hệ đầu (**Traditional SC**), mỗi cell đã tích hợp sẵn
+kết nối N-Well → VDD và P-Substrate → VSS bên trong layout của chính nó.
+Cách thiết kế này đảm bảo latch-up prevention nhưng tốn diện tích cell.
+
+Để tối ưu cell area, các library hiện đại chuyển sang kiến trúc **Tapless SC** — loại bỏ
+hoàn toàn internal well tap connections, nhờ đó giảm được cell footprint. Đánh đổi là
+must insert standalone Tap Cells định kỳ vào design để đảm bảo mọi vùng
+N-Well và P-Substrate đều được bias đúng. Tap Cell vì vậy là thành phần bắt buộc của
+Tapless Standard Cell Library.
+
+Ba kiến trúc liên quan (xem [[StandardCell]] — p.70 L5):
+- **Traditional SC**: internal tap tích hợp sẵn, không cần Tap Cell riêng.
+- **Tapless SC**: không có internal tap, phụ thuộc Tap Cell để đảm bảo well/substrate bias.
+- **Tap Cell**: physical-only cell chuyên dụng cho well/substrate connection — **không có input/output logic pins**.
+
 TapCell vì vậy thuộc nhóm cell bắt buộc cho reliability trong triển khai PnR, ngay cả khi không tham gia logic computation.
 
 ## Relation to rows / wells / substrate

@@ -27,7 +27,9 @@ $$\text{Aspect Ratio} = \frac{\text{Width}}{\text{Height}}$$
 
 AR = 1.0 → hình vuông. AR > 1.0 → wide. AR < 1.0 → tall. Aspect Ratio được điều chỉnh để khớp với packaging constraints (bond pitch, bump grid) và để bias routing resources theo chiều ưu tiên của dominant data paths.
 
-“Trong vault này, Aspect Ratio được định nghĩa là Width/Height. Một số tài liệu/tool có thể dùng định nghĩa nghịch đảo Height/Width, nên phải kiểm tra convention trước khi so sánh số liệu.”
+==Chú ý:== Không có một quy ước “chính thức chung” cho **aspect ratio của core area**; vì vậy không nên hiểu từ `aspect ratio` nếu tài liệu không định nghĩa rõ. Trong ngữ cảnh tổng quát, aspect ratio thường là **width / height**, nhưng trong **OpenROAD/ORFS**, `CORE_ASPECT_RATIO` được định nghĩa là **height / width**.
+
+Aspect Ratio trực tiếp biểu diễn tỉ số tài nguyên routing theo chiều dọc-ngang. Die cao có nhiều horizontal tracks hơn; die rộng có nhiều vertical tracks hơn. Điều này phải được cân nhắc cùng với preferred routing direction của metal stack trong technology.
 
 **Phân loại chip theo bottleneck diện tích:**
 

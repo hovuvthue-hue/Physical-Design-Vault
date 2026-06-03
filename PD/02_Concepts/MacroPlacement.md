@@ -17,16 +17,32 @@ Macros chiếm diện tích lớn, tạo ra "bức tường thành" cản trở 
 
 **7 nhân tố ảnh hưởng chính đến MacroPlacement:**
 
-| Nhân tố | Mục tiêu | Pitfall nếu vi phạm |
-|---|---|---|
-| 1. Timing Closure | Group macros liên quan gần nhau; favor data flow direction | Long wire delays → Setup violations không thể fix |
-| 2. Power Consumption | Đặt high-toggle macros gần nhau; align với data flow | Zig-zag paths → switching capacitance cao → waste power |
-| 3. System Interface | Interface macros gần related IO Pads; analog xa noisy digital | Long congested connections; noise coupling |
-| 4. Clock Distribution | Clocked macros (SRAM) gần clock distribution network | Long clock routes → excessive Skew, high ClockLatency |
-| 5. Routing Congestion | Adequate spacing giữa macros; tránh block routing channels | Detoured routes → timing degradation; routing failure |
-| 6. Power Delivery & EM/Thermal | High-power macros gần power grid; spread out để tránh hotspot | IR Drop violations; Electromigration failures |
-| 7. Placement Rules & Foundry | Giữ macro FIXED; tap cells; uniform poly orientation; distance từ die edge | Fab rejection; latch-up; Seal Ring interference |
+| Nhân tố                        | Mục tiêu                                                                                                                                     | Pitfall nếu vi phạm                                     |
+| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| 1. Timing Closure              | Group macros liên quan gần nhau; favor data flow direction                                                                                   | Long wire delays → Setup violations không thể fix       |
+| 2. Power Consumption           | Đặt high-toggle macros gần nhau; align với data flow                                                                                         | Zig-zag paths → switching capacitance cao → waste power |
+| 3. System Interface            | Interface macros gần related IO Pads; analog xa noisy digital                                                                                | Long congested connections; noise coupling              |
+| 4. Clock Distribution          | Clocked macros (SRAM) gần clock distribution network                                                                                         | Long clock routes → excessive Skew, high ClockLatency   |
+| 5. Routing Congestion          | Adequate spacing giữa macros; tránh block routing channels                                                                                   | Detoured routes → timing degradation; routing failure   |
+| 6. Power Delivery & EM/Thermal | High-power macros gần power grid; spread out để tránh hotspot                                                                                | IR Drop violations; Electromigration failures           |
+| 7. Placement Rules & Foundry   | Giữ macro FIXED; tap cells; uniform poly orientation; distance từ die edge; Fab rejection; latch-up; litho variation; Seal Ring interference | Fab rejection; latch-up; Seal Ring interference         |
 
+**Factor 7 (Placement Rules & Foundry Requirements):**
+
+- Fix macro positions trước khi finalize Floorplan
+  → Ngăn tool di chuyển chúng trong Placement và optimization.
+- Insert boundary cells theo yêu cầu
+  → Đảm bảo cells tại boundary giữ nguyên characterized behavior.
+- Insert tap cells theo yêu cầu
+  → Ngăn latch-up và đảm bảo well/substrate connections theo foundry rules.
+- **Maintain uniform poly orientation nếu process yêu cầu**
+  → Đặc biệt quan trọng với memory Macros như SRAM ở advanced nodes:
+    uniform poly orientation cải thiện lithography pattern reproducibility,
+    giảm CD variation giữa các transistor trong bitcell array,
+    trực tiếp ảnh hưởng đến SRAM yield và functionality.
+    Foundry thường chỉ định orientation hợp lệ (R0, MX, R180, MY) trong LEF/rule deck.
+- Giữ Macros đủ xa die edges
+  → Tránh interference với seal ring và đảm bảo dicing margin rules.
 ## Computed from
 
 **Quy trình MacroPlacement thực tế:**

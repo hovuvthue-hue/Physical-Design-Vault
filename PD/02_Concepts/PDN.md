@@ -36,12 +36,20 @@ PDN thường dùng nhiều lớp kim loại với vai trò khác nhau:
 Mapping lớp cụ thể (ví dụ Mx nào cho ring/strap/rail) là phụ thuộc process, PDK và rule deck. **[Needs verification]**
 
 ## Power/Ground Nets trong physical design
-Trong luồng thực tế, netlist logic tổng hợp vào PnR có thể chưa thể hiện đầy đủ kết nối nguồn/ground theo topology vật lý. Vì vậy, trong giai đoạn Floorplanning/PDN setup, kỹ sư cần thiết lập và bảo đảm kết nối đúng cho:
-- VDD/VSS nets của standard cells,
-- PG pins của macros,
-- các phần tử liên quan nguồn/ground như tie connectivity theo flow.
 
-Ý nghĩa: PowerNets không chỉ là “tên net” trong logic, mà là một cấu trúc kết nối vật lý cần được xây dựng đầy đủ trong PDN.
+VDD/VSS nets **hoàn toàn không tồn tại** trong synthesized netlist đầu vào — Gate-Level Netlist từ Logic Synthesis không chứa VDD/VSS như explicit nets. Chúng phải được tạo ra tường minh trong PnR flow.
+
+Quy trình hai bước bắt buộc trong Floorplanning/PDN setup:
+
+1. **Create** VDD/VSS nets (đặt tên, ví dụ: `VDD`, `VSS`).
+2. **Connect (logically)** tất cả PG pins của cells vào nets tương ứng.
+
+Ba loại components cần được connect vào PG nets:
+- **Standard cells' pins**: VDD/VSS pins của tất cả Standard Cell instances.
+- **Macro cells' pins**: PG pins của Hard IP macros (SRAM, PLL,...).
+- **Tie cells**: inputs của Tie-high/Tie-low cells cần được kết nối vào VDD/VSS.
+
+Ý nghĩa thực tế: không có tên `VDD` hay `VSS` nào trong netlist sau synthesis — kỹ sư PD tạo và setup connectivity cho các nets này trước khi PDN structure có thể được build.
 
 ## Trade-off chính
 PDN càng robust thì rủi ro [[IRDrop]] càng giảm, nhưng thường chiếm thêm tài nguyên định tuyến. Do đó Power Planning là bài toán cân bằng giữa độ bền nguồn và khả năng đi dây tín hiệu, thay vì tối ưu một phía tuyệt đối.

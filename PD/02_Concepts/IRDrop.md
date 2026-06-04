@@ -16,8 +16,33 @@ $$V_{drop} = I \times R$$
 Trong đó, khi dòng tiêu thụ tăng hoặc đường cấp nguồn có điện trở hiệu dụng cao, mức sụt áp tại cell sẽ tăng.
 
 ## Static IR Drop vs Dynamic IR Drop
-- **Static IR Drop**: thành phần sụt áp gắn với dòng tiêu thụ trung bình/ổn định theo thời gian tương đối dài.
-- **Dynamic IR Drop**: thành phần sụt áp tức thời do switching activity đồng thời gây current spikes; thường đi kèm voltage droop/ground bounce trong các thời điểm nhạy cảm.
+
+1. **Static IR Drop**: thành phần sụt áp gắn với dòng tiêu thụ trung bình/ổn định theo thời gian tương đối dài.
+
+**Static IR Drop formula:**
+
+$$\text{Static IR Drop} = I_{Avg} \times R = \frac{P_{Avg}}{V_{DD}} \times R$$
+
+Trong đó $P_{Avg}$ là Gate-level Average Power, gồm ba thành phần:
+
+$$P_{Avg} = P_{Leakage} + P_{Internal} + P_{Switching}$$
+
+| Thành phần | Công thức | Nguồn dữ liệu |
+|---|---|---|
+| $P_{Leakage}$ | Gate Leakage + Junction Leakage + Subthreshold Leakage | `.lib` (leakage_power) |
+| $P_{Internal}$ | Internal Energy × Freq × Toggle Rate (TR) | `.lib` (internal_power) |
+| $P_{Switching}$ | ½ × C × V² × Freq × TR | `.spef` (C), timing file (TR) |
+
+Hệ quả: design tiêu thụ power cao hơn → $I_{Avg}$ lớn hơn → Static IR Drop lớn hơn → effective VDD tại cell thấp hơn → [[CellDelay]] tăng → rủi ro timing vi phạm tăng.
+
+
+2. **Dynamic IR Drop**: thành phần sụt áp tức thời do switching activity đồng thời gây current spikes; thường đi kèm voltage droop/ground bounce trong các thời điểm nhạy cảm.
+
+**Dynamic IR Drop** xảy ra khi nhiều cells chuyển trạng thái đồng thời tại high frequency, gây current spike vượt mức $I_{Avg}$. Hai nguồn gây ra:
+- **Switching Noise**: switching current của các logic devices.
+- **Rush Current Noise**: rush current khi charging up decoupling capacitors của local grid khi woken up.
+
+Dynamic IR Drop tạo ra **Voltage Droop** trên VDD và **Ground Bounce** trên VSS — là voltage fluctuation tức thời ảnh hưởng cell delay trong khoảng thời gian ngắn sau clock edge.
 
 ## Ảnh hưởng tới timing
 Khi IR Drop tăng, effective VDD tại cell giảm. Hệ quả điển hình:

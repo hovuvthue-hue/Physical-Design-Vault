@@ -17,7 +17,20 @@ Rows được generate trong Floorplanning step dựa trên Core area dimensions
 ROW ROW_1 core 0 0 N DO 500 BY 1 STEP 140 0 ; 
 ROW ROW_2 core 0 900 FS DO 500 BY 1 STEP 140 0 ;
 
-Đọc là: ROW_1 sử dụng Site type "core", bắt đầu tại (0,0), chứa các Sites theo X với step bằng Site width. ROW liền kề có thể dùng orientation đối xứng/đảo hướng để phù hợp rail/well topology của library [Needs verification].
+Đọc là: ROW_1 sử dụng Site type "core", bắt đầu tại (0,0), chứa các Sites theo X với step bằng Site width. 
+
+Row orientation xen kẽ giữa hai giá trị chuẩn để enable cell flipping:
+
+| Orientation | Ý nghĩa |
+|---|---|
+| **R0** | Upright — không rotation, không mirror |
+| **MY** | Flip top to bottom — mirror theo trục ngang (X-axis) |
+
+Pattern R0 → MY → R0 → MY giữa các hàng liền kề tạo ra hai hiệu ứng vật lý bắt buộc:
+- **Abutted PG Rail**: VDD/VSS rail ở biên trên hàng R0 tiếp giáp rail ở biên dưới hàng MY liền kề — cells chia sẻ PG rail tại biên row mà không cần routing bổ sung.
+- **Abutted N-Well**: N-Well của cells trong hai hàng liền kề tiếp giáp nhau — loại bỏ well-to-well gap giữa các hàng, giảm DRC spacing requirements.
+
+Đây là cơ chế nền tảng cho phép Standard Cells được abutted trong Rows mà vẫn đảm bảo power/well connectivity liên tục.
 
 $$\text{Tổng số Rows} = \left\lfloor \frac{\text{Core Height}}{\text{Site Height}} \right\rfloor$$
 
@@ -41,7 +54,7 @@ Vùng bên trong Macro footprint không có Rows (Macro chiếm diện tích và
 - [[Floorplanning]] — Floorplanning tool generates Rows sau khi Core area và Macro positions được defined; Row generation là automated step nhưng PD engineer phải verify Row coverage và identify gaps do Macro placements
 
 ## Key insight
-Row orientation thường được tổ chức theo pattern xen kẽ hoặc đối xứng để hỗ trợ power-rail/well continuity của standard-cell architecture; tên orientation cụ thể và legality rule phụ thuộc library/tool convention. [Needs verification] Macro placement không tương thích với Row/Site boundary có thể làm giảm vùng placement hợp lệ quanh macro hoặc tạo local placement/routing difficulty.
+Row orientation xen kẽ R0 (upright) và MY (flip top to bottom). Cơ chế này tạo ra Abutted PG Rail và Abutted N-Well tại biên giữa các hàng liền kề — đây là điều kiện để Standard Cell fabric có power delivery và well biasing liên tục mà không cần khoảng cách giữa rows hay routing bổ sung. Library designer thiết kế cells với VDD rail ở một cạnh và VSS rail ở cạnh kia chính xác để tương thích với pattern abutment này. Macro placement không tương thích với Row/Site boundary có thể làm giảm vùng placement hợp lệ quanh macro hoặc tạo local placement/routing difficulty.
 
 ## Related
 → Chain: [[Chain_LEF_to_PnR]]

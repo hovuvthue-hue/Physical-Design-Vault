@@ -177,17 +177,17 @@ Trong repo, Parasitic Extraction nhận wire geometries từ Routing và xuất 
 
 Không nên gom card theo folder. Nên gọi theo ngữ cảnh:
 
-|Khi bài giảng nói về|Wikilink nên xuất hiện|
-|---|---|
-|Back-end boundary|`[[LogicSynthesis]]`, `[[GateLevelNetlist]]`, `[[Physical Design]]`, `[[Signoff]]`|
-|Input setup|`[[SDC]]`, `[[LIB]]`, `[[LEF]]`, `[[DEF]]`, `[[MMMC]]`, `[[PhysicalConstraints]]`|
-|Geometry foundation|`[[Pitch]]`, `[[Track]]`, `[[RoutingGrid]]`, `[[Site]]`, `[[Row]]`, `[[PlacementGrid]]`|
-|Library abstraction|`[[CellAbstract]]`, `[[Pin]]`, `[[Obstruction]]`, `[[StandardCell]]`, `[[HardIP]]`|
-|Floorplanning|`[[Floorplanning]]`, `[[CoreArea]]`, `[[MacroPlacement]]`, `[[PDN]]`, `[[IRDrop]]`, `[[PlacementBlockage]]`, `[[RoutingBlockage]]`|
-|Placement|`[[Placement]]`, `[[GlobalPlacement]]`, `[[DetailedPlacement]]`, `[[Legalization]]`, `[[PlacementDensity]]`, `[[CongestionAnalysis]]`, `[[DRVFixing]]`|
-|CTS|`[[ClockTreeSynthesis]]`, `[[CTSFlow]]`, `[[ClockSkew]]`, `[[ClockLatency]]`, `[[Slew]]`, `[[PostCTSOptimization]]`|
-|Timing|`[[STA]]`, `[[CellDelay]]`, `[[NetDelay]]`, `[[StageDelay]]`, `[[Slack]]`, `[[SetupTime]]`, `[[HoldTime]]`|
-|Routing/extraction|`[[Routing]]`, `[[ParasiticExtraction]]`, `[[SPEF]]`, `[[GDS]]`|
-|Closure|`[[Signoff]]`, `[[DRC]]`, `[[LVS]]`, `[[IRDrop]]`, `[[EM]]`, `[[ECO]]`|
+| Khi bài giảng nói về | Wikilink nên xuất hiện                                                                                                                                 |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Back-end boundary    | `[[LogicSynthesis]]`, `[[GateLevelNetlist]]`, `[[Physical Design]]`, `[[Signoff]]`                                                                     |
+| Input setup          | `[[SDC]]`, `[[LIB]]`, `[[LEF]]`, `[[DEF]]`, `[[MMMC]]`, `[[PhysicalConstraints]]`                                                                      |
+| Geometry foundation  | `[[Pitch]]`, `[[Track]]`, `[[RoutingGrid]]`, `[[Site]]`, `[[Row]]`, `[[PlacementGrid]]`                                                                |
+| Library abstraction  | `[[CellAbstract]]`, `[[Pin]]`, `[[Obstruction]]`, `[[StandardCell]]`, `[[HardIP]]`                                                                     |
+| Floorplanning        | `[[Floorplanning]]`, `[[CoreArea]]`, `[[MacroPlacement]]`, `[[PDN]]`, `[[IRDrop]]`, `[[PlacementBlockage]]`, `[[RoutingBlockage]]`                     |
+| Placement            | `[[Placement]]`, `[[GlobalPlacement]]`, `[[DetailedPlacement]]`, `[[Legalization]]`, `[[PlacementDensity]]`, `[[CongestionAnalysis]]`, `[[DRVFixing]]` |
+| CTS                  | `[[ClockTreeSynthesis]]`, `[[CTSFlow]]`, `[[ClockSkew]]`, `[[ClockLatency]]`, `[[Slew]]`, `[[PostCTSOptimization]]`                                    |
+| Timing               | `[[STA]]`, `[[CellDelay]]`, `[[NetDelay]]`, `[[StageDelay]]`, `[[Slack]]`, `[[SetupTime]]`, `[[HoldTime]]`                                             |
+| Routing/extraction   | `[[Routing]]`, `[[ParasiticExtraction]]`, `[[SPEF]]`, `[[GDS]]`                                                                                        |
+| Closure              | `[[Signoff]]`, `[[DRC]]`, `[[LVS]]`, `[[IRDrop]]`, `[[EM]]`, `[[ECO]]`                                                                                 |
 
 Một số card như `[[DRC]]`, `[[LVS]]`, `[[EM]]`, `[[ECO]]`, `[[Halo]]`, `[[BlockIOPin]]`, `[[PadRing]]`, `[[PowerStripe]]`, `[[CoreRing]]` có thể chưa tồn tại hoặc chưa thấy rõ trong search. Reference floorplanning của bạn cũng đã đề xuất nhiều new-card candidates, đặc biệt cho die/core area, IO/pad, blockage/halo, PDN, IR drop, EM, ESD, seal ring và packaging-aware top-level work.

@@ -15,7 +15,7 @@ PDN (Power Distribution Network) là mạng phân phối nguồn điện trong l
 Một PDN tốt cần cân bằng đồng thời các mục tiêu sau:
 - Cấp nguồn đến tất cả cells và macros một cách liên tục.
 - Giảm rủi ro [[IRDrop]] để hạn chế sụt áp cục bộ.
-- Giảm rủi ro Electromigration / self-heating ở mức khái niệm (không đặt ngưỡng số).
+- Giảm rủi ro [[Electromigration]] / self-heating ở mức khái niệm (không đặt ngưỡng số).
 - Tránh over-design: lưới nguồn quá dày có thể tiêu tốn diện tích kim loại và làm giảm Routing Resource cho tín hiệu.
 
 ## Cấu trúc phân cấp của PDN

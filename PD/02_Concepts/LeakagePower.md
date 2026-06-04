@@ -41,18 +41,19 @@ Gate oxide mỏng hơn có thể làm tăng rủi ro tunneling, nhưng magnitude
 Trong L8, GIDL được liệt kê như một thành phần leakage bên cạnh diode reverse-bias current, subthreshold current và gate oxide leakage. Mức độ ảnh hưởng của GIDL là process/device-specific. [Needs verification]
 
 ## Factors affecting leakage
-| Factor | Concept-level effect |
-|---|---|
-| Lower Vth | Tăng Subthreshold Leakage. |
-| Higher VDD | Tăng rủi ro Gate Leakage và Junction Leakage do điện trường/bias lớn hơn. [Needs verification] |
-| Higher temperature | Thường làm nhiều leakage components tăng. [Needs verification] |
-| Larger transistor width | Tạo nhiều leakage paths hơn hoặc device area lớn hơn. [Needs verification] |
-| Thinner oxide | Tăng rủi ro gate oxide tunneling. [Needs verification] |
-| Reverse Body Bias | Có thể giảm leakage bằng cách tăng effective Vth. [Needs verification] |
-| Forward Body Bias | Có thể tăng leakage bằng cách giảm effective Vth. [Needs verification] |
-| Process variation | Làm leakage thay đổi theo từng device/cell instance. [Needs verification] |
+| Factor                        | Concept-level effect                                                                             |
+| ----------------------------- | ------------------------------------------------------------------------------------------------ |
+| Lower Vth                     | Tăng Subthreshold Leakage.                                                                       |
+| Higher VDD                    | Tăng rủi ro Gate Leakage và Junction Leakage do điện trường/bias lớn hơn. [Needs verification]   |
+| Higher temperature            | Thường làm nhiều leakage components tăng. [Needs verification]                                   |
+| Larger transistor width       | Tạo nhiều leakage paths hơn hoặc device area lớn hơn. [Needs verification]                       |
+| Thinner oxide                 | Tăng rủi ro gate oxide tunneling. [Needs verification]                                           |
+| Reverse Body Bias             | Có thể giảm leakage bằng cách tăng effective Vth. [Needs verification]                           |
+| Forward Body Bias             | Có thể tăng leakage bằng cách giảm effective Vth. [Needs verification]                           |
+| Process variation             | Làm leakage thay đổi theo từng device/cell instance. [Needs verification]                        |
 | Logic state / Stacking effect | Một số stacked OFF devices có thể giảm leakage tùy logic state và topology. [Needs verification] |
 
+Bảng tương ứng cho dynamic power factors: xem [[PowerAnalysis]].
 ## Technology scaling trend
 Ở các technology lớn/cũ hơn, **Dynamic Power** thường là phần được quan tâm nhiều hơn trong tổng power. Khi technology scaling đi xuống, LeakagePower có thể tăng và trở thành một phần quan trọng hơn của total power.
 

@@ -32,12 +32,37 @@ Tỷ trọng tương đối phụ thuộc cell type, Vt option, process, tempera
 
 Ở giai đoạn placement, dynamic power thường được ước lượng từ activity giả định hoặc activity đã annotate một phần, nên kết quả mang tính định hướng hơn là signoff-final.
 
-## Switching vs internal power
-Trong Dynamic Power có thể tách concept-level thành:
-- **Switching Power**: liên quan tới nạp/xả điện dung tải (đặc biệt net/interconnect).
-- **Internal Power**: tiêu tán bên trong cell khi tín hiệu chuyển trạng thái.
+## Switching vs internal power (Dynamic Power sub-components)
 
-Phân tách này giúp định hướng tối ưu: giảm capacitance/activity có thể tác động mạnh lên switching; thay đổi cell/library có thể ảnh hưởng internal và leakage [Needs verification].
+Dynamic Power tách thành hai sub-components:
+
+**Switching Power** — dominant component:
+$$P_{switching} = \alpha \cdot C \cdot V^2 \cdot f$$
+$\alpha$ = switching activity factor, $C$ = load capacitance, $V$ = supply voltage, $f$ = clock frequency. Đây là thành phần chiếm tỷ trọng lớn nhất trong Dynamic Power và là target chính của power optimization.
+
+**Internal Power** — bên trong Standard Cell:
+
+Gồm hai phần:
+
+1. **Short-circuit power**: xảy ra khi cả PMOS và NMOS dẫn điện đồng thời trong khoảng thời gian ngắn tại mỗi signal transition, tạo đường thẳng tạm thời từ VDD xuống GND:
+$$P_{short\_circuit} \approx I_{sc} \cdot V \cdot t_{sc} \cdot f$$
+$I_{sc}$ = short-circuit current, $t_{sc}$ = thời gian tồn tại short-circuit path mỗi transition. $t_{sc}$ tỉ lệ thuận với Input Slew — Slew thoải → overlap time dài → $P_{short\_circuit}$ lớn hơn. Đây là một lý do Max Transition violations có tác động power ngoài timing.
+
+2. **Internal node switching**: switching của các nút nội bộ trong cell (không xuất hiện ở output).
+
+## Factors affecting dynamic power
+
+| Factor | Tác động lên Dynamic Power |
+|---|---|
+| ↑ Switching Activity (α) | ↑ Current (nhiều transitions hơn) |
+| ↑ Capacitance (C) | ↑ Current (tải lớn hơn) |
+| ↑ Supply Voltage (V) | ↑ Power ∝ V², ↑ Current ∝ V |
+| ↑ Frequency (f) | ↑ Current (nhiều transitions/giây hơn) |
+| ↑ Fanout / Wirelength | ↑ Capacitance → ↑ Current |
+| ↑ Glitching / Hazards | ↑ Unnecessary transitions → ↑ Power lãng phí |
+| ↑ Parallelism | ↑ Instantaneous current spikes → ↑ Dynamic IR Drop risk |
+
+Bảng tương ứng cho leakage factors: xem [[LeakagePower]].
 
 ## Accuracy across implementation stages
 Độ chính xác của [[PowerAnalysis]] thay đổi theo stage:

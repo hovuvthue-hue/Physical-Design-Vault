@@ -45,6 +45,6 @@ Signoff là ranh giới kiểm tra cuối giữa implementation database và quy
 → Chain: [[Chain_PnR_Flow]]
 → Upstream: [[ParasiticExtraction]] · [[Routing]] · [[PostRouteOptimization]] · [[ChipFinishing]] · [[STA]]
 → Downstream: Tape-out
-→ Checks bao gồm: [[DRC]] · LVS · [[IRDrop]] · Electromigration · [[SignalIntegrity]]
+→ Checks bao gồm: [[DRC]] · LVS · [[IRDrop]] · [[Electromigration]] · [[SignalIntegrity]]
 → Tools: Cadence Tempus · Mentor Calibre · Cadence Voltus
 → Cùng nhóm: [[Floorplanning]] · [[Placement]] · [[ClockTreeSynthesis]] · [[Routing]] · [[ParasiticExtraction]]

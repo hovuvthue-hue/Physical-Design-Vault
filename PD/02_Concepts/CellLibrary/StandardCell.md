@@ -52,6 +52,16 @@ Vth optimization (HVT → LVT swap trên critical paths) là một trong những
 - **[[STA]]**: drive strength và Vth variant của từng cell trực tiếp ảnh hưởng đến Cell Delay (via LIB LUT lookup); Vth swapping là common ECO để fix Setup violations trên critical paths
 - **[[LogicSynthesis]]**: Technology Mapping = matching generic Boolean logic với Standard Cell functions trong library; synthesis chọn drive strength và Vth variants dựa trên timing/area/power objectives
 
+**Legal placement orientations** (L7 p.9): Standard Cell có 4 orientations hợp lệ trong Placement:
+
+| Orientation | Ý nghĩa |
+|---|---|
+| **R0** | Default — upright, no rotation, no mirror |
+| **MY** | Mirror along Y-axis |
+| **MX** | Mirror along X-axis |
+| **R180** | 180° rotation |
+
+Mục đích: đảm bảo alignment với power rails và enable valid cell abutment giữa các cells liền kề trong cùng Row. Row alternation (R0 ↔ flipped) tạo Abutted PG Rail và Abutted N-Well tại row boundary. [Exact orientation convention là tool-specific — Needs verification]
 ## Requires
 - [[LEF]] — Macro LEF (Cell Abstract) là physical representation dùng trong PnR
 - [[LIB]] — Liberty file chứa timing/power characterization data tại từng PVT corner

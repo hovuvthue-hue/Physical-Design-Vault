@@ -50,13 +50,13 @@ Logical input:
 - Gate-level netlist
 
 Timing and constraint input:
-- SDC
-- MMMC setup
-- Liberty timing/power libraries
+- [[SDC]]
+- [[MMMC]] setup
+- Liberty timing/power libraries ([[LIB]])
 
 Physical and technology input:
-- LEF
-- DEF
+- [[LEF]]
+- [[DEF]]
 - Technology information
 - Extraction technology files
 

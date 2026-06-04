@@ -26,6 +26,8 @@ Row orientation xen kẽ giữa hai giá trị chuẩn để enable cell flippin
 | **R0** | Upright — không rotation, không mirror |
 | **MY** | Flip top to bottom — mirror theo trục ngang (X-axis) |
 
+> **Lưu ý convention:** Tresemi L7 gọi row orientation "flip top to bottom" là **MY**, trong khi convention EDA chuẩn thường dùng **MX** (Mirror about X-axis = horizontal axis) cho flip top-to-bottom và **MY** cho flip left-to-right. L7 slide p.9 định nghĩa "MY – Mirror along Y-axis" nhưng p.10 lại mô tả "MY: Flip top to bottom" — hai phát biểu này không nhất quán với nhau. Khi làm việc với Innovus hoặc ICC2, cần verify orientation naming theo tool documentation của từng phiên bản. **Điều không thay đổi:** physical effect cần thiết cho PG rail abutment là flip top-to-bottom giữa các hàng liền kề.
+
 Pattern R0 → MY → R0 → MY giữa các hàng liền kề tạo ra hai hiệu ứng vật lý bắt buộc:
 - **Abutted PG Rail**: VDD/VSS rail ở biên trên hàng R0 tiếp giáp rail ở biên dưới hàng MY liền kề — cells chia sẻ PG rail tại biên row mà không cần routing bổ sung.
 - **Abutted N-Well**: N-Well của cells trong hai hàng liền kề tiếp giáp nhau — loại bỏ well-to-well gap giữa các hàng, giảm DRC spacing requirements.

@@ -18,6 +18,7 @@ Placement tool tối ưu hóa đồng thời nhiều objectives:
 - **Timing-driven placement**: cells trên critical paths được đặt gần nhau để minimize wire delay, dựa trên [[Slack]] từ SDC
 - **Congestion-driven placement**: phân bố cell density đều để tránh routing hotspots — tool dùng global routing estimate để dự đoán congestion
 - **Utilization**: tỷ lệ (total cell area) / (Core area), được cân bằng theo mục tiêu timing/routability cụ thể của từng design [Needs verification]
+- **DRV compliance**: đảm bảo cell spacing rules, max transition, max capacitance, và max fanout constraints không bị vi phạm trong quá trình placement; đây là objective độc lập với timing/congestion — DRVFixing sau placement sẽ clean up những gì còn lại, nhưng placement tool cũng phải awareness DRV constraints ngay từ đầu
 
 Placement diễn ra theo 2 giai đoạn:
 1. **[[GlobalPlacement]]**: xác định vị trí gần đúng, cho phép overlap tạm thời, tối ưu wirelength và timing
@@ -34,6 +35,7 @@ Placement diễn ra theo 2 giai đoạn:
 - [[GateLevelNetlist]] — danh sách tất cả cell instances và connectivity (Netlist) để tool biết cần place những gì và Net nào cần minimize wirelength
 - [[SDC]] — Timing constraints để tool thực hiện timing-driven placement, ưu tiên cells trên critical paths
 - [[LEF]] — Cell Abstracts cung cấp kích thước chính xác của từng Standard Cell, Pin locations, và Site/Row definitions
+- UPF (Unified Power Format) — khi design có multi-voltage domains, UPF phải được load trước Placement để tool biết power domain boundaries, voltage islands, và vị trí level-shifter cells; không relevant với single-voltage designs
 
 ## Used by
 - [[ClockTreeSynthesis]] — nhận vị trí chính xác của clock sinks làm input để synthesize và balance Clock Tree

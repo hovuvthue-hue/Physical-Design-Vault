@@ -13,15 +13,15 @@ Synopsys Design Constraints (SDC) là format file định nghĩa toàn bộ timi
 
 SDC hoạt động trên **Design Objects** — các thực thể mà timing constraints tham chiếu đến. Phân biệt chính xác các Design Objects là bắt buộc để SDC hoạt động đúng:
 
-| Object | Định nghĩa | Scope |
-|---|---|---|
-| Design | Mô tả mạch thực hiện một chức năng (Verilog module) | module boundary |
-| Cell | Instantiation của Design trong Design khác (Verilog instance) | bên trong Design |
-| Reference | Design gốc mà Cell "trỏ đến" (Verilog sub-module) | logical definition |
-| Port | input/output/inout của **Design** — tức là boundary I/O của module | module boundary |
-| Pin | input/output/inout của **Cell** bên trong Design — tức là instance-level terminal | bên trong Design |
-| Net | Wire kết nối Ports với Pins và/hoặc Pins với nhau | physical connectivity |
-| Clock | Port hoặc Pin được tường minh định nghĩa là clock source trong SDC | xác định bởi `create_clock` |
+| Object    | Định nghĩa                                                                        | Scope                       |
+| --------- | --------------------------------------------------------------------------------- | --------------------------- |
+| Design    | Mô tả mạch thực hiện một chức năng (Verilog module)                               | module boundary             |
+| Cell      | Instantiation của Design trong Design khác (Verilog instance)                     | bên trong Design            |
+| Reference | Design gốc mà Cell "trỏ đến" (Verilog sub-module)                                 | logical definition          |
+| Port      | input/output/inout của **Design** — tức là boundary I/O của module                | module boundary             |
+| Pin       | input/output/inout của **Cell** bên trong Design — tức là instance-level terminal | bên trong Design            |
+| Net       | Wire kết nối Ports với Pins và/hoặc Pins với nhau                                 | physical connectivity       |
+| Clock     | Port hoặc Pin được tường minh định nghĩa là clock source trong SDC                | xác định bởi `create_clock` |
 
 **Phân biệt Port vs Pin**: Port là I/O ở module-level boundary (block interface); Pin là I/O ở instance-level terminal (cell connection). Cùng một signal có thể là Port của module cha và là driver của Net kết nối đến Pins của các cell instances bên trong. Sự nhầm lẫn Port/Pin là nguyên nhân phổ biến của "object not found" errors trong SDC.
 

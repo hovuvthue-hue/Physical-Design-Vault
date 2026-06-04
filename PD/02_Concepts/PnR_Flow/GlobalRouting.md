@@ -8,6 +8,19 @@ chain: Chain_PnR_Flow
 ---
 # GlobalRouting
 
+## Early Global Routing during Placement
+
+GlobalRouting cũng được gọi explicitly trong **Placement flow** (Innovus: `route_early_global`) để estimate routing feasibility trong khi đặt cells — trước khi GlobalRouting stage chính thức sau CTS. Đây là predictive step giúp placer đưa ra quyết định tốt hơn về cell distribution và congestion.
+
+Trong context này:
+- Results được đánh dấu status **"unknown"** — đây là estimate, không phải final route geometry
+- **Overflow (%)** là key metric: tỷ lệ routing demand vượt quá routing supply cục bộ
+  - Overflow < 1% → generally routable
+  - Overflow > 1% → likely routing challenges → cần điều chỉnh placement trước khi tiến sang CTS/Routing
+- Cells không được routed thực tế — đây là coarse predictive step
+
+**Phân biệt với GlobalRouting chính thức:** Early GR trong Placement = estimation/feedback tool cho placer; GR sau CTS = route planning stage trong Routing flow (output là route plan hướng dẫn DetailedRouting).
+
 ## Definition
 GlobalRouting là stage lập kế hoạch routing ở mức trừu tượng trước khi hình học wire/via hợp lệ cuối cùng được tạo ra. Thay vì quyết định từng đoạn metal chính xác trên từng [[Track]], GlobalRouting ước lượng topology, hướng đi tương đối, nhu cầu dùng tài nguyên routing và rủi ro congestion để chuẩn bị cho [[DetailedRouting]].
 

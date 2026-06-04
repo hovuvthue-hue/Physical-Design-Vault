@@ -13,6 +13,18 @@ chain: Chain_PnR_Flow
 
 Nói ngắn gọn: vùng càng nhiều cell trên cùng legal area thì density càng cao.
 
+## Two variants of Placement Density
+
+**Cell Density** — chỉ tính Standard Cells:
+$$\text{Cell Density} = \frac{\text{Total Standard Cell Area}}{\text{Total Placeable Area}}$$
+
+**Core Density** — tính cả Macros:
+$$\text{Core Density} = \frac{\text{Total Standard Cell Area} + \text{Macro Area}}{\text{Total Placeable Area}}$$
+
+Cell Density loại trừ Macros nên phản ánh mức độ đặc của Standard Cell fabric; Core Density cho bức tranh tổng thể của Core area.
+
+## Practical guideline
+Placement density thường được giữ dưới **~70%** để đảm bảo routability. Density cao hơn dẫn đến tăng congestion và khó routing.
 ## Local density vs global utilization
 - **Global utilization**: góc nhìn tổng thể toàn core/placeable area.
 - **Local density**: góc nhìn theo từng vùng nhỏ trong layout.

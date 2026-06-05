@@ -9,7 +9,14 @@ chain: Chain_PnR_Flow
 # ParasiticExtraction
 
 ## Definition
-Parasitic Extraction là bước trích xuất các giá trị điện trở (R) và điện dung (C) ký sinh từ wire và [[Via]] geometries thực tế trong Route DB. Các giá trị RC này không tồn tại trong Netlist logic — chúng phát sinh từ đặc tính vật lý của metal wires trên silicon. Output là file SPEF (Standard Parasitic Exchange Format) chứa [[InterconnectRC]] của từng Net, được STA tool tiêu thụ để tính wire delay chính xác.
+Parasitic Extraction là bước trích xuất các giá trị điện trở (R) và điện dung (C) ký sinh từ wire và [[Via]] geometries thực tế trong Route DB. Các giá trị RC này không tồn tại trong Netlist logic — chúng phát sinh từ đặc tính vật lý của metal wires trên silicon. Output là file [[SPEF]] (Standard Parasitic Exchange Format) chứa [[InterconnectRC]] của từng Net, được STA tool tiêu thụ để tính wire delay chính xác.
+
+RC extraction có thể output ra 3 formats:
+- **DSPF (Detail Standard Parasitic Format)**: format chi tiết nhất, lưu đầy đủ topology RC; file size lớn
+- **RSPF (Reduced Standard Parasitic Format)**: format rút gọn, bỏ bớt detail trung gian
+- **SPEF (Standard Parasitic Exchange Format)**: compact nhất, được hỗ trợ bởi tất cả tools và là format chuẩn cho STA và timing analysis
+
+Trong thực tế, SPEF là format được dùng trong toàn bộ PnR flow; DSPF và RSPF ít gặp hơn.
 
 ## Computed from
 Extraction tool tính toán parasitics dựa trên wire geometry và process parameters:

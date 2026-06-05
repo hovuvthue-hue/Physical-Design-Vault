@@ -84,7 +84,7 @@ Large local delay, high fanout, và poor slew có thể chỉ ra candidate cần
 
 ## Full Clock Path Analysis (Post-CTS)
 
-Sau CTS, clock path nên được phân tích cùng data path vì propagated clock, [[ClockSkew]], [[ClockLatency|insertion delay]] và CPPR-related effects có thể ảnh hưởng post-CTS/post-route timing. Tool/report details là flow-specific. [Needs verification] Phân tích full clock path thường tách timing context thành 3 phần:
+Sau CTS, clock path nên được phân tích cùng data path vì propagated clock, [[ClockSkew]], [[ClockLatency|insertion delay]] và [[CPPR]]-related effects có thể ảnh hưởng post-CTS/post-route timing. Tool/report details là flow-specific. [Needs verification] Phân tích full clock path thường tách timing context thành 3 phần:
 
 **Launch Clock Path:** Clock port ngoài cùng → qua Clock Buffers → đến clock Pin của launch FF.
 
@@ -94,7 +94,7 @@ Sau CTS, clock path nên được phân tích cùng data path vì propagated clo
 
 Launch clock path, data path và capture clock path giúp nhìn rõ quan hệ giữa propagated clock, data delay, CPPR-related effects và [[ClockSkew]] trong post-CTS/post-route timing. [Needs verification]
 
-## Path Grouping và Path Filtering
+## [[PathGrouping]] và Path Filtering
 
 **Path Grouping:** STA có thể phân nhóm paths theo loại hoặc theo intent của flow để tách analysis/optimization groups. Cách group paths và cách optimizer dùng các groups này phụ thuộc tool setup, constraint strategy và implementation policy. [Needs verification]
 

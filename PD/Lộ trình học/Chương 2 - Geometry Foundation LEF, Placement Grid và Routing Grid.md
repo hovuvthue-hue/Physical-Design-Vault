@@ -169,7 +169,6 @@ Nếu một layer có pitch nhỏ hơn, layer đó có thể có nhiều routing
 - via enclosure;
     
 - design rule constraints.
-    
 
 ### Vì sao Pitch quan trọng?
 
@@ -190,7 +189,6 @@ Pitch ảnh hưởng đến:
 - standard-cell height;
     
 - site alignment.
-    
 
 Ở mức cơ bản, có thể hiểu:
 
@@ -205,10 +203,8 @@ Pitch ảnh hưởng đến:
 - [[RoutingGrid]] được [[Routing]] sử dụng.
     
 - [[Pitch]] cũng liên quan gián tiếp đến [[Site]] vì standard-cell architecture thường được thiết kế để align với routing resources.
-    
 
 ---
-
 ## 2.6. [[Track]] — đường routing hợp lệ trên một layer
 
 [[Track]] là một đường routing candidate trên một metal layer.
@@ -228,14 +224,12 @@ Trong đó:
 - `Pitch` là khoảng cách giữa hai tracks;
     
 - `i` là index của track.
-    
 
 Một metal layer có thể có preferred routing direction:
 
 - horizontal;
     
 - vertical.
-    
 
 Ví dụ phổ biến:
 
@@ -289,11 +283,9 @@ Các yếu tố làm tăng routing demand:
 [[RoutingGrid]] là tập hợp các tracks trên các routing layers.
 
 Có thể hiểu:
-
 ```text
 RoutingGrid = all routing tracks across all routing layers
 ```
-
 [[Routing]] tool dùng [[RoutingGrid]] để tìm đường nối các pins.
 
 Routing không chỉ là “vẽ dây ngắn nhất”. Router phải đồng thời xét:
@@ -325,7 +317,6 @@ Routing không chỉ là “vẽ dây ngắn nhất”. Router phải đồng th
 - antenna rule, nếu flow check;
     
 - non-default rules, nếu dùng cho clock hoặc critical nets.
-    
 
 ### RoutingGrid và timing
 
@@ -400,7 +391,6 @@ Ví dụ:
 - power rail của cells phải align với row;
     
 - cell symmetry ảnh hưởng legal orientation.
-    
 
 ### Liên kết cần nhớ
 
@@ -411,7 +401,6 @@ Ví dụ:
 - [[Row]] tạo thành [[PlacementGrid]].
     
 - [[Placement]] đặt [[StandardCell]] lên [[PlacementGrid]].
-    
 
 ---
 
@@ -440,7 +429,6 @@ Rows thường được tạo trong [[Floorplanning]], dựa trên:
 - placement blockage;
     
 - power rail convention.
-    
 
 ### Vai trò của Row
 
@@ -459,7 +447,6 @@ Một row có thể bị cắt hoặc phân mảnh bởi:
 - keepout;
     
 - boundary constraint.
-    
 
 Row fragmentation làm giảm effective placeable area và có thể làm placement khó hơn.
 
@@ -483,10 +470,8 @@ Không nên ghi nhớ cứng một naming convention duy nhất. Tool khác nhau
 - [[Row]] được tạo trong [[Floorplanning]]
     
 - [[Row]] được dùng bởi [[Placement]] và [[DetailedPlacement]]
-    
 
 ---
-
 ## 2.10. [[PlacementGrid]] — không gian đặt standard cells
 
 [[PlacementGrid]] là tập hợp các legal site positions trong rows.
@@ -516,7 +501,6 @@ Một placement hợp lệ cần thỏa:
 - power rail alignment hợp lệ;
     
 - multi-height rule hợp lệ nếu có.
-    
 
 ### PlacementGrid và utilization
 
@@ -546,7 +530,6 @@ Trong đó placeable area bị giảm bởi:
 - power/grid constraints;
     
 - boundary effects.
-    
 
 Vì vậy, một core nhìn có vẻ rộng nhưng effective placeable area có thể nhỏ hơn nhiều.
 

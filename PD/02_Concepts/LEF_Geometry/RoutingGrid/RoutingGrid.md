@@ -16,10 +16,10 @@ Routing Grid tách biệt với [[PlacementGrid]]: PlacementGrid quản lý lega
 ## Computed from
 Routing Grid được tạo bằng cách instantiate Tracks cho mỗi metal layer theo thông tin từ Tech LEF. Mỗi metal layer có hướng ưu tiên (preferred routing direction) để minimize cross-layer coupling:
 
-| Layer | Hướng ưu tiên | Ghi chú |
-|---|---|---|
-| Lower/upper layers | Preferred direction theo công nghệ | Router dùng để quản lý routing resource |
-| Adjacent layers | Thường trực giao (orthogonal) | Giảm xung đột hướng đi dây trong Manhattan routing |
+| Layer              | Hướng ưu tiên                      | Ghi chú                                            |
+| ------------------ | ---------------------------------- | -------------------------------------------------- |
+| Lower/upper layers | Preferred direction theo công nghệ | Router dùng để quản lý routing resource            |
+| Adjacent layers    | Thường trực giao (orthogonal)      | Giảm xung đột hướng đi dây trong Manhattan routing |
 
 Mật độ Routing Grid tại một vùng được đo bằng **routing capacity** = tổng số Tracks available trên tất cả layers tại vùng đó. **Routing congestion** xảy ra khi routing demand vượt quá routing capacity — đây là tín hiệu rủi ro quan trọng cần check sau Placement.
 

@@ -28,9 +28,10 @@ Trong thực tế với [[ClockSkew]] và OCV Margin đầy đủ:
 - Setup: `Slack = (T_c + δ_skew) − (t_cq + t_logic_max + t_setup + δ_margin)`
 - Hold: `Slack = (t_ccq + t_logic_min − δ_margin) − (t_hold + δ_skew)`
 
-Hai macro-metrics tổng hợp từ Slack của tất cả paths:
-- **WNS (Worst Negative Slack)**: `min(Slack)` toàn chip — path tồi tệ nhất; WNS quyết định maximum operating frequency thực tế của chip
-- **TNS (Total Negative Slack)**: `Σ(negative Slacks)` — tổng mức độ vi phạm; TNS phản ánh khối lượng công việc ECO cần giải quyết
+Ba macro-metrics tổng hợp từ Slack của tất cả paths:
+- **WNS (Worst Negative Slack)**: `min(Slack)` toàn chip → quyết định max operating frequency thực tế; WNS = 0 là target tối thiểu trước Tape-out.
+- **TNS (Total Negative Slack)**: `Σ(negative Slacks)` → phản ánh tổng khối lượng ECO cần giải quyết; TNS lớn → violations phân tán rộng.
+- **FEP (Failing Endpoints)**: số Endpoints có Slack âm → phản ánh diện rộng của timing violations; FEP cao → nhiều paths cần optimization, không chỉ worst path. Phân biệt: WNS = severity của violation tệ nhất; FEP = số lượng endpoints bị ảnh hưởng.
 
 ## Constrains
 - **[[SetupTime]]**: Setup Slack âm → data path quá chậm → Setup violation; fix bằng cách tăng AT room (upsize cells, shorten wires, add pipeline stage) hoặc tăng RAT (relax clock period — nhưng làm giảm chip performance)

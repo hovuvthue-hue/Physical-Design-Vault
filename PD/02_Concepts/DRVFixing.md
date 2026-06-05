@@ -14,12 +14,22 @@ chain: Chain_PnR_Flow
 Mục tiêu là đưa design về trạng thái “khỏe điện” hơn trước khi đi tiếp sang CTS, Routing, hoặc các bước downstream.
 
 ## Common DRV types
-Trong phạm vi concept-level pre-CTS, DRV thường xoay quanh:
-- **max transition / slew violation**
-- **max capacitance violation**
-- **max fanout violation**
 
-Các rule cụ thể và ngưỡng cụ thể phụ thuộc library/tool/flow [Needs verification].
+Ba loại DRV phổ biến trong pre-CTS context, mỗi loại gắn với một loại pin khác nhau:
+
+**max_capacitance** — constraint trên **output pin**
+Giới hạn maximum load capacitance mà một output pin được phép drive. Defined trong cell library hoặc optionally set bởi designer qua SDC. Violation khi tổng capacitance tải quá lớn so với khả năng driver.
+Fix methods: tăng driver strength (upsize cell), insert buffers để chia tải, net splitting nếu cần.
+
+**max_transition** — constraint trên **input pin** (không phải output pin)
+Định nghĩa maximum input slew (transition time) cho phép tại một pin. Violation khi driver quá yếu hoặc net load quá nặng → output slew thoải → input slew tại receiver vượt ngưỡng.
+Fix methods: tăng driver strength, insert buffers để split long/high-capacitance nets và kiểm soát slew.
+
+**max_fanout** — constraint trên **output pin**
+Giới hạn số lượng loads tối đa mà một output pin có thể drive. Violation khi single driver feed quá nhiều gates → excessive capacitance → slow transitions.
+Fix methods: insert buffers/repeaters để split fanout load.
+
+Các rule cụ thể và ngưỡng phụ thuộc library/tool/flow [Needs verification].
 
 ## Why DRV fixing matters before CTS and after route
 Nếu để tồn tại electrical DRV trước CTS:

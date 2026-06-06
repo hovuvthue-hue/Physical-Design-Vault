@@ -16,27 +16,30 @@ Thay vì dùng nhiều single-bit FF tách rời, design có thể dùng một M
 ## Banking concept
 **Banking** là ý tưởng gom nhiều single-bit FF tương thích thành một MBFF.
 
-Ví dụ minh họa: 8 FF 1-bit có thể được ánh xạ thành 1 MBFF 8-bit nếu thỏa điều kiện timing/clock/physical. Đây chỉ là ví dụ minh họa, không phải quy tắc bắt buộc cho mọi design.
+Ví dụ: tool có thể gom 8 FF 1-bit thành 1 MBFF 8-bit, hoặc gom 4 register banks 2-bit thành 2 register banks 4-bit — với điều kiện các registers đó có cùng timing constraints.
 
-Về clock sink, ba single-bit FF sẽ expose ba clock pins độc lập cho CTS; một MBFF 3-bit tương thích có thể expose một shared clock pin cho cả nhóm, nhờ đó giảm số clock sinks mà CTS nhìn thấy. Tuy nhiên sink count giảm không có nghĩa lợi ích luôn miễn phí: MBFF cell có physical size/load lớn hơn một single FF và có thể giảm placement flexibility hoặc locality.
+Về clock sink: N single-bit FF expose N clock pins độc lập cho CTS; một MBFF N-bit tương thích có thể expose một shared clock pin, nhờ đó giảm số clock sinks mà CTS nhìn thấy. Tuy nhiên MBFF cell có physical size/load lớn hơn một single FF và có thể ràng buộc placement/locality.
 
 ## Why MBFF is used
-MBFF thường được cân nhắc vì các lợi ích tiềm năng:
-- nhiều bit chia sẻ clock buffer hoặc clock connection;
-- giảm clock capacitance tổng ở một số trường hợp;
-- có thể giảm dynamic power của clock network;
-- có thể giảm area do gom cell;
-- có thể rút ngắn một phần clock tree net length;
-- có thể cải thiện skew/timing cục bộ khi các bit chia sẻ clock sink point chung.
+MBFF optimization reduces:
+- **Area:** nhờ shared transistors và optimized transistor-level layout khi gom registers.
+- **Total clock tree net length:** ít clock sink points hơn → clock tree compact hơn.
+- **Number of clock tree buffers:** CTS cần ít buffers hơn khi sink count giảm.
 
-Các mức cải thiện cụ thể phụ thuộc library, tool, và flow setup [Needs verification].
+Kết quả tổng hợp:
+- Area reduction
+- Power reduction
+- Better clock skew control
+- Timing improvement
+
+Mức cải thiện cụ thể phụ thuộc library, tool, flow setup, và mức độ banking thực tế đạt được.
 
 ## Merge requirements
-Không phải mọi FF đều merge được. Banking vào MBFF thường yêu cầu:
-- timing constraints tương thích;
-- cùng clock domain hoặc clock relation tương thích;
+Không phải mọi FF đều merge được. Banking vào MBFF chỉ hợp lệ khi:
+- các registers có **cùng timing constraints** — tool copies timing constraints sang resulting multibit register;
+- tương thích về clock domain hoặc clock relation;
 - tương thích về placement/locality để tránh kéo dài net bất lợi;
-- có MBFF cells phù hợp trong library và được tool flow hỗ trợ [Needs verification].
+- library có MBFF cells phù hợp và tool flow hỗ trợ.
 
 ## Trade-offs / risks
 MBFF có thể giúp PPA, nhưng có các rủi ro cần đánh đổi:

@@ -46,7 +46,6 @@ Không nên hiểu Physical Design là “vẽ layout”. Với digital implemen
 
 Một Physical Design flow thực tế thường cần các nhóm input sau:
 
-Logical input:
 - Gate-level netlist
 
 Timing and constraint input:

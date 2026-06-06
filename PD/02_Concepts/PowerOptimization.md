@@ -9,10 +9,17 @@ chain: Chain_PnR_Flow
 # PowerOptimization
 
 ## Definition
-**PowerOptimization** là nhóm hoạt động tối ưu sau placement nhằm giảm power tiêu thụ, đồng thời vẫn giữ các ràng buộc timing và tính hợp lệ vật lý của layout.
+## Definition
+**PowerOptimization** là nhóm hoạt động tối ưu nhằm giảm power tiêu thụ mà không compromising timing. Khi Power Optimization được enable, tool thực hiện các actions sau:
 
-Trong ngữ cảnh L8, đây là phần của post-placement optimization trước [[ClockTreeSynthesis]]. Trong bối cảnh post-route, PowerOptimization có thể xuất hiện như power/area recovery bên trong [[PostRouteOptimization]], nhưng chỉ khi timing, DRV, và rủi ro signoff còn được kiểm soát.
+- Swap cells sang lower-power equivalents để giảm leakage.
+- Dùng cells với drive strength nhỏ hơn để minimize area và power.
+- Select higher-Vt cells để giảm thêm leakage power.
+- Remove unnecessary buffers hoặc inverters để giảm dynamic power và area.
+- Adjust cell placement để optimize wirelength cho dynamic power savings.
+- Tuân thủ design constraints như UPF power budgets.
 
+Trong ngữ cảnh post-placement (pre-CTS), đây là bước chạy sau timing optimization. Trong bối cảnh post-route, PowerOptimization có thể xuất hiện như power/area recovery bên trong [[PostRouteOptimization]], nhưng chỉ khi timing, DRV, và rủi ro signoff còn được kiểm soát.
 ## Analysis vs optimization
 - [[PowerAnalysis]]: đo/ước lượng và phân rã power để hiểu nguyên nhân.
 - **PowerOptimization**: thay đổi lựa chọn implementation (cell/placement/post-placement tuning) để cải thiện kết quả power.

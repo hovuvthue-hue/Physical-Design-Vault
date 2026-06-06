@@ -736,7 +736,6 @@ Lý do:
 - routing tracks phải đi qua hoặc gần pin access points;
     
 - legal placement phải không phá pin accessibility.
-    
 
 Nếu không align, design vẫn có thể có placement hợp lệ nhưng routing xấu.
 

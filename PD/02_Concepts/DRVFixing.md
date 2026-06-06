@@ -39,6 +39,8 @@ Nếu để tồn tại electrical DRV trước CTS:
 
 Vì vậy DRVFixing thường là một phần quan trọng của pre-CTS cleanup. Sau [[Routing]], [[PostRouteOptimization]] tiếp tục dùng kết quả [[STA]] với extracted parasitics để sửa DRV còn lại trong bối cảnh [[Slew]], capacitance, và fanout thực tế hơn.
 
+**Lưu ý về clock nets:** DRV violations trên clock nets thường không được fix trong pre-CTS stage — [[ClockTreeSynthesis]] sẽ rebuild toàn bộ clock network với clock buffer placement tối ưu, do đó DRV trên clock nets được để lại cho CTS xử lý. Việc cố fix clock net DRV trước CTS có thể can thiệp vào CTS optimization.
+
 ## Typical conceptual fixes
 Ở mức khái niệm, DRVFixing có thể bao gồm:
 - điều chỉnh/bổ sung buffer hợp lý,

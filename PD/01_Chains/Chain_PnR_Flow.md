@@ -45,7 +45,7 @@ Output: Cell coordinates (x,y) legalized trên Placement Grid.
 
 Truyền xuống: Clock sink locations (x,y) là input bắt buộc cho CTS.
 
-Exit: No major congestion hotspots · Pre-route Timing feasible.
+Exit: All cells legally placed (no overlaps, no unplaced cells) · No DRV violations (max fanout, max cap, max transition — clock net DRV được để CTS xử lý) · Low congestion (Overflow < 1%, Hotspot < 100) · No EMIR violations · Pre-route Timing feasible (no or minor timing violations).
 
 **Bước 4 — [[ClockTreeSynthesis]]**
 

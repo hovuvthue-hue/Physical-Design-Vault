@@ -16,7 +16,7 @@ Placement là giai đoạn legal standard-cell placement kèm pre-CTS optimizati
 Placement tool tối ưu hóa đồng thời nhiều objectives:
 - **Wirelength minimization**: ước tính tổng wire length dựa trên [[HPWL]] (Half-Perimeter Wirelength) của từng Net
 - **Timing-driven placement**: cells trên critical paths được đặt gần nhau để minimize wire delay, dựa trên [[Slack]] từ SDC
-- **Congestion-driven placement**: phân bố cell density đều để tránh routing hotspots — tool dùng global routing estimate để dự đoán congestion
+- - **Congestion-driven placement**: phân bố cell density đều để tránh routing hotspots — tool dùng global routing estimate để dự đoán congestion. Đây là chế độ thay thế cho timing-driven (mặc định); timing-driven tối ưu wire length nhưng có thể tạo congestion, congestion-driven spread cells ra nhưng wire length dài hơn. Điều kiện áp dụng: design congested VÀ còn đủ positive timing margin.
 - **Utilization**: tỷ lệ (total cell area) / (Core area), được cân bằng theo mục tiêu timing/routability cụ thể của từng design [Needs verification]
 - **DRV compliance**: đảm bảo cell spacing rules, max transition, max capacitance, và max fanout constraints không bị vi phạm trong quá trình placement; đây là objective độc lập với timing/congestion — DRVFixing sau placement sẽ clean up những gì còn lại, nhưng placement tool cũng phải awareness DRV constraints ngay từ đầu
 

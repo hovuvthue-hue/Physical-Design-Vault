@@ -10,7 +10,9 @@ chain: Chain_PnR_Flow
 
 ## Early Global Routing during Placement
 
-GlobalRouting cũng được gọi explicitly trong **Placement flow** (Innovus: `route_early_global`) để estimate routing feasibility trong khi đặt cells — trước khi GlobalRouting stage chính thức sau CTS. Đây là predictive step giúp placer đưa ra quyết định tốt hơn về cell distribution và congestion.
+GlobalRouting cũng được gọi explicitly trong **Placement flow** để estimate routing feasibility trong khi đặt cells — trước khi GlobalRouting stage chính thức sau CTS. Đây là predictive step giúp placer đưa ra quyết định tốt hơn về cell distribution và congestion.
+
+Tool sử dụng **GCELLs (Global Routing Cells)** — lưới ô thô chia Core area thành các vùng nhỏ — để phân tích routing demand/supply theo vùng. Mỗi GCELL đại diện cho một local routing resource bucket chứa số Tracks nhất định theo chiều ngang và dọc; overflow tại một GCELL = số tracks thiếu hụt trong GCELL đó so với routing demand.
 
 Trong context này:
 - Results được đánh dấu status **"unknown"** — đây là estimate, không phải final route geometry

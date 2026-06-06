@@ -15,12 +15,12 @@ Về bản chất, Placement Blockage là cơ chế điều chỉnh **legal plac
 
 **4 loại Placement Blockage:**
 
-| Loại | Hành vi | Use case |
-|---|---|---|
-| **Hard** | Cấm hoàn toàn tất cả cell placement trong vùng | Vùng dự trữ cho routing channels, power straps |
-| **Partial** | Cho phép placement đến một ngưỡng utilization xác định trước | Vùng routing-heavy nhưng vẫn cần một số logic |
-| **Soft** | Chỉ cho phép một số cell types nhất định (Buffers, Inverters, Clock gaters) | Vùng chimneys giữa Macros — chỉ buffers được allowed |
-| **Macro-only** | Cấm placement Macros trong vùng, nhưng Standard Cells vẫn được phép | Bảo vệ SC areas khỏi bị tool tự động đặt thêm Macros |
+| Loại           | Hành vi                                                                     | Use case                                             |
+| -------------- | --------------------------------------------------------------------------- | ---------------------------------------------------- |
+| **Hard**       | Cấm hoàn toàn tất cả cell placement trong vùng                              | Vùng dự trữ cho routing channels, power straps       |
+| **Partial**    | Cho phép placement đến một ngưỡng utilization xác định trước                | Vùng routing-heavy nhưng vẫn cần một số logic        |
+| **Soft**       | Chỉ cho phép một số cell types nhất định (Buffers, Inverters, Clock gaters) | Vùng chimneys giữa Macros — chỉ buffers được allowed |
+| **Macro-only** | Cấm placement Macros trong vùng, nhưng Standard Cells vẫn được phép         | Bảo vệ SC areas khỏi bị tool tự động đặt thêm Macros |
 
 **Halo** — loại Placement Blockage đặc biệt gắn với Macro:
 - Halo là một vùng keep-out có kích thước cố định bao quanh một Macro cụ thể

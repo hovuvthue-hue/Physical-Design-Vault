@@ -17,6 +17,15 @@ Jitter được characterize bởi nhà sản xuất PLL và cung cấp trong da
 - **Cycle-to-Cycle Jitter**: độ lệch giữa hai chu kỳ liên tiếp
 - **Long-term Jitter / Phase Noise**: tích lũy qua nhiều chu kỳ
 
+## Sources of Clock Jitter
+Jitter phát sinh từ nhiều nguồn vật lý và điện:
+- **Crosstalk noise** — nhiễu cảm ứng từ các nets lân cận coupling vào clock net
+- **Power supply variation (IR Drop / voltage fluctuation)** — biến động điện áp nguồn làm thay đổi đặc tính switching của clock buffer
+- **Thermal variation** — dao động nhiệt độ ảnh hưởng đến tốc độ transistor trong clock path
+- **PLL noise** — nhiễu nội bộ của PLL làm clock edges dịch chuyển ngẫu nhiên
+- **Process variation** — biến thiên quy trình chế tạo tạo ra sự bất nhất giữa các transistor trong clock path
+- **Electromagnetic interference (EMI)** — nhiễu điện từ từ môi trường bên ngoài
+
 Trong STA, Jitter ảnh hưởng đến timing analysis theo cơ chế sau:
 
 **Với Setup check** (đánh giá sườn clock thứ n và n+1):

@@ -19,6 +19,12 @@ Clock Skew phát sinh từ sự bất đối xứng vật lý trong Clock Tree s
 
 $$\delta_{skew} = \text{Latency}_{capture} - \text{Latency}_{launch}$$
 
+Các nguyên nhân chính gây ra Clock Skew:
+- **Unequal clock path delays** — sự chênh lệch tổng delay trên các nhánh khác nhau của clock tree
+- **Clock buffer insertion** — số lượng và drive strength của clock buffers/inverters không đồng đều giữa các nhánh
+- **Routing differences** — sự chênh lệch wire length và RC parasitics giữa các clock nets
+- **Clock loading imbalance** — phân phối tải (fanout/capacitance) không đồng đều giữa các nhánh clock tree
+
 Trong đó Latency của mỗi FF = Source Latency + Network Latency (toàn bộ delay từ clock source đến clock pin của FF đó). STA tool đo Skew bằng cách so sánh Clock Arrival Time tại từng cặp (Launch FF, Capture FF) liên quan đến cùng một timing path. Có 3 loại Skew thường gặp trong thực tế: **Local Skew** (giữa 2 FF cụ thể trên cùng một timing path — con số STA dùng để tính [[Slack]]), **Global Skew** (max − min Latency trên toàn bộ clock domain — metric đánh giá chất lượng CTS), **Useful Skew** (Skew được cố tình tạo ra để cải thiện timing trên critical paths).
 
 ## Constraints

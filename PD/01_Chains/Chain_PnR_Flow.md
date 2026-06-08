@@ -49,7 +49,17 @@ Exit: All cells legally placed (no overlaps, no unplaced cells) · No DRV violat
 
 **Bước 4 — [[ClockTreeSynthesis]]**
 
-Nhận: Clock sink locations từ Placement.
+Nhận: Clock sink locations từ Placement + Clock Tree Spec.
+
+**Pre-CTS Sanity Checks (gate trước khi CTS thực thi):**
+- Tất cả Standard Cells và Macros đã được placed hợp lệ (no overlaps)
+- Placement density và congestion trong giới hạn chấp nhận được
+- Setup timing violations đã được clean hoặc chỉ còn minor violations
+- Non-clock DRV violations (max fanout, max transition, max capacitance) đã được clean; clock-net DRVs được để CTS xử lý
+- Tất cả clock definitions đã được định nghĩa đầy đủ (`create_clock`, `create_generated_clock`)
+- Clock constraints đã được review: clock uncertainty, clock groups, false paths/multicycle paths, clock gating checks
+- CTS resources khả dụng: buffer/inverter cells trong library, placement space cho clock buffers, routing resources cho clock nets
+- Power/ground, tie cells, và physical-only cells không có vấn đề
 
 Output: Clock tree topology, Buffer/Inverter positions, Clock net routes.
 

@@ -13,7 +13,29 @@ Clock Tree Synthesis (CTS) là bước xây dựng **physical clock distribution
 
 Về nội bộ thực thi, CTS thường đi qua chuỗi [[CTSFlow]]: Clustering → Balancing → Routing Clock Tree → Post-Conditioning.
 
-Clock Sink thường là clock pin của sequential elements (FF/latch) và có thể bao gồm clock pin của macro tùy design/library support [Needs verification]. Mục tiêu chính là kiểm soát [[ClockSkew]], [[ClockLatency|Insertion Delay]], [[Slew]]/Transition, đồng thời giữ timing/power ở mức chấp nhận được cho post-CTS [[STA]].
+Clock Sink thường là clock pin của sequential elements (FF/latch) và có thể bao gồm clock pin của macro tùy design/library support [Needs verification].
+
+## CTS Objectives (theo thứ tự ưu tiên)
+
+**1. Achieve Clock Tree Targets (Highest Priority)**
+- Balance clock insertion delay
+- Minimize clock skew
+- Minimize insertion delay
+
+**2. Meet Clock Tree Design Rules**
+- Maximum transition/fanout/capacitance
+- **Minimum pulse width** — đảm bảo chiều rộng xung clock đủ lớn để các sequential elements kích hoạt đúng cách; vi phạm minimum pulse width có thể dẫn đến functional failure
+
+**3. Meet Timing Constraints**
+- Setup/Hold timing
+
+**4. Minimize Power Consumption**
+- Dynamic power (switching activity của clock buffers)
+- Leakage power
+
+**5. Minimize Noise on Clock Nets**
+- Crosstalk-induced glitches
+- Clock signal integrity degradation
 
 ## Computed from
 CTS tool xây dựng Clock Tree theo các bước:
@@ -39,7 +61,8 @@ CTS tool xây dựng Clock Tree theo các bước:
 - [[SDC]] — clock definitions, uncertainty/jitter, transition constraints và timing exceptions liên quan
 - [[LEF]] + timing libraries (Liberty) — thông tin physical/timing của Clock Buffer/Inverter để chọn cell phù hợp [Needs verification]
 - [[MMMC]] / RC corners — framework phân tích multi-corner cho skew/latency/transition sau CTS
-- CTS spec (nếu flow hỗ trợ) — mục tiêu và design-rule cho clock tree có thể được mô tả ở mức flow/tool [Needs verification]
+- **Clock Tree Spec** — file đặc tả các mục tiêu và design-rule của clock tree, bao gồm target skew, target insertion delay, max transition, max fanout, clock buffer list, NDR rules, và shielding requirements. Đây là input chính thức bên cạnh placed database
+- [[ITF]] — Interconnect Technology Files cung cấp RC parameters cho từng metal layer, dùng bởi CTS tool để ước tính wire delay trong quá trình xây dựng và cân bằng clock tree
 
 ## Used by
 - [[Routing]] — nhận clock tree topology và vị trí buffer/inverter đã insert để triển khai clock nets vật lý

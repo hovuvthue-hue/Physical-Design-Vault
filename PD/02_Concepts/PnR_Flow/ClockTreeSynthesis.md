@@ -63,6 +63,8 @@ CTS tool xây dựng Clock Tree theo các bước:
 - [[MMMC]] / RC corners — framework phân tích multi-corner cho skew/latency/transition sau CTS
 - **Clock Tree Spec** — file đặc tả các mục tiêu và design-rule của clock tree, bao gồm target skew, target insertion delay, max transition, max fanout, clock buffer list, NDR rules, và shielding requirements. Đây là input chính thức bên cạnh placed database
 - [[ITF]] — Interconnect Technology Files cung cấp RC parameters cho từng metal layer, dùng bởi CTS tool để ước tính wire delay trong quá trình xây dựng và cân bằng clock tree
+- [[ClockSkewGroup]] — skew group definitions phải được configure trước CTS để CTS biết scope của từng optimization domain
+- [[ClockExceptions]] — exception pin configurations phải được setup trước CTS để tool xử lý đúng các pins đặc biệt (Stop, Nonstop, Exclude, Ignore, Through, Floating)
 
 ## Used by
 - [[Routing]] — nhận clock tree topology và vị trí buffer/inverter đã insert để triển khai clock nets vật lý
@@ -79,7 +81,7 @@ Kết quả CTS thường cần đi qua lớp [[CTSQualityReview]] trước khi 
 → Chain: [[Chain_PnR_Flow]]
 → Upstream: [[Placement]]
 → Downstream: [[Routing]] · [[STA]]
-→ Closely related: [[CTSFlow]] · [[CTSOptimization]] · [[ClockSkew]] · [[ClockLatency|Insertion Delay]] · [[HoldTime]] · [[Slack]] · [[PostCTSOptimization]] · [[CTSQualityReview]]
+→ Closely related: [[CTSFlow]] · [[CTSOptimization]] · [[ClockSkew]] · [[ClockLatency|Insertion Delay]] · [[HoldTime]] · [[Slack]] · [[PostCTSOptimization]] · [[CTSQualityReview]] · [[ClockDutyCycle]] · [[MinimumPulseWidth]] · [[ClockSkewGroup]] · [[ClockExceptions]] · [[NDR]]
 → Cùng nhóm: [[Floorplanning]] · [[Placement]] · [[Routing]] · [[ParasiticExtraction]] · [[Signoff]]
 
 

@@ -16,11 +16,13 @@ SignalIntegrity là concept chất lượng/correctness của tín hiệu sau kh
 ## Crosstalk as SI issue
 [[SignalIntegrity|Crosstalk]] là subtopic quan trọng của SignalIntegrity trong Routing. Khi hai routed nets gần nhau, coupling capacitance có thể làm switching trên aggressor net ảnh hưởng victim net.
 
-Ở mức concept, Crosstalk có thể biểu hiện như:
+Ở mức concept, Crosstalk có thể biểu hiện theo ba dạng phân biệt, tùy theo hướng switching của aggressor net so với victim net:
 
-- coupling-induced noise trên victim net;
-- crosstalk-induced delay do switching tương quan giữa aggressor/victim;
-- quan hệ aggressor/victim phụ thuộc topology, timing window và extracted parasitics. [Needs verification]
+- **Speed up victim**: aggressor switching cùng chiều với victim → coupling current đẩy victim đến đích nhanh hơn → delay giảm. Có vẻ tốt nhưng thực ra gây timing unpredictability và có thể tạo Hold violation khi data path trở nên quá nhanh so với expected.
+- **Slow down victim**: aggressor switching ngược chiều với victim → coupling current cản chuyển đổi của victim → delay tăng. Đây là dạng gây Setup violation phổ biến nhất.
+- **Glitch trên victim**: aggressor switching trong khi victim không switching → coupling tạo voltage bump hoặc droop tạm thời trên victim. Nếu glitch đủ lớn để vượt qua receiver threshold, có thể gây **false switching** → functional failures hoặc unexpected power consumption.
+
+Mức độ ảnh hưởng phụ thuộc vào: coupling capacitance, aggressor slew, victim load, driver strength, và timing window giữa aggressor và victim transitions.
 
 Card này không tạo card riêng cho Crosstalk.
 

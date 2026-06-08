@@ -9,7 +9,7 @@ chain: Chain_STA_Basics
 # ClockUncertainty
 
 ## Definition
-Clock Uncertainty là tham số SDC dùng để model tổng sự không chắc chắn về thời điểm clock edge thực sự đến tại Flip-flop, bao gồm Jitter (biến thiên chu kỳ từ PLL) và Skew budget (chênh lệch arrival time giữa các FF). Clock Uncertainty được subtract ra khỏi timing budget như một safety margin, buộc STA tool phải optimize design với biên độ dự phòng đủ lớn để chip hoạt động an toàn dù có nhiễu và biến thiên vật lý. Quan trọng: Clock Uncertainty cho Setup và Hold được set khác nhau vì bản chất vật lý của Jitter khác nhau trong hai bài toán.
+Clock Uncertainty là tham số SDC dùng để model tổng sự không chắc chắn về thời điểm clock edge thực sự đến tại Flip-flop. Clock uncertainty tổng hợp bốn nguồn không chắc chắn: **Jitter** (biến thiên chu kỳ từ PLL), **Skew variation** (chênh lệch arrival time giữa các FF), **PVT variation** (biến thiên Process, Voltage, Temperature làm timing không đồng nhất trên-chip), và **additional setup/hold timing margin** để dự phòng. Clock Uncertainty được subtract ra khỏi timing budget như một safety margin, buộc STA tool phải optimize design với biên độ dự phòng đủ lớn để chip hoạt động an toàn dù có nhiễu và biến thiên vật lý. Quan trọng: Clock Uncertainty cho Setup và Hold được set khác nhau vì bản chất vật lý của Jitter khác nhau trong hai bài toán.
 
 ## Computed from
 Clock Uncertainty được kỹ sư thiết lập trong SDC dựa trên specs từ PLL datasheet và CTS quality targets:

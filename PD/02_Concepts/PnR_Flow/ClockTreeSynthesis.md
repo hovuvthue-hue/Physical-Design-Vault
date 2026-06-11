@@ -37,6 +37,28 @@ Clock Sink thường là clock pin của sequential elements (FF/latch) và có 
 - Crosstalk-induced glitches
 - Clock signal integrity degradation
 
+## Inverter-Based vs Buffer-Based Clock Trees
+
+Cả clock inverters và clock buffers đều được library characterize cho **balanced rise và fall delays** — khác với regular functional cells vốn không được tối ưu cho sự đối xứng này. Sự đối xứng rise/fall là điều kiện bắt buộc vì bất kỳ bất đối xứng nào sẽ tích lũy thành skew giữa các paths đi qua số lượng inversions khác nhau.
+
+**Clock Inverter:** Single-stage cell với delay thấp hơn per cell và area nhỏ hơn, nhưng flips polarity — mỗi root-to-sink path phải duy trì inversion count đúng (chẵn hoặc lẻ tùy logic requirement). Điều này làm cho tree construction bị ràng buộc nhiều hơn vì cần đảm bảo polarity consistency trên tất cả paths.
+
+**Clock Buffer:** Thường là hai inverter stages nối tiếp với stage đầu nhỏ và stage sau lớn hơn để drive wire capacitance và sink load. Vì buffer-based trees drive được wire segments dài hơn, chúng thường cần ít stages hơn cho cùng path length.
+
+**Trade-offs thực tế:**
+
+| | Inverter-Based | Buffer-Based |
+|---|---|---|
+| Delay per cell | Thấp hơn | Cao hơn (2 stages) |
+| Stage count cho cùng path length | Nhiều hơn | Ít hơn |
+| Polarity constraint | Phải balance inversion count | Không có |
+| Tree construction complexity | Cao hơn | Thấp hơn |
+| Total delay accumulation | Có thể cao hơn do nhiều stages | Thường thấp hơn |
+| Switching power | Có thể cao hơn | Thường thấp hơn (ít stages) |
+| Accumulated skew sensitivity | Cao hơn (nhiều stages tích lũy variation) | Thấp hơn |
+
+**Key takeaway:** Buffer-based trees thường là practical default cho main clock distribution vì đơn giản hóa implementation và giảm stage count. Inverter-based hoặc mixed trees có thể được chọn khi polarity requirements, pulse-width behavior, hoặc library-specific optimization khiến chúng hấp dẫn hơn. Lựa chọn cuối cùng phụ thuộc library, design requirements, và CTS spec. [Needs verification]
+
 ## Computed from
 CTS tool xây dựng Clock Tree theo các bước:
 - **Clock tree topology**: tool chọn cấu trúc cây (H-tree, fishbone, mesh, hoặc hybrid) dựa trên phân bố vật lý của clock sinks sau Placement

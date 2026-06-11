@@ -9,8 +9,21 @@ chain: Chain_STA_Basics
 # ClockLatency
 
 ## Definition
-Clock Latency (a.k.a. Insertion Delay, hay Clock Insertion Delay) là tổng thời gian tín hiệu clock đi từ điểm nguồn phát ban đầu đến chân clock (clock pin) của một Flip-flop cụ thể. Clock Latency là con số độc lập cho từng FF — không phải một giá trị chung cho toàn bộ clock domain. Latency cao không nhất thiết là vấn đề; vấn đề xảy ra khi Latency của các FF trong cùng domain chênh lệch nhau lớn (tức là Clock Skew lớn). Latency gồm hai thành phần cộng lại: Source Latency và Network Latency.
+Clock Latency là tổng thời gian tín hiệu clock đi từ điểm nguồn phát ban đầu đến chân clock (clock pin) của một Flip-flop cụ thể. Clock Latency là **live STA value** — cập nhật mỗi khi extraction được chạy lại sau routing, phản ánh trạng thái extracted hiện tại của design.
 
+Clock Latency là con số độc lập cho từng FF — không phải một giá trị chung cho toàn bộ clock domain. Latency cao không nhất thiết là vấn đề; vấn đề xảy ra khi Latency của các FF trong cùng domain chênh lệch nhau lớn (tức là Clock Skew lớn). Latency gồm hai thành phần cộng lại: Source Latency và Network Latency.
+
+## Phân biệt Clock Latency và Clock Insertion Delay
+
+Cả hai đều đo tổng thời gian clock propagate từ source đến một sink cụ thể — cùng một đường vật lý — nhưng ở các thời điểm khác nhau trong flow:
+
+| | Clock Insertion Delay | Clock Latency |
+|---|---|---|
+| Bản chất | Fixed CTS estimate — không thay đổi sau khi clock tree đã được build | Live STA value — cập nhật mỗi khi extraction được chạy sau routing |
+| Thời điểm đại diện | Snapshot từ tree construction | Trạng thái extracted hiện tại của design |
+| Nguồn dữ liệu | CTS engine (báo cáo ngay sau khi tree được build) | STA engine với propagated clock + SPEF |
+
+Sau khi CTS hoàn thành, Insertion Delay là giá trị cố định. Sau khi routing và extraction chạy, Clock Latency cập nhật theo wire RC thực tế được trích xuất — trong khi Insertion Delay vẫn giữ nguyên. Tại Signoff, Clock Latency là con số phản ánh thực tế silicon chính xác hơn Insertion Delay.
 ## Computed from
 $$\text{Total Latency}_{FF} = \text{Source Latency} + \text{Network Latency}$$
 

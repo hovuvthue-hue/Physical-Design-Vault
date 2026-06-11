@@ -45,6 +45,27 @@ Pha này sửa các violations bao gồm: setup/hold/transition/capacitance/fano
 
 Pha này vẫn thuộc nội bộ CTSFlow và cần phân biệt với [[PostCTSOptimization]] ở giai đoạn downstream rộng hơn.
 
+## Recommended Three-Stage Setup Approach
+
+Ngoài 4 internal execution phases, CTS còn có một recommended workflow để set up và validate clock tree trên design mới, dùng ba `cts_balance_mode` settings theo thứ tự leo thang:
+
+**Stage 1 — Cluster:**
+Tool nhóm tất cả clock sink pins thành clusters và chỉ insert buffers để thỏa mãn DRV constraints (transition time, capacitance, fanout limits). Không có skew balancing, không có timing optimization, không có clock net routing. Mục tiêu: xác định xem maximum insertion delay path có hợp lý không — tìm transition violations từ floorplan issues (blockages, narrow channels), FIXED clock gates, divider flops, power domain crossings, và uneven cluster distribution across skew groups.
+
+Trong Clock Tree Debugger, DRV-inserted buffers phân biệt được với balancing buffers; insertion delay bar chart highlight maximum delay path.
+
+**Stage 2 — Trial:**
+Tool chạy full clustering stage cộng virtual delay balancing — thay vì insert real balancing buffers, tool áp dụng estimated virtual delays để simulate một balanced clock tree. Clock nets vẫn chưa được route. Đây là fast và low-cost run. Mục tiêu: xác định liệu balancing constraints có được setup đúng không — tìm large skew hoặc insertion delay tăng bất thường từ conflicting skew group constraints.
+
+Trong CTD, virtual delay values được annotate trực tiếp trên affected buffer nodes; arrival time chart hiển thị simulated sink arrivals so với balancing target line, cho thấy liệu skew group constraints có achievable không.
+
+**Stage 3 — Full:**
+Tool chạy complete CTS flow: sink clustering, real buffer và inverter insertion cho DRV compliance và skew balancing, clock net routing qua NanoRoute với NDR rules, và concurrent data path timing optimization. Đây là production mode và là default. Clock insertion delay tại stage này là real và propagated.
+
+Trong CTD, balancing buffers phân biệt với DRV buffers theo màu; arrival time chart hiển thị actual propagated clock arrivals với minimized skew; NDR routing confirmation xuất hiện trong tree header.
+
+Workflow thực tế: chạy cluster trước để kiểm tra floorplan và DRV, sau đó trial để validate constraints trước khi commit vào full run — tiết kiệm thời gian bằng cách phát hiện vấn đề sớm ở các stage ít tốn kém hơn.
+
 ## What CTSFlow produces
 Ở mức concept, CTSFlow tạo ra:
 - Clock tree đã qua các bước hình thành, cân bằng, và routing clock ở mức nội bộ CTS.

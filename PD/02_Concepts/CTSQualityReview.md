@@ -11,51 +11,112 @@ chain: Chain_PnR_Flow
 ## Definition
 **CTSQualityReview** là hoạt động đánh giá chất lượng đầu ra của [[ClockTreeSynthesis]] để quyết định liệu design đã đủ ổn định để đi tiếp xuống [[Routing]] và readiness cho [[Signoff]] hay chưa.
 
-Mục tiêu của card này là mô tả khung đánh giá ở mức concept, không phải checklist cứng theo một tool cụ thể.
+Kết quả CTS phải được review để đảm bảo các yêu cầu về timing, electrical, physical implementation, routability, và clock quality đã được thỏa mãn trước khi chuyển sang routing và signoff stages.
 
-## What is reviewed after CTS
-Sau CTS, review thường nhìn vào các nhóm output chính:
-- netlist/design database đã được cập nhật với clock buffer/inverter,
-- dữ liệu vật lý clock routing ở mức implementation database,
-- thông tin timing và clock quality của clock network,
-- ước lượng tác động lên power và routability downstream.
+## CTS Deliverables
 
-Tên report, định dạng database, và mức chi tiết theo từng tool phụ thuộc flow triển khai. [Needs verification]
+CTS tạo ra các đầu ra là cơ sở cho quality review:
 
-## Timing and electrical checks
-Nhóm kiểm tra timing/electrical thường bao gồm:
-- trạng thái setup/hold slack sau propagated clock,
-- DRV liên quan transition/[[Slew]], capacitance, fanout,
-- mức ổn định QoR khi thay đổi corner/mode phân tích [[STA]].
+- Optimized gate-level netlist (cập nhật với clock buffer/inverter được chèn vào)
+- Clock-routed DEF database
+- Timing reports
+- Clock tree quality reports
+- Power analysis reports
 
-Ngưỡng pass/fail cụ thể là flow-dependent, không nên xem như quy tắc phổ quát. [Needs verification]
+## 1. Timing and Electrical Checks
 
-## Placement and routability checks
-CTS có thể chèn thêm nhiều clock cells, vì vậy quality review cũng cần xem:
-- tính hợp lệ placement sau khi insert cell,
-- ảnh hưởng lên mật độ và xu hướng nghẽn route,
-- rủi ro tiêu tốn tài nguyên routing khi đi downstream.
+**Timing Checks:**
+- Setup và Hold timing violations phải được loại bỏ hoặc giảm xuống mức tối thiểu.
+- WNS (Worst Negative Slack) và TNS (Total Negative Slack) phải gần bằng 0.
+- Số lượng failing endpoints (FEP) phải ở mức tối thiểu.
 
-Mức đánh giá congestion/routability cụ thể phụ thuộc tool metric và stage đo. [Needs verification]
+**Electrical and DRV Quality:**
+- Tất cả electrical constraint violations (max transition/capacitance/fanout) phải được xử lý hoặc giảm thiểu, **bao gồm cả clock nets**.
 
-## Power checks
-Clock network thường là nguồn đóng góp dynamic power đáng kể, nên CTSQualityReview cần kiểm tra:
-- tác động power do clock buffers/inverters được thêm,
-- thay đổi switching load/capacitance của clock tree,
-- xu hướng power khi cân bằng giữa timing và electrical cleanup.
+Ngưỡng pass/fail cụ thể là flow-dependent. [Needs verification]
+
+## 2. Placement and Routability Checks
+
+**Placement Legality Checks:**
+- Tất cả cells phải được legally placed.
+- Không có cells nào bị overlap, unplaced, hoặc vi phạm placement rules.
+- Placement legalization đảm bảo: valid cell alignment, row compliance, proper spacing, manufacturable placement.
+- Placement density phải nằm trong giới hạn chấp nhận được để tránh severe congestion.
+
+**Routability Checks:**
+- Design phải duy trì khả năng routable.
+- Target routability điển hình:
+  - Overflow < 1%
+  - Hotspot count < 100
+
+Mức pass/fail cụ thể phụ thuộc tool metric và methodology. [Needs verification]
+
+## 3. Power Consumption Checks
+
+Clock network thường là nguồn đóng góp dynamic power đáng kể vì clock signals toggle liên tục. CTS phải thỏa mãn power targets tổng thể trong khi tối thiểu hóa tác động của clock distribution.
+
+**Power Checks After CTS:**
+- Total power consumption — bao gồm dynamic power, leakage power, và internal power — phải nằm trong design targets.
+- Clock networks là major contributors của dynamic switching power vì clock signals toggle liên tục.
+- CTS optimization phải minimize không cần thiết: clock buffer insertion, clock switching activity, clock tree depth, và clock capacitance.
 
 Kết quả định lượng nên được đọc cùng [[PowerAnalysis]] trong đúng context stage/corner. [Needs verification]
 
-## Clock quality checks
-Các chỉ số clock quality cốt lõi gồm:
-- [[ClockSkew]]
-- [[ClockLatency]]
-- [[Slew]] (clock transition)
+## 4. Clock Tree Quality Checks
+
+Các chỉ số clock quality cốt lõi:
+
+- **[[ClockSkew]]** phải nằm trong target limits.
+- **Clock insertion delay** phải được tối thiểu hóa hoặc kiểm soát theo CTS targets trong khi vẫn duy trì balanced clock distribution.
+- **[[ClockLatency]]** phải cân bằng giữa các clock sinks trong cùng một skew group.
+- **Clock transition quality** ([[Slew]]) phải thỏa mãn maximum transition và electrical constraint requirements.
 
 Các chỉ số này cần được xem đồng thời thay vì tách rời, vì tối ưu một chiều có thể làm xấu chiều khác trong downstream closure.
 
-## Debug aids
-Một số flow dùng Clock Tree Debugger (CTD) như công cụ hỗ trợ quan sát clock tree topology và vùng bất thường.
+### Phân biệt Insertion Delay và Clock Latency
+
+Trong context Clock Tree Quality Checks, cần phân biệt:
+
+- **Insertion Delay**: fixed CTS estimate — không thay đổi sau khi clock tree đã được build; là snapshot từ thời điểm tree construction.
+- **[[ClockLatency]]**: live STA value — cập nhật mỗi khi extraction được chạy sau routing; phản ánh trạng thái extracted hiện tại của design.
+
+Cả hai đo cùng một đường vật lý nhưng ở các thời điểm khác nhau. Sau routing và extraction, Clock Latency cập nhật theo wire RC thực tế, trong khi Insertion Delay vẫn giữ nguyên. Tại Signoff, Clock Latency là con số phản ánh thực tế chính xác hơn.
+
+## CTS Checklist
+
+Tổng hợp các hạng mục cần pass trước khi chuyển sang Routing:
+
+**Timing Checks:**
+- Không có setup violations hoặc chỉ còn minimal setup violations.
+- Không có hold violations hoặc chỉ còn minimal hold violations.
+- WNS và TNS gần bằng 0.
+- FEP ở mức tối thiểu.
+
+**Electrical Checks:**
+- Không có DRV violations trên cả signal nets và clock nets.
+
+**Placement and Routability Checks:**
+- Tất cả cells legally placed và fully legalized.
+- Congestion overflow và hotspot levels trong acceptable limits.
+
+**Power Consumption Checks:**
+- Total power đáp ứng design targets.
+- Clock network power được tối ưu.
+
+**Clock Tree Quality Checks:**
+- Clock insertion delay đáp ứng CTS targets.
+- Clock skew trong target limits.
+- Clock transition quality đáp ứng electrical constraints.
+
+## Debug Aids — Clock Tree Debugger (CTD)
+
+CTD (Clock Tree Debugger) cung cấp graphical views để inspect, analyze, và debug clock tree structure, timing, và balance. Hai views chính:
+
+**Clock Tree Layout View:** Hiển thị vị trí vật lý của clock tree cells và routing trên die. Engineer có thể trace clock path từ source đến sinks và identify physical issues như blockages hoặc unusual routing detours.
+
+**Clock Insertion Delay View:** Plots mỗi clock tree cell theo insertion delay trên trục Y — buffers/inverters (vàng), ICGs (xanh lá), flip-flops (đỏ) từ trên xuống dưới. Các red markers (flip-flops) tụ sát nhau ở phía dưới chỉ ra clock tree được cân bằng tốt với minimal skew; spread rộng lập tức flag skew problem cần debug.
+
+**Cross-View Navigation:** Chọn một cell hoặc path trong một view sẽ highlight elements tương ứng trong view kia, cho phép locate và investigate problem areas trên die nhanh chóng.
 
 CTD chỉ nên xem như debug aid phụ thuộc tool/UI, không phải định nghĩa cốt lõi của CTSQualityReview. [Needs verification]
 

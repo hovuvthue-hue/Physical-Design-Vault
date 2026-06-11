@@ -29,6 +29,15 @@ Clock nets là đối tượng phổ biến nhất của NDR trong CTS context v
 - Typical clock NDR pattern: 2× minimum width, 2× minimum spacing (thường ký hiệu 2W/2S)
 - NDR rule được specify trong Clock Tree Spec và là một trong các inputs của [[ClockTreeSynthesis]]
 
+## NDR Application by Clock Tree Net Type
+Trong clock tree, NDR rules được áp dụng phân tầng theo loại net:
+
+- **Root nets**: nets gần clock source, drive toàn bộ hoặc phần lớn clock tree → NDR nghiêm ngặt nhất, thường kết hợp wider wire + larger spacing + shielding
+- **Internal nets**: nets trung gian trong clock tree → NDR mức trung bình
+- **Sink nets**: nets kết nối trực tiếp đến clock sinks (leaf nets) → NDR nhẹ hơn hoặc default rules tùy design
+
+Chiến lược này phù hợp với nguyên tắc: ảnh hưởng càng rộng thì protection requirement càng cao. Root net ảnh hưởng toàn bộ chip nếu bị noise — cần được bảo vệ chặt nhất. Sink net chỉ ảnh hưởng một hoặc vài flip-flops — overhead NDR đầy đủ có thể không cần thiết và lãng phí routing resources.
+
 ## NDR Trade-offs
 Áp dụng NDR có chi phí:
 - **Routing resources**: wire rộng hơn và spacing lớn hơn tiêu thụ nhiều routing tracks hơn → routing capacity giảm cho các nets khác → tăng congestion risk

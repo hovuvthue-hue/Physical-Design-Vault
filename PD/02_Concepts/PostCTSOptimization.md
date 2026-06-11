@@ -16,6 +16,10 @@ chain: Chain_PnR_Flow
 ## Position in flow
 Trong flow vật lý, PostCTSOptimization thường nằm sau [[CTSFlow]] và trước khi thiết kế đi sâu vào [[Routing]] chi tiết và kiểm tra readiness cho [[Signoff]].
 
+PostCTSOptimization được thực thi khi timing violations còn tồn tại sau CTS routing và post-conditioning. Ở giai đoạn này, WNS và TNS nên ở mức gần bằng 0, và số lượng failing endpoints (FEP) nên ở mức tối thiểu. Timing analysis dùng propagated clocks với extracted clock routing parasitics.
+
+Đây là lớp closure trung gian để ổn định QoR sau khi clock tree đã được xây dựng, trước khi thiết kế đi sâu vào [[Routing]] chi tiết.
+
 Nói ngắn gọn: đây là lớp closure trung gian để ổn định QoR sau khi clock tree đã được xây dựng.
 
 ## Difference from PreCTSOptimization / CTSOptimization / Post-Conditioning
@@ -25,12 +29,14 @@ Nói ngắn gọn: đây là lớp closure trung gian để ổn định QoR sau
 
 ## Main cleanup targets
 Các mục tiêu thường gặp ở mức concept:
-- setup recovery dựa trên kết quả post-CTS [[STA]]
-- hold recovery khi skew/latency thực bắt đầu lộ rõ
-- repair electrical DRV thông qua [[DRVFixing]]
-- transition/[[Slew]] cleanup trên các net/cell nhạy cảm
-- capacitance/fanout cleanup để giảm rủi ro vi phạm tiếp diễn
-- skew refinement có kiểm soát để cải thiện tính ổn định timing
+- setup/hold timing recovery
+- DRV repair thông qua [[DRVFixing]]
+- transition improvement
+- capacitance reduction
+- skew refinement
+- load balancing
+
+Common techniques: buffer insertion, buffer resizing, cell sizing, useful skew optimization, load balancing, và incremental timing optimization. Incremental optimization thường cần thiết để tiếp tục tinh chỉnh timing convergence mà không gây design perturbation lớn.
 
 Thứ tự ưu tiên các mục tiêu trên phụ thuộc flow/tool/library cụ thể. [Needs verification]
 

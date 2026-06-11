@@ -19,26 +19,31 @@ CTSFlow không phải một stage độc lập ngoài PnR flow, mà là “nội
 Nó nhận bối cảnh từ placement/clock constraints của CTS, rồi chuyển clock từ mô hình cấu trúc ban đầu sang clock network đã có routing và được làm sạch chất lượng ở mức hậu định tuyến clock.
 
 ## Phase 1 — Clustering
-Clustering nhóm các clock sinks theo độ gần vật lý và ý đồ clock-domain/skew-group, sau đó hình thành clock structure ban đầu để phân phối tải.
+CTS tool nhóm các clock sinks (Flip-flops) liên quan thành clusters trước khi xây dựng clock tree, dựa trên vị trí vật lý, fanout, capacitance, và DRV constraints. Mỗi cluster đại diện cho một nhóm sequential cells cùng clock source. Clock tree được xây dựng theo DRV constraints (max capacitance, max fanout, max transition). Reports sau clustering cho thấy số lượng buffers, inverters, và gated clock cells được insert.
 
-Ở pha này, tool thường phải đồng thời tôn trọng các ràng buộc fanout/capacitance/transition và các mục tiêu [[DRVFixing]] liên quan clock net ở mức khái niệm.
+Ba chiến lược clustering:
+- **Top-Down Clustering**: bắt đầu với một cluster lớn chứa toàn bộ sinks, sau đó đệ quy chia nhỏ thành các clusters nhỏ hơn.
+- **Bottom-Up Clustering**: bắt đầu từ từng sink riêng lẻ và dần gộp thành clusters lớn hơn.
+- **Iterative Clustering**: kết hợp cả top-down và bottom-up theo vòng lặp để cải thiện chất lượng clock tree.
 
 ## Phase 2 — Balancing
-Balancing điều chỉnh topology, phân bố delay, và vị trí/đặc tính buffer trên clock paths để giảm chênh lệch clock arrival time giữa sinks.
+Balancing điều chỉnh clock paths để equalize clock arrival times và minimize clock skew. CTS tool cân bằng skew theo skew-group constraints; optimization được lặp lại cho đến khi skew targets đạt được cho tất cả skew groups hoặc không còn cải thiện thêm được nữa. CTS engine có thể: insert thêm buffers, modify clock tree topology, adjust clock branch depth, và apply useful skew optimization.
 
-Pha này gắn trực tiếp với mục tiêu kiểm soát [[ClockSkew]] và [[ClockLatency]], đồng thời liên hệ với các chiến lược trong [[CTSOptimization]] (bao gồm cả controlled skew khi cần).
+Pha này gắn trực tiếp với mục tiêu kiểm soát [[ClockSkew]] và [[ClockLatency]], đồng thời liên hệ với các chiến lược trong [[CTSOptimization]].
 
 ## Phase 3 — Routing Clock Tree
-Sau khi topology và buffer placement đã đủ ổn định, clock tree được chuyển thành các clock nets vật lý có routing.
+Clock nets được route vật lý theo dedicated routing rules, tuân theo NDR rules đã được define trước. Clock nets thường được route trên các metal layers cao hơn để: giảm resistance và capacitance, minimize coupling noise, cải thiện signal integrity, và giảm clock latency variation.
 
-Trong một số flow, clock routing có thể đi kèm quy tắc đặc biệt như NDR, shielding, hoặc ưu tiên layer cao hơn; chi tiết phụ thuộc tool/PDK/flow cụ thể. [Needs verification]
+Routing rules thường được áp dụng phân biệt cho: trunk nets, leaf nets, và top-level clock routes. Multi-cut vias thường được dùng để cải thiện reliability, electromigration robustness, và via resistance.
 
 Pha này là cầu nối trực tiếp sang [[Routing]] và ảnh hưởng chất lượng RC thực tế cho phân tích timing downstream.
 
 ## Phase 4 — Post-Conditioning
-Post-Conditioning dùng hành vi clock thực tế hơn (sau khi có routing và/hoặc extraction phù hợp flow) để xử lý phần còn lại của transition/capacitance/fanout/skew/timing risk.
+Giai đoạn tinh chỉnh CTS cuối cùng, nơi propagated clocks được dùng để repair các timing và DRV violations phát sinh do routed clock delays và extracted parasitics. Clock latency, transition, và skew thực tế được đánh giá sau clock routing; clock paths được tinh chỉnh để cải thiện skew, insertion delay, transition quality, và clock integrity tổng thể.
 
-Pha này vẫn thuộc nội bộ CTSFlow và cần phân biệt với [[PostCTSOptimization]] ở giai đoạn downstream rộng hơn (deferred scope).
+Pha này sửa các violations bao gồm: setup/hold/transition/capacitance/fanout. Routed clock nets có thể introduce: routing parasitics, additional RC delay, coupling effects, và clock latency variation. CPPR adjustment được áp dụng để cải thiện timing accuracy. Các hoạt động tinh chỉnh có thể bao gồm: buffer insertion, buffer resizing, useful skew optimization, và hold fixing.
+
+Pha này vẫn thuộc nội bộ CTSFlow và cần phân biệt với [[PostCTSOptimization]] ở giai đoạn downstream rộng hơn.
 
 ## What CTSFlow produces
 Ở mức concept, CTSFlow tạo ra:

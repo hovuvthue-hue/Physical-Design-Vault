@@ -32,13 +32,24 @@ Di chuyển vị trí vật lý của clock cells (buffer/inverter) để phân 
 Tái tổ chức connectivity hoặc phân cụm sink giữa các nhánh clock tree để cải thiện load balance, skew, hoặc electrical quality tổng thể.
 
 ### 4) Dummy Load Insertion
-Bổ sung tải giả có kiểm soát ở một số nhánh clock để cân bằng delay giữa các nhánh nhanh/chậm. Kỹ thuật này có thể giúp cân bằng timing nhưng thường tăng switching power và tải tổng.
+Bổ sung artificial loads vào các nhánh clock tree được chọn để cân bằng clock loading, cải thiện skew matching, và equalize clock path delay. Dummy loads thường được thêm vào clock path ngắn nhất để match delay với các path dài hơn.
+
+Ba loại dummy load:
+- **Buffer-Based Dummy Load**: dùng thêm clock buffers để tạo balancing delay và capacitance.
+- **Inverter-Based Dummy Load**: dùng inverter cells để tạo controlled delay và load balancing.
+- **RC-Based Dummy Load**: dùng wire resistance và capacitance để tạo thêm delay.
+
+Kỹ thuật này giúp cân bằng timing nhưng thường tăng switching power và tải tổng.
 
 ### 5) Load Splitting
-Tách tải lớn (fanout/capacitance lớn) thành nhiều nhánh nhỏ hơn bằng cách thêm stages hoặc tái phân phối sink, nhằm cải thiện slew/DRV trên từng nhánh.
+Insert thêm buffers hoặc cloned drivers để chia fanout lớn thành các nhóm nhỏ hơn, cải thiện clock transition quality và thỏa mãn CTS và DRV constraints.
 
-### 6) Useful Skew (as controlled skew)
-Thay vì ép skew về gần 0 tuyệt đối, có thể chủ động điều chỉnh skew có kiểm soát trên một số timing paths để hỗ trợ closure.
+Hai phương pháp:
+- **Load splitting via cloning**: nhân bản driver để mỗi bản phục vụ một subset sinks nhỏ hơn, chia đều fanout.
+- **Load splitting via buffering**: thêm một buffer layer mới để chia fanout thành các nhóm song song.
+
+### 6) Useful Skew
+Chủ động điều chỉnh clock arrival times để cải thiện setup hoặc hold timing mà không thay đổi data path logic. Thay vì ép skew về gần 0 tuyệt đối, CTS tool điều chỉnh có kiểm soát skew trên các paths được chọn để tối ưu timing.
 
 Useful skew có thể được cân nhắc khi một hard setup path cần thêm effective timing budget, nhưng đây là trade-off CTS/STA có kiểm soát chứ không phải functional timing exception. Useful skew có thể cải thiện setup margin trên các path được chọn đồng thời làm giảm hold margin trên các path liên quan; vì vậy phải đánh giá setup và hold cùng nhau qua [[HoldTime]], [[Slack]], và [[STA]]. Mức áp dụng thực tế phụ thuộc tool/flow và policy timing-closure. [Needs verification]
 
